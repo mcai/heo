@@ -1,4 +1,3 @@
-import os
 import sys
 
 from common import bench_and_trace_file_name_range, num_cores

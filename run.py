@@ -27,6 +27,6 @@ experiments = []
 
 
 for bench, trace_file_name in bench_and_trace_file_name_range:
-    add_experiment(experiments, bench, trace_file_name, num_cores, 'OddEven', 'BufferLevel', max_cycles)
+    add_experiment(experiments, bench, trace_file_name + '.combined', num_cores, 'OddEven', 'BufferLevel', max_cycles)
 
 run_experiments(experiments, run_experiment)
