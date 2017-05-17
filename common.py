@@ -10,7 +10,7 @@ bench_and_trace_file_name_range = [
     ('x264', 'traces/x264.trace.4.txt'),
 ]
 
-max_cycles = 100000
+max_cycles = 100000000
 
 num_cores = 64
 
