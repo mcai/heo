@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"strings"
 	"strconv"
+	"math/rand"
 )
 
 type TraceFileLine struct {
@@ -89,7 +90,11 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 }
 
 func (generator *TraceTrafficGenerator) AdvanceOneCycle() {
-	if (generator.Network.Driver.CycleAccurateEventQueue().CurrentCycle % 30 == 0 && generator.Network.Driver.CycleAccurateEventQueue().CurrentCycle < 100000000) {
+	if !generator.Network.AcceptPacket || generator.MaxPackets != -1 && generator.Network.NumPacketsReceived > generator.MaxPackets {
+		return
+	}
+
+	if rand.Float64() <= generator.PacketInjectionRate {
 		if generator.CurrentTraceFileLine < len(generator.TraceFileLines) {
 			var traceFileLine = generator.TraceFileLines[generator.CurrentTraceFileLine]
 			generator.CurrentTraceFileLine += 1
@@ -97,7 +102,7 @@ func (generator *TraceTrafficGenerator) AdvanceOneCycle() {
 			var src = int(traceFileLine.ThreadId)
 			var dest = generator.Network.Config.NumNodes - 1
 
-			var packet = NewDataPacket(generator.Network, src, dest, 16, true, func() {})
+			var packet = NewDataPacket(generator.Network, src, dest, generator.Network.Config.DataPacketSize, true, func() {})
 
 			generator.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
 				generator.Network.Receive(packet)

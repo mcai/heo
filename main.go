@@ -15,6 +15,9 @@ func main() {
 	var selection string
 	var maxCycles int64
 
+	var acoSelectionAlpha = 0.45
+	var reinforcementFactor = 0.001
+
 	flag.StringVar(&outputDirectory, "d", "", "output directory")
 	flag.StringVar(&benchmark, "b", "", "benchmark")
 	flag.StringVar(&traceFileName, "f", "", "NOC simulation trace file name")
@@ -23,13 +26,13 @@ func main() {
 	flag.StringVar(&selection, "s", "BufferLevel", "NOC selection algorithm")
 	flag.Int64Var(&maxCycles, "c", 1000, "Maximum number of cycles to simulate")
 
+	flag.Float64Var(&acoSelectionAlpha, "sa", 0.45, "ACO selection alpha")
+	flag.Float64Var(&reinforcementFactor, "rf", 0.001, "Reinforcement factor")
+
 	flag.Parse()
 
 	var dataPacketInjectionRate = 0.015
 	var antPacketInjectionRate = 0.0002
-
-	var acoSelectionAlpha = 0.45
-	var reinforcementFactor = 0.001
 
 	var experiment = NewTraceDrivenExperiment(
 		outputDirectory,
@@ -37,7 +40,7 @@ func main() {
 		maxCycles,
 		noc.TRAFFIC_TRACE,
 		dataPacketInjectionRate,
-		noc.ROUTING_ODD_EVEN, noc.SELECTION_BUFFER_LEVEL,
+		noc.RoutingType(routing), noc.SelectionType(selection),
 		antPacketInjectionRate,
 		acoSelectionAlpha,
 		reinforcementFactor,
