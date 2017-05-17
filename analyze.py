@@ -38,8 +38,12 @@ to_csv('results/general.csv', results, [
 
     ('Max Cycles', lambda r: r.configs['MaxCycles']),
     ('Simulation Time (Seconds)', lambda r: r.stats['SimulationTimeInSeconds']),
+
     ('Throughput', lambda r: r.stats['Throughput']),
     ('Average Packet Delay', lambda r: r.stats['AveragePacketDelay']),
+
+    ('Payload Throughput', lambda r: r.stats['PayloadThroughput']),
+    ('Average Payload Packet Delay', lambda r: r.stats['AveragePayloadPacketDelay']),
 ])
 
 generate_plot('results/general.csv',
@@ -53,3 +57,11 @@ generate_plot('results/general.csv',
 generate_plot('results/general.csv',
               'results/average_packet_delay', 'Bench', 'Average Packet Delay',
               'Algorithm', 'Average Packet Delay')
+
+generate_plot('results/general.csv',
+              'results/payload_throughput', 'Bench', 'Payload Throughput',
+              'Algorithm', 'Payload Throughput')
+
+generate_plot('results/general.csv',
+              'results/average_payload_packet_delay', 'Bench', 'Average Payload Packet Delay',
+              'Algorithm', 'Average Payload Packet Delay')
