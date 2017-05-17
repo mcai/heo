@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from common import bench_and_trace_file_name_range, working_directory, max_cycles
 from utils import parse_result, to_csv, generate_plot
 
