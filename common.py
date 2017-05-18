@@ -19,6 +19,10 @@ data_packet_injection_rate_range = [
     0.1,
     0.15,
     0.2,
+    0.21,
+    0.22,
+    0.23,
+    0.24,
     0.25,
 ]
 

@@ -1,0 +1,23 @@
+{
+  "OutputDirectory": "results/64/OddEven/ACO/canneal/100000/0.25/0.3/0.032",
+  "NumNodes": 64,
+  "MaxCycles": 100000,
+  "MaxPackets": -1,
+  "DrainPackets": false,
+  "Routing": "OddEven",
+  "Selection": "ACO",
+  "MaxInjectionBufferSize": 32,
+  "MaxInputBufferSize": 4,
+  "NumVirtualChannels": 4,
+  "LinkWidth": 4,
+  "LinkDelay": 1,
+  "DataPacketTraffic": "Trace",
+  "DataPacketInjectionRate": 0.25,
+  "DataPacketSize": 16,
+  "AntPacketTraffic": "Uniform",
+  "AntPacketInjectionRate": 0.0002,
+  "AntPacketSize": 4,
+  "AcoSelectionAlpha": 0.3,
+  "ReinforcementFactor": 0.032,
+  "TraceFileName": "traces/canneal.trace.4.txt.combined"
+}
