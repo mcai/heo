@@ -10,9 +10,18 @@ bench_and_trace_file_name_range = [
     ('x264', 'traces/x264.trace.4.txt'),
 ]
 
-max_cycles = 10000000
-# max_cycles = 100000000
+max_cycles = 100000000
 num_cores = 64
+
+data_packet_injection_rate_range = [
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8,
+]
+
+ant_packet_injection_rate = 0.0002
 
 aco_selection_alpha_range = [
     0.30,
@@ -38,7 +47,8 @@ reinforcement_factor_range = [
 ]
 
 
-def working_directory(bench, num_nodes, routing, selection, max_cycles, aco_selection_alpha, reinforcement_factor):
+def working_directory(bench, num_nodes, routing, selection, max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor):
     return 'results/' + str(num_nodes) + '/' + routing + '/' + selection \
            + '/' + bench + '/' + str(max_cycles) \
+           + '/' + str(data_packet_injection_rate) \
            + '/' + str(aco_selection_alpha) + '/' + str(reinforcement_factor)

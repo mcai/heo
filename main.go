@@ -15,8 +15,11 @@ func main() {
 	var selection string
 	var maxCycles int64
 
-	var acoSelectionAlpha = 0.45
-	var reinforcementFactor = 0.001
+	var dataPacketInjectionRate float64
+	var antPacketInjectionRate float64
+
+	var acoSelectionAlpha float64
+	var reinforcementFactor float64
 
 	flag.StringVar(&outputDirectory, "d", "", "output directory")
 	flag.StringVar(&benchmark, "b", "", "benchmark")
@@ -26,13 +29,13 @@ func main() {
 	flag.StringVar(&selection, "s", "BufferLevel", "NOC selection algorithm")
 	flag.Int64Var(&maxCycles, "c", 1000, "Maximum number of cycles to simulate")
 
+	flag.Float64Var(&dataPacketInjectionRate, "di", 0.015, "data packet injection rate")
+	flag.Float64Var(&antPacketInjectionRate, "ai", 0.0002, "dnt packet injection rate")
+
 	flag.Float64Var(&acoSelectionAlpha, "sa", 0.45, "ACO selection alpha")
 	flag.Float64Var(&reinforcementFactor, "rf", 0.001, "Reinforcement factor")
 
 	flag.Parse()
-
-	var dataPacketInjectionRate = 0.015
-	var antPacketInjectionRate = 0.0002
 
 	var experiment = NewTraceDrivenExperiment(
 		outputDirectory,
