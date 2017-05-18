@@ -3,9 +3,9 @@ from common import bench_and_trace_file_name_range, working_directory, max_cycle
     reinforcement_factor_range, data_packet_injection_rate_range
 from utils import parse_result, to_csv, generate_plot
 
-results = []
-
 for data_packet_injection_rate in data_packet_injection_rate_range:
+    results = []
+
     for bench, trace_file_name in bench_and_trace_file_name_range:
             results.append(
                 parse_result(working_directory(bench, 64, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1),
@@ -35,7 +35,7 @@ for data_packet_injection_rate in data_packet_injection_rate_range:
         ('Routing', lambda r: r.configs['Routing']),
         ('Selection', lambda r: r.configs['Selection']),
 
-        ('Data Packet Rate', lambda r: r.configs['DataPacketRate']),
+        ('Data Packet Injection Rate', lambda r: r.configs['DataPacketInjectionRate']),
 
         ('ACO Selection Alpha', lambda r: r.configs['AcoSelectionAlpha']),
         ('Reinforcement Factor', lambda r: r.configs['ReinforcementFactor']),
