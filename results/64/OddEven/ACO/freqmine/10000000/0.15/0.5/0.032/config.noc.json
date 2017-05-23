@@ -1,0 +1,23 @@
+{
+  "OutputDirectory": "results/64/OddEven/ACO/freqmine/10000000/0.15/0.5/0.032",
+  "NumNodes": 64,
+  "MaxCycles": 10000000,
+  "MaxPackets": -1,
+  "DrainPackets": false,
+  "Routing": "OddEven",
+  "Selection": "ACO",
+  "MaxInjectionBufferSize": 32,
+  "MaxInputBufferSize": 4,
+  "NumVirtualChannels": 4,
+  "LinkWidth": 4,
+  "LinkDelay": 1,
+  "DataPacketTraffic": "Trace",
+  "DataPacketInjectionRate": 0.15,
+  "DataPacketSize": 16,
+  "AntPacketTraffic": "Uniform",
+  "AntPacketInjectionRate": 0.0002,
+  "AntPacketSize": 4,
+  "AcoSelectionAlpha": 0.5,
+  "ReinforcementFactor": 0.032,
+  "TraceFileName": "traces/freqmine.trace.4.txt.combined"
+}
