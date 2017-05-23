@@ -11,7 +11,7 @@ bench_and_trace_file_name_range = [
 ]
 
 # max_cycles = 100000000
-max_cycles = 100000
+max_cycles = 10000000
 num_cores = 64
 
 data_packet_injection_rate_range = [
