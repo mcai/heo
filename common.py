@@ -1,3 +1,9 @@
+synthesized_traffic_range = [
+    'Uniform',
+    'Transpose1',
+    'Transpose2',
+]
+
 bench_and_trace_file_name_range = [
     # ('simple_pthread', 'test_traces/simple_pthread.trace.21454.0'),
 
@@ -11,10 +17,22 @@ bench_and_trace_file_name_range = [
 ]
 
 # max_cycles = 100000000
-max_cycles = 10000000
-num_cores = 64
+# max_cycles = 10000000
+max_cycles = 1000
+num_nodes = 64
 
-data_packet_injection_rate_range = [
+synthesized_data_packet_injection_rate_range = [
+    0.015,
+    0.030,
+    0.045,
+    0.060,
+    0.075,
+    0.090,
+    0.105,
+    0.120,
+]
+
+trace_driven_data_packet_injection_rate_range = [
     0.05,
     0.1,
     0.15,
@@ -52,8 +70,6 @@ reinforcement_factor_range = [
 ]
 
 
-def working_directory(bench, num_nodes, routing, selection, max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor):
-    return 'results/' + str(num_nodes) + '/' + routing + '/' + selection \
-           + '/' + bench + '/' + str(max_cycles) \
-           + '/' + str(data_packet_injection_rate) \
-           + '/' + str(aco_selection_alpha) + '/' + str(reinforcement_factor)
+def working_directory(traffic, bench, max_cycles, num_nodes, routing, selection, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor):
+    return 'results/t_' + traffic + '/b_' + bench + '/c_' + str(max_cycles) + '/n_' + str(num_nodes) + '/r_' + routing + '/s_' + selection \
+           + '/di_' + str(data_packet_injection_rate) + '/ai_' + str(aco_selection_alpha) + '/rf_' + str(reinforcement_factor)

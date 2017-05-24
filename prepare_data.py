@@ -1,6 +1,6 @@
 import sys
 
-from common import bench_and_trace_file_name_range, num_cores
+from common import bench_and_trace_file_name_range, num_nodes
 
 results = []
 
@@ -21,7 +21,7 @@ for bench, trace_file_name in bench_and_trace_file_name_range:
 
                 thread_id = int(parts[0])
 
-                if thread_id >= num_cores - 2:
+                if thread_id >= num_nodes - 2:
                     print('threadId is out of range, corresponding line.\n')
                     sys.exit(-1)
 

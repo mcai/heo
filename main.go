@@ -8,12 +8,15 @@ import (
 
 func main() {
 	var outputDirectory string
-	var benchmark string
+
+	var traffic string
 	var traceFileName string
+
+	var maxCycles int64
 	var numNodes int
+
 	var routing string
 	var selection string
-	var maxCycles int64
 
 	var dataPacketInjectionRate float64
 	var antPacketInjectionRate float64
@@ -22,33 +25,45 @@ func main() {
 	var reinforcementFactor float64
 
 	flag.StringVar(&outputDirectory, "d", "", "output directory")
-	flag.StringVar(&benchmark, "b", "", "benchmark")
-	flag.StringVar(&traceFileName, "f", "", "NOC simulation trace file name")
-	flag.IntVar(&numNodes, "n", 16, "number of NOC nodes")
-	flag.StringVar(&routing, "r", "OddEven", "NOC routing algorithm")
-	flag.StringVar(&selection, "s", "BufferLevel", "NOC selection algorithm")
-	flag.Int64Var(&maxCycles, "c", 1000, "Maximum number of cycles to simulate")
+
+	flag.StringVar(&traffic, "t", "Uniform", "traffic")
+	flag.StringVar(&traceFileName, "tf", "", "NoC simulation trace file name")
+
+	flag.Int64Var(&maxCycles, "c", 1000, "maximum number of cycles to simulate")
+	flag.IntVar(&numNodes, "n", 16, "number of NoC nodes")
+
+	flag.StringVar(&routing, "r", "OddEven", "NoC routing algorithm")
+	flag.StringVar(&selection, "s", "BufferLevel", "NoC selection algorithm")
 
 	flag.Float64Var(&dataPacketInjectionRate, "di", 0.015, "data packet injection rate")
-	flag.Float64Var(&antPacketInjectionRate, "ai", 0.0002, "dnt packet injection rate")
+	flag.Float64Var(&antPacketInjectionRate, "ai", 0.0002, "ant packet injection rate in the ACO NoC selection algorithm")
 
-	flag.Float64Var(&acoSelectionAlpha, "sa", 0.45, "ACO selection alpha")
-	flag.Float64Var(&reinforcementFactor, "rf", 0.001, "Reinforcement factor")
+	flag.Float64Var(&acoSelectionAlpha, "sa", 0.45, "ACO selection alpha in the ACO NoC selection algorithm")
+	flag.Float64Var(&reinforcementFactor, "rf", 0.001, "reinforcement factor in the ACO NoC selection algorithm")
 
 	flag.Parse()
 
-	var experiment = NewTraceDrivenExperiment(
+	var config = noc.NewNoCConfig(
 		outputDirectory,
 		numNodes,
 		maxCycles,
-		noc.TRAFFIC_TRACE,
-		dataPacketInjectionRate,
-		noc.RoutingType(routing), noc.SelectionType(selection),
-		antPacketInjectionRate,
-		acoSelectionAlpha,
-		reinforcementFactor,
-		traceFileName,
-	)
+		-1,
+		false)
+
+	config.DataPacketTraffic = noc.TrafficType(traffic)
+	config.DataPacketInjectionRate = dataPacketInjectionRate
+	config.Routing = noc.RoutingType(routing)
+	config.Selection = noc.SelectionType(selection)
+
+	if noc.SelectionType(selection) == noc.SELECTION_ACO {
+		config.AntPacketInjectionRate = antPacketInjectionRate
+		config.AcoSelectionAlpha = acoSelectionAlpha
+		config.ReinforcementFactor = reinforcementFactor
+	}
+
+	config.TraceFileName = traceFileName
+
+	var experiment =  noc.NewNoCExperiment(config)
 
 	var experiments []simutil.Experiment
 
