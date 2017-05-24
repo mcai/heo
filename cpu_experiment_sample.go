@@ -20,12 +20,8 @@ var (
 )
 
 func runExecutionDriven() {
-	var experiments = []simutil.Experiment{
-		mstBaseline(),
-		mstHelperThreaded(),
-	}
-
-	simutil.RunExperiments(experiments, false)
+	mstBaseline().Run(false),
+	mstHelperThreaded().Run(false)
 }
 
 func mstBaseline() simutil.Experiment {

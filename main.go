@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"github.com/mcai/heo/noc"
-	"github.com/mcai/heo/simutil"
 )
 
 func main() {
@@ -63,11 +62,5 @@ func main() {
 
 	config.TraceFileName = traceFileName
 
-	var experiment =  noc.NewNoCExperiment(config)
-
-	var experiments []simutil.Experiment
-
-	experiments = append(experiments, experiment)
-
-	simutil.RunExperiments(experiments, false)
+	noc.NewNoCExperiment(config).Run(false)
 }
