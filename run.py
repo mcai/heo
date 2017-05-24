@@ -13,7 +13,7 @@ def run(bench, trace_file_name, num_nodes, routing, selection, max_cycles, data_
     os.system('rm -fr ' + dir)
     os.system('mkdir -p ' + dir)
 
-    cmd_run = '~/GoProjects/bin/heo -d=' + dir + ' -b=' + bench + ' -f=' + trace_file_name \
+    cmd_run = '~/go/bin/heo -d=' + dir + ' -b=' + bench + ' -f=' + trace_file_name \
               + ' -n=' + str(num_nodes) + ' -r=' + routing + ' -s=' + selection \
               + ' -c=' + str(max_cycles) \
               + ' -di=' + str(data_packet_injection_rate) + ' -ai=' + str(ant_packet_injection_rate) \

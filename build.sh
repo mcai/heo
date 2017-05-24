@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-export GOPATH=~/GoProjects/
+export GOPATH=~/go/
 cd $GOPATH/src/
 go install github.com/mcai/heo
