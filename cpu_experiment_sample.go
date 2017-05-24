@@ -20,7 +20,7 @@ var (
 )
 
 func runExecutionDriven() {
-	mstBaseline().Run(false),
+	mstBaseline().Run(false)
 	mstHelperThreaded().Run(false)
 }
 
