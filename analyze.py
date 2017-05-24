@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from common import bench_and_trace_file_name_range, working_directory, max_cycles, aco_selection_alpha_range, \
-    reinforcement_factor_range, data_packet_injection_rate_range
+    reinforcement_factor_range, data_packet_injection_rate_range, num_cores
 from utils import parse_result, to_csv, generate_plot
 
 
@@ -40,14 +40,18 @@ for data_packet_injection_rate in data_packet_injection_rate_range:
 
     for bench, _ in bench_and_trace_file_name_range:
             results.append(
-                parse_result(working_directory(bench, 64, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1),
+                parse_result(working_directory(bench, num_cores, 'XY', 'Random', max_cycles, data_packet_injection_rate, -1, -1),
+                             bench=bench)
+            )
+            results.append(
+                parse_result(working_directory(bench, num_cores, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1),
                              bench=bench)
             )
 
             for aco_selection_alpha in aco_selection_alpha_range:
                 for reinforcement_factor in reinforcement_factor_range:
                     results.append(
-                        parse_result(working_directory(bench, 64, 'OddEven', 'ACO', max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor),
+                        parse_result(working_directory(bench, num_cores, 'OddEven', 'ACO', max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor),
                                      bench=bench)
                     )
 
@@ -75,19 +79,23 @@ for data_packet_injection_rate in data_packet_injection_rate_range:
                   'results/average_payload_packet_delay_' + str(data_packet_injection_rate), 'Bench', 'Average Payload Packet Delay',
                   'Algorithm', 'Average Payload Packet Delay')
 
-for bench, _ in bench_and_trace_file_name_range:
+for bench, __ in bench_and_trace_file_name_range:
     results = []
 
     for data_packet_injection_rate in data_packet_injection_rate_range:
         results.append(
-            parse_result(working_directory(bench, 64, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1),
+            parse_result(working_directory(bench, num_cores, 'XY', 'Random', max_cycles, data_packet_injection_rate, -1, -1),
+                         bench=bench)
+        )
+        results.append(
+            parse_result(working_directory(bench, num_cores, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1),
                          bench=bench)
         )
 
         for aco_selection_alpha in aco_selection_alpha_range:
             for reinforcement_factor in reinforcement_factor_range:
                 results.append(
-                    parse_result(working_directory(bench, 64, 'OddEven', 'ACO', max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor),
+                    parse_result(working_directory(bench, num_cores, 'OddEven', 'ACO', max_cycles, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor),
                                  bench=bench)
                 )
 

@@ -31,6 +31,7 @@ experiments = []
 
 for bench, trace_file_name in bench_and_trace_file_name_range:
     for data_packet_injection_rate in data_packet_injection_rate_range:
+        add_experiment(experiments, bench, trace_file_name + '.combined', num_cores, 'XY', 'Random', max_cycles, data_packet_injection_rate, -1, -1)
         add_experiment(experiments, bench, trace_file_name + '.combined', num_cores, 'OddEven', 'BufferLevel', max_cycles, data_packet_injection_rate, -1, -1)
 
         for aco_selection_alpha in aco_selection_alpha_range:
