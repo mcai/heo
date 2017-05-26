@@ -65,9 +65,11 @@ Heo is written in Go.
 
 ## Dependencies
 
-1. `sudo apt-get install python-pip3`
+1. `sudo apt-get install python3-pip python3-tk`
 
-2. `pip3 install matplotlib pandas seaborn` or `sudo apt-get install python3-matplotlib python3-pandas python3-seaborn`
+2. `pip3 install --upgrade pip`
+
+3. `pip3 install matplotlib pandas seaborn objectpath`
 
 
 ## System Requirements
