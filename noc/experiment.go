@@ -61,7 +61,9 @@ func (experiment *NoCExperiment) CycleAccurateEventQueue() *simutil.CycleAccurat
 
 func (experiment *NoCExperiment) Run(skipIfStatsFileExists bool) {
 	if skipIfStatsFileExists {
-		if _, err := os.Stat(experiment.Network.Config.OutputDirectory + "/" + simutil.STATS_JSON_FILE_NAME); err == nil {
+		statsFileName := experiment.Network.Config.OutputDirectory + "/" + simutil.STATS_JSON_FILE_NAME
+		if _, err := os.Stat(statsFileName); err == nil {
+			fmt.Printf("Stats file exists, skipped: %s\n", statsFileName)
 			return
 		}
 	}
