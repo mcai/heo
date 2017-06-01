@@ -20,8 +20,8 @@ var (
 )
 
 func runExecutionDriven() {
-	mstBaseline().Run(false)
-	mstHelperThreaded().Run(false)
+	mstBaseline().Run()
+	mstHelperThreaded().Run()
 }
 
 func mstBaseline() simutil.Experiment {

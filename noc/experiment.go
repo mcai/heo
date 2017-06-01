@@ -59,15 +59,7 @@ func (experiment *NoCExperiment) CycleAccurateEventQueue() *simutil.CycleAccurat
 	return experiment.cycleAccurateEventQueue
 }
 
-func (experiment *NoCExperiment) Run(skipIfStatsFileExists bool) {
-	if skipIfStatsFileExists {
-		statsFileName := experiment.Network.Config.OutputDirectory + "/" + simutil.STATS_JSON_FILE_NAME
-		if _, err := os.Stat(statsFileName); err == nil {
-			fmt.Printf("Stats file exists, skipped: %s\n", statsFileName)
-			return
-		}
-	}
-
+func (experiment *NoCExperiment) Run() {
 	experiment.BeginTime = time.Now()
 
 	for (experiment.Network.Config.MaxCycles == -1 || experiment.CycleAccurateEventQueue().CurrentCycle < experiment.Network.Config.MaxCycles) && (experiment.Network.Config.MaxPackets == -1 || experiment.Network.NumPacketsReceived < experiment.Network.Config.MaxPackets) {

@@ -11,6 +11,11 @@ from utils import add_experiment, run_experiments
 def run(traffic, bench, trace_file_name, max_cycles, num_nodes, routing, selection, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor):
     dir = working_directory(traffic, bench, max_cycles, num_nodes, routing, selection, data_packet_injection_rate, aco_selection_alpha, reinforcement_factor)
 
+    stats_file_name = dir + '/stats.json'
+    if os.path.isfile(stats_file_name):
+        print('Stats file exists, skipped: ' + stats_file_name)
+        return
+
     os.system('rm -fr ' + dir)
     os.system('mkdir -p ' + dir)
 

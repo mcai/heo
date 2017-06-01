@@ -3,7 +3,6 @@ package cpu
 import (
 	"time"
 	"github.com/mcai/heo/simutil"
-	"os"
 	"github.com/mcai/heo/cpu/uncore"
 	"github.com/mcai/heo/noc"
 )
@@ -68,13 +67,7 @@ func (experiment *CPUExperiment) BlockingEventDispatcher() *simutil.BlockingEven
 	return experiment.blockingEventDispatcher
 }
 
-func (experiment *CPUExperiment) Run(skipIfStatsFileExists bool) {
-	if skipIfStatsFileExists {
-		if _, err := os.Stat(experiment.CPUConfig.OutputDirectory + "/" + simutil.STATS_JSON_FILE_NAME); err == nil {
-			return
-		}
-	}
-
+func (experiment *CPUExperiment) Run() {
 	experiment.dumpConfigs()
 
 	experiment.BeginTime = time.Now()

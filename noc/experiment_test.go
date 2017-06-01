@@ -24,5 +24,5 @@ func TestNoCExperiment(t *testing.T) {
 
 	var experiment = NewNoCExperiment(config)
 
-	experiment.Run(false)
+	experiment.Run()
 }

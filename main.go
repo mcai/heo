@@ -62,5 +62,5 @@ func main() {
 
 	config.TraceFileName = traceFileName
 
-	noc.NewNoCExperiment(config).Run(true)
+	noc.NewNoCExperiment(config).Run()
 }
