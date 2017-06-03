@@ -63,6 +63,8 @@ Heo is written in Go.
 
 7. Support application of machine learning algorithms in architectural components.
 
+8. Support deep_anpr.
+
 ## Dependencies
 
 1. `sudo apt-get install python3-pip python3-tk`
