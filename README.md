@@ -57,7 +57,7 @@ Heo is written in Go.
 
 4. Support DRAM-NVM hybrid memory systems.
 
-5. Support Command line options and Component Properites.
+5. Support Command line options and component properties.
 
 6. Support multiple hardware prefetchers.
 
