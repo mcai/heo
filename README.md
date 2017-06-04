@@ -83,6 +83,7 @@ For **developing and running Heo**, make sure that:
 1. You have Ubuntu Linux 16.04 or higher (or other mainstream Linux distributions);
 
 2. To compile and run Go programs, the following software must be installed:
+	
 	- golang 1.8.1
 
 ## Quick Start
