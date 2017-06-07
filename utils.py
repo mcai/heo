@@ -3,10 +3,8 @@
 import csv
 import json
 
-import collections
 from objectpath import *
 from os import path
-from pyparsing import Word, Optional, ParseException, printables, nums, restOfLine
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -106,7 +104,7 @@ def generate_plot(csv_file_name, plot_file_name, x, y, hue, y_title, xticklabels
 
 
 def run_experiments(experiments, run_experiment):
-    num_processes = mp.cpu_count()
+    num_processes = (mp.cpu_count() - 1) if mp.cpu_count() > 1 else 1
     pool = mp.Pool(num_processes)
     pool.map(run_experiment, experiments)
 
