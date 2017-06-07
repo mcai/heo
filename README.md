@@ -12,7 +12,7 @@ This program is free software, licensed under the MIT license.
 
 ## About
 
-Heo is a cycle-accurate CPU-GPU heterogeneous multicore architectural simulator.
+Heo is a cycle-accurate multicore architectural simulator.
 
 Heo is written in Go.
 
@@ -62,8 +62,6 @@ Heo is written in Go.
 6. Support multiple hardware prefetchers.
 
 7. Support application of machine learning algorithms in architectural components.
-
-8. Support deep_anpr.
 
 ## Dependencies
 
