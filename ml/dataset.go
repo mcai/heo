@@ -8,7 +8,9 @@ import (
 	"strconv"
 )
 
-func LoadCSV(filename string) [][]string {
+type Dataset [][]string
+
+func FromCSV(filename string) Dataset {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatal("Cannot open file: " + filename)
@@ -26,10 +28,20 @@ func LoadCSV(filename string) [][]string {
 		}
 	}
 
-	return lines
+	return Dataset(lines)
 }
 
-func StringColumnValuesToFloat64s(dataset [][]string, column int) []float64 {
+func (dataset Dataset) ColumnValuesAsString(column int) []string {
+	var values []string
+
+	for i, _ := range dataset {
+		values = append(values, dataset[i][column])
+	}
+
+	return values
+}
+
+func (dataset Dataset) ColumnValuesAsFloat64(column int) []float64 {
 	var values []float64
 
 	for i, _ := range dataset {
@@ -40,16 +52,16 @@ func StringColumnValuesToFloat64s(dataset [][]string, column int) []float64 {
 	return values
 }
 
-func StringColumnValuesToInts(dataset [][]string, column int) ([]int, map[int]string) {
-	var class_values = make(map[string]int)
+func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) {
+	var classValues = make(map[string]int)
 	var lookup = make(map[int]string)
 
 	var index = 0
 	for i, _ := range dataset {
 		var value = dataset[i][column]
 
-		if _, exists := class_values[value]; !exists {
-			class_values[value] = index
+		if _, exists := classValues[value]; !exists {
+			classValues[value] = index
 			lookup[index] = value
 			index += 1
 		}
@@ -58,10 +70,35 @@ func StringColumnValuesToInts(dataset [][]string, column int) ([]int, map[int]st
 	var values []int
 
 	for i, _ := range dataset {
-		var value = class_values[dataset[i][column]]
+		var value = classValues[dataset[i][column]]
 		values = append(values, value)
 	}
 
 	return values, lookup
+}
+
+func (dataset Dataset) MinMax() [](struct{ min float64; max float64 }) {
+	var minMax [](struct{ min float64; max float64 })
+
+	for column, _ := range dataset[0] {
+		var columnValues = dataset.ColumnValuesAsFloat64(column)
+
+		var min = columnValues[0]
+		var max = columnValues[0]
+
+		for _, value := range columnValues {
+			if value > value {
+				value = value
+			}
+
+			if value < min {
+				min = value
+			}
+		}
+
+		minMax = append(minMax, struct{ min float64; max float64 }{min, max})
+	}
+
+	return minMax
 }
 
