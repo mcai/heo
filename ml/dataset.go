@@ -83,38 +83,33 @@ func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) 
 	return values, lookup
 }
 
-func (dataset Dataset) MinMax() [](struct{ min float64; max float64 }) {
-	var minMax [](struct{ min float64; max float64 })
+func (dataset Dataset) MinMax(column int) (float64, float64) {
+	var columnValues = dataset.ColumnValuesAsFloat64(column)
 
-	for column := range dataset[0] {
-		var columnValues = dataset.ColumnValuesAsFloat64(column)
+	var min = columnValues[0]
+	var max = columnValues[0]
 
-		var min = columnValues[0]
-		var max = columnValues[0]
-
-		for _, value := range columnValues {
-			if value > max {
-				max = value
-			}
-
-			if value < min {
-				min = value
-			}
+	for _, value := range columnValues {
+		if value > max {
+			max = value
 		}
 
-		minMax = append(minMax, struct{ min float64; max float64 }{min, max})
+		if value < min {
+			min = value
+		}
 	}
 
-	return minMax
+	return min, max
 }
 
-func (dataset Dataset) Normalize(minMax [](struct{ min float64; max float64 })) {
+func (dataset Dataset) Normalize() {
 	for _, row := range dataset {
 		for i := 0; i < len(row); i++ {
 			var value, err = strconv.ParseFloat(row[i], 64)
 
 			if err == nil {
-				row[i] = fmt.Sprintf("%f", (value - minMax[i].min) / (minMax[i].max - minMax[i].min))
+				var min, max = dataset.MinMax(i)
+				row[i] = fmt.Sprintf("%f", (value - min) / (max - min))
 			}
 		}
 	}
