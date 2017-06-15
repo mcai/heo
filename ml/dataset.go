@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"strings"
 	"strconv"
+	"fmt"
 )
 
 type Dataset [][]string
@@ -45,7 +46,12 @@ func (dataset Dataset) ColumnValuesAsFloat64(column int) []float64 {
 	var values []float64
 
 	for i := range dataset {
-		var value, _ = strconv.ParseFloat(dataset[i][column], 64)
+		var value, err = strconv.ParseFloat(dataset[i][column], 64)
+
+		if err != nil {
+			log.Fatalf("Cannot parse float number %s\n", dataset[i][column])
+		}
+
 		values = append(values, value)
 	}
 
@@ -87,8 +93,8 @@ func (dataset Dataset) MinMax() [](struct{ min float64; max float64 }) {
 		var max = columnValues[0]
 
 		for _, value := range columnValues {
-			if value > value {
-				value = value
+			if value > max {
+				max = value
 			}
 
 			if value < min {
@@ -100,5 +106,17 @@ func (dataset Dataset) MinMax() [](struct{ min float64; max float64 }) {
 	}
 
 	return minMax
+}
+
+func (dataset Dataset) Normalize(minMax [](struct{ min float64; max float64 })) {
+	for _, row := range dataset {
+		for i := 0; i < len(row); i++ {
+			var value, err = strconv.ParseFloat(row[i], 64)
+
+			if err == nil {
+				row[i] = fmt.Sprintf("%f", (value - minMax[i].min) / (minMax[i].max - minMax[i].min))
+			}
+		}
+	}
 }
 

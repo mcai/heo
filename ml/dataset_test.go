@@ -18,6 +18,19 @@ func TestLoadCSV(t *testing.T) {
 func TestDatasetMinMax(t *testing.T) {
 	var dataset = Dataset{{"50", "30"}, {"20", "90"}}
 	fmt.Println(dataset)
+
 	var minMax = dataset.MinMax()
 	fmt.Println(minMax)
+}
+
+func TestNormalize(t *testing.T) {
+	var filename = "../data/pima-indians-diabetes.csv"
+	var dataset = FromCSV(filename)
+	fmt.Println(dataset[0])
+
+	var minMax = dataset.MinMax()
+	fmt.Println(minMax[0])
+
+	dataset.Normalize(minMax)
+	fmt.Println(dataset[0])
 }
