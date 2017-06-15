@@ -34,7 +34,7 @@ func FromCSV(filename string) Dataset {
 func (dataset Dataset) ColumnValuesAsString(column int) []string {
 	var values []string
 
-	for i, _ := range dataset {
+	for i := range dataset {
 		values = append(values, dataset[i][column])
 	}
 
@@ -44,7 +44,7 @@ func (dataset Dataset) ColumnValuesAsString(column int) []string {
 func (dataset Dataset) ColumnValuesAsFloat64(column int) []float64 {
 	var values []float64
 
-	for i, _ := range dataset {
+	for i := range dataset {
 		var value, _ = strconv.ParseFloat(dataset[i][column], 64)
 		values = append(values, value)
 	}
@@ -57,7 +57,7 @@ func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) 
 	var lookup = make(map[int]string)
 
 	var index = 0
-	for i, _ := range dataset {
+	for i := range dataset {
 		var value = dataset[i][column]
 
 		if _, exists := classValues[value]; !exists {
@@ -69,7 +69,7 @@ func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) 
 
 	var values []int
 
-	for i, _ := range dataset {
+	for i := range dataset {
 		var value = classValues[dataset[i][column]]
 		values = append(values, value)
 	}
@@ -80,7 +80,7 @@ func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) 
 func (dataset Dataset) MinMax() [](struct{ min float64; max float64 }) {
 	var minMax [](struct{ min float64; max float64 })
 
-	for column, _ := range dataset[0] {
+	for column := range dataset[0] {
 		var columnValues = dataset.ColumnValuesAsFloat64(column)
 
 		var min = columnValues[0]
