@@ -50,3 +50,15 @@ func TestDataset_Stdev(t *testing.T) {
 	var stdev = dataset.Stdev(1)
 	fmt.Println(stdev)
 }
+
+func TestDataset_StandardizedFloat64Values(t *testing.T) {
+	var dataset = Dataset{{"50", "30"}, {"20", "90"}, {"30", "50"}}
+	fmt.Println(dataset)
+
+	fmt.Println(dataset.Float64Values(0))
+
+	var min, max = dataset.MinMax(0)
+	fmt.Println(min, max)
+
+	fmt.Println(dataset.StandardizedFloat64Values(0))
+}

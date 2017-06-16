@@ -107,9 +107,10 @@ func (dataset Dataset) NormalizedFloat64Values(column int) []float64 {
 
 	var normalizedFloat64Values []float64
 
+	var min, max = dataset.MinMax(column)
+
 	for row := range dataset {
 		var value = values[row]
-		var min, max = dataset.MinMax(column)
 		normalizedFloat64Values = append(normalizedFloat64Values, (value - min) / (max - min))
 	}
 
@@ -146,5 +147,21 @@ func (dataset Dataset) Stdev(column int) float64 {
 	stdev = math.Sqrt(stdev / float64(len(dataset) - 1))
 
 	return stdev
+}
+
+func (dataset Dataset) StandardizedFloat64Values(column int)[]float64 {
+	var values = dataset.Float64Values(column)
+
+	var standardizedFloat64Values []float64
+
+	var mean = dataset.Mean(column)
+	var stdev = dataset.Stdev(column)
+
+	for row := range dataset {
+		var value = values[row]
+		standardizedFloat64Values = append(standardizedFloat64Values, (value - mean) / stdev)
+	}
+
+	return standardizedFloat64Values
 }
 
