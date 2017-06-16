@@ -2,7 +2,6 @@ package noc
 
 import (
 	"time"
-	"os"
 	"github.com/mcai/heo/simutil"
 	"fmt"
 )
