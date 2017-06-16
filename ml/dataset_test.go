@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func TestLoadCSV(t *testing.T) {
+func TestFromCSV(t *testing.T) {
 	var filename = "../data/iris.csv"
 	var dataset = FromCSV(filename)
 
@@ -15,7 +15,7 @@ func TestLoadCSV(t *testing.T) {
 	fmt.Println(dataset.IndexedValues(len(dataset[0]) - 1))
 }
 
-func TestDatasetMinMax(t *testing.T) {
+func TestDataset_MinMax(t *testing.T) {
 	var dataset = Dataset{{"50", "30"}, {"20", "90"}}
 	fmt.Println(dataset)
 
@@ -23,7 +23,7 @@ func TestDatasetMinMax(t *testing.T) {
 	fmt.Println(min, max)
 }
 
-func TestNormalize(t *testing.T) {
+func TestDataset_Normalize(t *testing.T) {
 	var filename = "../data/pima-indians-diabetes.csv"
 	var dataset = FromCSV(filename)
 	fmt.Println(dataset[0])
@@ -33,4 +33,12 @@ func TestNormalize(t *testing.T) {
 
 	dataset.Normalize()
 	fmt.Println(dataset[0])
+}
+
+func TestDataset_Means(t *testing.T) {
+	var dataset = Dataset{{"50", "30"}, {"20", "90"}}
+	fmt.Println(dataset)
+
+	var mean = dataset.Mean(0)
+	fmt.Println(mean)
 }

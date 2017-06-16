@@ -115,3 +115,15 @@ func (dataset Dataset) Normalize() {
 	}
 }
 
+func (dataset Dataset) Mean(column int) float64 {
+	var sum = float64(0)
+
+	var values = dataset.Float64Values(column)
+
+	for _, value := range values {
+		sum += value
+	}
+
+	return sum / float64(len(dataset))
+}
+
