@@ -11,8 +11,8 @@ func TestLoadCSV(t *testing.T) {
 
 	fmt.Printf("Loaded data file %s with %d rows and %d columns.\n", filename, len(dataset), len(dataset[0]))
 	fmt.Println(dataset[0])
-	fmt.Println(dataset.ColumnValuesAsFloat64(3))
-	fmt.Println(dataset.ColumnValuesAsIntMap(len(dataset[0]) - 1))
+	fmt.Println(dataset.Float64Values(3))
+	fmt.Println(dataset.IndexedValues(len(dataset[0]) - 1))
 }
 
 func TestDatasetMinMax(t *testing.T) {

@@ -22,9 +22,9 @@ func FromCSV(filename string) Dataset {
 	var scanner = bufio.NewScanner(file)
 	for scanner.Scan() {
 		var text = scanner.Text()
-		var line = strings.Split(text, ",")
 
 		if len(strings.TrimSpace(text)) > 0 {
+			var line = strings.Split(text, ",")
 			lines = append(lines, line)
 		}
 	}
@@ -32,7 +32,7 @@ func FromCSV(filename string) Dataset {
 	return Dataset(lines)
 }
 
-func (dataset Dataset) ColumnValuesAsString(column int) []string {
+func (dataset Dataset) StringValues(column int) []string {
 	var values []string
 
 	for i := range dataset {
@@ -42,7 +42,7 @@ func (dataset Dataset) ColumnValuesAsString(column int) []string {
 	return values
 }
 
-func (dataset Dataset) ColumnValuesAsFloat64(column int) []float64 {
+func (dataset Dataset) Float64Values(column int) []float64 {
 	var values []float64
 
 	for i := range dataset {
@@ -58,38 +58,38 @@ func (dataset Dataset) ColumnValuesAsFloat64(column int) []float64 {
 	return values
 }
 
-func (dataset Dataset) ColumnValuesAsIntMap(column int) ([]int, map[int]string) {
-	var classValues = make(map[string]int)
-	var lookup = make(map[int]string)
+func (dataset Dataset) IndexedValues(column int) ([]int, map[int]string) {
+	var namesToIndexes = make(map[string]int)
+	var indexesToNames = make(map[int]string)
 
 	var index = 0
 	for i := range dataset {
-		var value = dataset[i][column]
+		var name = dataset[i][column]
 
-		if _, exists := classValues[value]; !exists {
-			classValues[value] = index
-			lookup[index] = value
+		if _, exists := namesToIndexes[name]; !exists {
+			namesToIndexes[name] = index
+			indexesToNames[index] = name
 			index += 1
 		}
 	}
 
-	var values []int
+	var indexes []int
 
 	for i := range dataset {
-		var value = classValues[dataset[i][column]]
-		values = append(values, value)
+		var index = namesToIndexes[dataset[i][column]]
+		indexes = append(indexes, index)
 	}
 
-	return values, lookup
+	return indexes, indexesToNames
 }
 
 func (dataset Dataset) MinMax(column int) (float64, float64) {
-	var columnValues = dataset.ColumnValuesAsFloat64(column)
+	var values = dataset.Float64Values(column)
 
-	var min = columnValues[0]
-	var max = columnValues[0]
+	var min = values[0]
+	var max = values[0]
 
-	for _, value := range columnValues {
+	for _, value := range values {
 		if value > max {
 			max = value
 		}
