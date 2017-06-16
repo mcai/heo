@@ -6,7 +6,7 @@ import (
 	"bufio"
 	"strings"
 	"strconv"
-	"fmt"
+	"math"
 )
 
 type Dataset [][]string
@@ -102,17 +102,18 @@ func (dataset Dataset) MinMax(column int) (float64, float64) {
 	return min, max
 }
 
-func (dataset Dataset) Normalize() {
-	for _, row := range dataset {
-		for i := 0; i < len(row); i++ {
-			var value, err = strconv.ParseFloat(row[i], 64)
+func (dataset Dataset) NormalizedFloat64Values(column int) []float64 {
+	var values = dataset.Float64Values(column)
 
-			if err == nil {
-				var min, max = dataset.MinMax(i)
-				row[i] = fmt.Sprintf("%f", (value - min) / (max - min))
-			}
-		}
+	var normalizedFloat64Values []float64
+
+	for row := range dataset {
+		var value = values[row]
+		var min, max = dataset.MinMax(column)
+		normalizedFloat64Values = append(normalizedFloat64Values, (value - min) / (max - min))
 	}
+
+	return normalizedFloat64Values
 }
 
 func (dataset Dataset) Mean(column int) float64 {
@@ -125,5 +126,25 @@ func (dataset Dataset) Mean(column int) float64 {
 	}
 
 	return sum / float64(len(dataset))
+}
+
+func (dataset Dataset) Stdev(column int) float64 {
+	var mean = dataset.Mean(column)
+
+	var variance []float64
+
+	for _, value := range dataset.Float64Values(column) {
+		variance = append(variance, math.Pow(value - mean, 2))
+	}
+
+	var stdev = float64(0)
+
+	for _, v := range variance {
+		stdev += v
+	}
+
+	stdev = math.Sqrt(stdev / float64(len(dataset) - 1))
+
+	return stdev
 }
 

@@ -23,22 +23,30 @@ func TestDataset_MinMax(t *testing.T) {
 	fmt.Println(min, max)
 }
 
-func TestDataset_Normalize(t *testing.T) {
+func TestDataset_NormalizedFloat64Values(t *testing.T) {
 	var filename = "../data/pima-indians-diabetes.csv"
 	var dataset = FromCSV(filename)
-	fmt.Println(dataset[0])
+
+	fmt.Println(dataset.Float64Values(0))
 
 	var min, max = dataset.MinMax(0)
 	fmt.Println(min, max)
 
-	dataset.Normalize()
-	fmt.Println(dataset[0])
+	fmt.Println(dataset.NormalizedFloat64Values(0))
 }
 
 func TestDataset_Means(t *testing.T) {
-	var dataset = Dataset{{"50", "30"}, {"20", "90"}}
+	var dataset = Dataset{{"50", "30"}, {"20", "90"}, {"30", "50"}}
 	fmt.Println(dataset)
 
-	var mean = dataset.Mean(0)
+	var mean = dataset.Mean(1)
 	fmt.Println(mean)
+}
+
+func TestDataset_Stdev(t *testing.T) {
+	var dataset = Dataset{{"50", "30"}, {"20", "90"}, {"30", "50"}}
+	fmt.Println(dataset)
+
+	var stdev = dataset.Stdev(1)
+	fmt.Println(stdev)
 }
