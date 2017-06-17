@@ -3,6 +3,7 @@ package ml
 import (
 	"testing"
 	"fmt"
+	//"math/rand"
 )
 
 func TestFromCSV(t *testing.T) {
@@ -61,4 +62,14 @@ func TestDataset_StandardizedFloat64Values(t *testing.T) {
 	fmt.Println(min, max)
 
 	fmt.Println(dataset.StandardizedFloat64Values(0))
+}
+
+func TestDataset_TrainTestSplit(t *testing.T) {
+	var dataset = Dataset{{"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"6"}, {"7"}, {"8"}, {"9"}, {"10"}}
+	fmt.Println(dataset)
+
+	var train, test = dataset.TrainTestSplit(0.6)
+
+	fmt.Println(train)
+	fmt.Println(test)
 }

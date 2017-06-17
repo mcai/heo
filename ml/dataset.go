@@ -7,6 +7,7 @@ import (
 	"strings"
 	"strconv"
 	"math"
+	"math/rand"
 )
 
 type Dataset [][]string
@@ -163,5 +164,24 @@ func (dataset Dataset) StandardizedFloat64Values(column int)[]float64 {
 	}
 
 	return standardizedFloat64Values
+}
+
+func (dataset Dataset) TrainTestSplit(split float64) ([][]string, Dataset) {
+	var train [][]string
+
+	var trainSize = int(split * float64(len(dataset)))
+	var test = dataset
+
+	for len(train) < trainSize {
+		var index = rand.Intn(len(test))
+
+		var row = test[index]
+
+		test = append(test[:index], test[index + 1:]...)
+
+		train = append(train, row)
+	}
+
+	return train, test
 }
 
