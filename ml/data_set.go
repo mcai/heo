@@ -166,7 +166,7 @@ func (dataSet DataSet) StandardizedFloat64Values(column int) []float64 {
 	return standardizedFloat64Values
 }
 
-func (dataSet DataSet) TrainTestSplit(split float64) ([][]string, DataSet) {
+func (dataSet DataSet) TrainTestSplit(split float64) (DataSet, DataSet) {
 	var train DataSet
 
 	var trainSize = int(split * float64(len(dataSet)))
