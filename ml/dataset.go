@@ -150,7 +150,7 @@ func (dataset Dataset) Stdev(column int) float64 {
 	return stdev
 }
 
-func (dataset Dataset) StandardizedFloat64Values(column int)[]float64 {
+func (dataset Dataset) StandardizedFloat64Values(column int) []float64 {
 	var values = dataset.Float64Values(column)
 
 	var standardizedFloat64Values []float64
@@ -192,7 +192,7 @@ func (dataset Dataset) CrossValidationSplit(folds int) []Dataset {
 
 	var foldSize = int(len(dataset) / folds)
 
-	for i:= 0; i < folds; i++ {
+	for i := 0; i < folds; i++ {
 		var fold Dataset
 
 		for len(fold) < foldSize {
@@ -209,5 +209,17 @@ func (dataset Dataset) CrossValidationSplit(folds int) []Dataset {
 	}
 
 	return datasetSplit
+}
+
+func AccuracyMetric(actual []string, predicted []string) float64 {
+	var correct = float64(0)
+
+	for i := 0; i < len(actual); i++ {
+		if actual[i] == predicted[i] {
+			correct += 1
+		}
+	}
+
+	return correct / float64(len(actual)) * 100.0
 }
 

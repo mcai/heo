@@ -82,3 +82,12 @@ func TestDataset_CrossValidationSplit(t *testing.T) {
 
 	fmt.Println(folds)
 }
+
+func TestAccuracyMetric(t *testing.T) {
+	var actual = []string{"0", "0", "0", "0", "0", "1", "1", "1", "1", "1"}
+	var predicted = []string{"0", "1", "0", "0", "0", "1", "0", "1", "1", "1"}
+
+	var accuracy = AccuracyMetric(actual, predicted)
+
+	fmt.Println(accuracy)
+}
