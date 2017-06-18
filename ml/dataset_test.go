@@ -73,3 +73,12 @@ func TestDataset_TrainTestSplit(t *testing.T) {
 	fmt.Println(train)
 	fmt.Println(test)
 }
+
+func TestDataset_CrossValidationSplit(t *testing.T) {
+	var dataset = Dataset{{"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"6"}, {"7"}, {"8"}, {"9"}, {"10"}}
+	fmt.Println(dataset)
+
+	var folds = dataset.CrossValidationSplit(4)
+
+	fmt.Println(folds)
+}

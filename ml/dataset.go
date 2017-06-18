@@ -167,7 +167,7 @@ func (dataset Dataset) StandardizedFloat64Values(column int)[]float64 {
 }
 
 func (dataset Dataset) TrainTestSplit(split float64) ([][]string, Dataset) {
-	var train [][]string
+	var train Dataset
 
 	var trainSize = int(split * float64(len(dataset)))
 	var test = dataset
@@ -183,5 +183,31 @@ func (dataset Dataset) TrainTestSplit(split float64) ([][]string, Dataset) {
 	}
 
 	return train, test
+}
+
+func (dataset Dataset) CrossValidationSplit(folds int) []Dataset {
+	var datasetSplit []Dataset
+
+	var datasetCopy = dataset
+
+	var foldSize = int(len(dataset) / folds)
+
+	for i:= 0; i < folds; i++ {
+		var fold Dataset
+
+		for len(fold) < foldSize {
+			var index = rand.Intn(len(datasetCopy))
+
+			var row = datasetCopy[index]
+
+			datasetCopy = append(datasetCopy[:index], datasetCopy[index + 1: ]...)
+
+			fold = append(fold, row)
+		}
+
+		datasetSplit = append(datasetSplit, Dataset(fold))
+	}
+
+	return datasetSplit
 }
 
