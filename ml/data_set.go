@@ -212,7 +212,7 @@ func (dataSet DataSet) CrossValidationSplit(folds int) []DataSet {
 }
 
 func AccuracyMetric(actual []string, predicted []string) float64 {
-	var correct = float64(0)
+	var correct = int64(0)
 
 	for i := 0; i < len(actual); i++ {
 		if actual[i] == predicted[i] {
@@ -220,7 +220,7 @@ func AccuracyMetric(actual []string, predicted []string) float64 {
 		}
 	}
 
-	return correct / float64(len(actual)) * 100.0
+	return float64(correct) / float64(len(actual)) * 100.0
 }
 
 func ConfusionMatrix(actual []string, predicted []string) [][]int64 {
