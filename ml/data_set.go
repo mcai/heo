@@ -222,22 +222,3 @@ func AccuracyMetric(actual []string, predicted []string) float64 {
 
 	return float64(correct) / float64(len(actual)) * 100.0
 }
-
-func ConfusionMatrix(actual []string, predicted []string) [][]int64 {
-	var unique = actual
-
-	var matrix [][]int64
-
-	for i := 0; i < len(unique); i++ {
-		matrix = append(matrix, []int64{})
-	}
-
-	for i := 0; i < len(unique); i++ {
-		for j := 0; j< len(unique); j++ {
-			matrix[i] = append(matrix[i], 0)
-		}
-	}
-
-	return matrix
-}
-
