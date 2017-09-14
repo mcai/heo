@@ -23,7 +23,7 @@ func main() {
 	var acoSelectionAlpha float64
 	var reinforcementFactor float64
 
-	flag.StringVar(&outputDirectory, "d", "", "output directory")
+	flag.StringVar(&outputDirectory, "d", "results", "output directory")
 
 	flag.StringVar(&traffic, "t", "Uniform", "traffic")
 	flag.StringVar(&traceFileName, "tf", "", "NoC simulation trace file name")
