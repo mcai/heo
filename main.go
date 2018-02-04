@@ -54,7 +54,7 @@ func main() {
 	config.Routing = noc.RoutingType(routing)
 	config.Selection = noc.SelectionType(selection)
 
-	if noc.SelectionType(selection) == noc.SELECTION_ACO {
+	if noc.SelectionType(selection) == noc.SelectionAco {
 		config.AntPacketInjectionRate = antPacketInjectionRate
 		config.AcoSelectionAlpha = acoSelectionAlpha
 		config.ReinforcementFactor = reinforcementFactor
