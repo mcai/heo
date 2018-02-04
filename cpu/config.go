@@ -3,60 +3,60 @@ package cpu
 import "github.com/mcai/heo/simutil"
 
 type CPUConfig struct {
-	OutputDirectory            string
+	OutputDirectory string
 
-	ContextMappings            []*ContextMapping
+	ContextMappings []*ContextMapping
 
 	MaxFastForwardDynamicInsts int64
 	MaxMeasurementDynamicInsts int64
 
-	NumCores                   int32
-	NumThreadsPerCore          int32
+	NumCores          int32
+	NumThreadsPerCore int32
 
-	PhysicalRegisterFileSize   uint32
+	PhysicalRegisterFileSize uint32
 
-	DecodeWidth                uint32
-	IssueWidth                 uint32
-	CommitWidth                uint32
+	DecodeWidth uint32
+	IssueWidth  uint32
+	CommitWidth uint32
 
-	DecodeBufferSize           uint32
-	ReorderBufferSize          uint32
-	LoadStoreQueueSize         uint32
+	DecodeBufferSize   uint32
+	ReorderBufferSize  uint32
+	LoadStoreQueueSize uint32
 
-	BranchPredictorType        BranchPredictorType
+	BranchPredictorType BranchPredictorType
 
-	TwoBitBranchPredictorSize  uint32
-	BranchTargetBufferNumSets  uint32
-	BranchTargetBufferAssoc    uint32
-	ReturnAddressStackSize     uint32
+	TwoBitBranchPredictorSize uint32
+	BranchTargetBufferNumSets uint32
+	BranchTargetBufferAssoc   uint32
+	ReturnAddressStackSize    uint32
 }
 
 func NewCPUConfig(outputDirectory string) *CPUConfig {
 	var config = &CPUConfig{
-		OutputDirectory:outputDirectory,
+		OutputDirectory: outputDirectory,
 
-		MaxFastForwardDynamicInsts:0,
-		MaxMeasurementDynamicInsts:-1,
+		MaxFastForwardDynamicInsts: 0,
+		MaxMeasurementDynamicInsts: -1,
 
-		NumCores:2,
-		NumThreadsPerCore:2,
+		NumCores:          2,
+		NumThreadsPerCore: 2,
 
-		PhysicalRegisterFileSize:128,
+		PhysicalRegisterFileSize: 128,
 
-		DecodeWidth:4,
-		IssueWidth:4,
-		CommitWidth:4,
+		DecodeWidth: 4,
+		IssueWidth:  4,
+		CommitWidth: 4,
 
-		DecodeBufferSize:96,
-		ReorderBufferSize: 96,
-		LoadStoreQueueSize:48,
+		DecodeBufferSize:   96,
+		ReorderBufferSize:  96,
+		LoadStoreQueueSize: 48,
 
-		BranchPredictorType:BranchPredictorType_PERFECT,
+		BranchPredictorType: BranchPredictorType_PERFECT,
 
-		TwoBitBranchPredictorSize:2048,
-		BranchTargetBufferNumSets:512,
-		BranchTargetBufferAssoc:4,
-		ReturnAddressStackSize:8,
+		TwoBitBranchPredictorSize: 2048,
+		BranchTargetBufferNumSets: 512,
+		BranchTargetBufferAssoc:   4,
+		ReturnAddressStackSize:    8,
 	}
 
 	return config

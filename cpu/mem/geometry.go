@@ -14,13 +14,13 @@ type Geometry struct {
 
 func NewGeometry(size uint32, assoc uint32, lineSize uint32) *Geometry {
 	var geometry = &Geometry{
-		Size:size,
-		Assoc:assoc,
-		LineSize:lineSize,
-		LineSizeInLog2:uint32(math.Log2(float64(lineSize))),
-		NumSets:size / assoc / lineSize,
-		NumSetsInLog2:uint32(math.Log2(float64(size / uint32(assoc) / lineSize))),
-		NumLines:size / lineSize,
+		Size:           size,
+		Assoc:          assoc,
+		LineSize:       lineSize,
+		LineSizeInLog2: uint32(math.Log2(float64(lineSize))),
+		NumSets:        size / assoc / lineSize,
+		NumSetsInLog2:  uint32(math.Log2(float64(size / uint32(assoc) / lineSize))),
+		NumLines:       size / lineSize,
 	}
 
 	return geometry
@@ -45,5 +45,3 @@ func (geometry *Geometry) GetSet(address uint32) uint32 {
 func (geometry *Geometry) IsAligned(address uint32) bool {
 	return geometry.GetDisplacement(address) == 0
 }
-
-

@@ -106,9 +106,9 @@ type ArchitecturalRegisterFile struct {
 
 func NewArchitecturalRegisterFile(littleEndian bool) *ArchitecturalRegisterFile {
 	var regs = &ArchitecturalRegisterFile{
-		LittleEndian:littleEndian,
-		Gpr:make([]uint32, 32),
-		Fpr:NewFloatingPointRegisters(littleEndian),
+		LittleEndian: littleEndian,
+		Gpr:          make([]uint32, 32),
+		Fpr:          NewFloatingPointRegisters(littleEndian),
 	}
 
 	return regs
@@ -168,8 +168,8 @@ type FloatingPointRegisters struct {
 
 func NewFloatingPointRegisters(littleEndian bool) *FloatingPointRegisters {
 	var fprs = &FloatingPointRegisters{
-		LittleEndian:littleEndian,
-		data:make([]byte, 4 * 32),
+		LittleEndian: littleEndian,
+		data:         make([]byte, 4*32),
 	}
 
 	if littleEndian {
@@ -186,7 +186,7 @@ func (fprs *FloatingPointRegisters) Uint32(index uint32) uint32 {
 
 	var buffer = make([]byte, size)
 
-	copy(buffer, fprs.data[index * size:index * size + size])
+	copy(buffer, fprs.data[index*size:index*size+size])
 
 	return fprs.ByteOrder.Uint32(buffer)
 }
@@ -198,7 +198,7 @@ func (fprs *FloatingPointRegisters) SetUint32(index uint32, value uint32) {
 
 	fprs.ByteOrder.PutUint32(buffer, value)
 
-	copy(fprs.data[index * size:index * size + size], buffer)
+	copy(fprs.data[index*size:index*size+size], buffer)
 }
 
 func (fprs *FloatingPointRegisters) Float32(index uint32) float32 {
@@ -206,7 +206,7 @@ func (fprs *FloatingPointRegisters) Float32(index uint32) float32 {
 
 	var buffer = make([]byte, size)
 
-	copy(buffer, fprs.data[index * size:index * size + size])
+	copy(buffer, fprs.data[index*size:index*size+size])
 
 	return math.Float32frombits(fprs.ByteOrder.Uint32(buffer))
 }
@@ -218,7 +218,7 @@ func (fprs *FloatingPointRegisters) SetFloat32(index uint32, value float32) {
 
 	fprs.ByteOrder.PutUint32(buffer, math.Float32bits(value))
 
-	copy(fprs.data[index * size:index * size + size], buffer)
+	copy(fprs.data[index*size:index*size+size], buffer)
 }
 
 func (fprs *FloatingPointRegisters) Uint64(index uint32) uint64 {
@@ -226,7 +226,7 @@ func (fprs *FloatingPointRegisters) Uint64(index uint32) uint64 {
 
 	var buffer = make([]byte, size)
 
-	copy(buffer, fprs.data[index * size:index * size + size])
+	copy(buffer, fprs.data[index*size:index*size+size])
 
 	return fprs.ByteOrder.Uint64(buffer)
 }
@@ -238,7 +238,7 @@ func (fprs *FloatingPointRegisters) SetUint64(index uint32, value uint64) {
 
 	fprs.ByteOrder.PutUint64(buffer, value)
 
-	copy(fprs.data[index * size:index * size + size], buffer)
+	copy(fprs.data[index*size:index*size+size], buffer)
 }
 
 func (fprs *FloatingPointRegisters) Float64(index uint32) float64 {
@@ -246,7 +246,7 @@ func (fprs *FloatingPointRegisters) Float64(index uint32) float64 {
 
 	var buffer = make([]byte, size)
 
-	copy(buffer, fprs.data[index * size:index * size + size])
+	copy(buffer, fprs.data[index*size:index*size+size])
 
 	return math.Float64frombits(fprs.ByteOrder.Uint64(buffer))
 }
@@ -258,5 +258,5 @@ func (fprs *FloatingPointRegisters) SetFloat64(index uint32, value float64) {
 
 	fprs.ByteOrder.PutUint64(buffer, math.Float64bits(value))
 
-	copy(fprs.data[index * size:index * size + size], buffer)
+	copy(fprs.data[index*size:index*size+size], buffer)
 }

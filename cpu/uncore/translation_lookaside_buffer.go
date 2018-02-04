@@ -13,9 +13,9 @@ type TranslationLookasideBuffer struct {
 
 func NewTranslationLookasideBuffer(memoryHierarchy MemoryHierarchy, name string) *TranslationLookasideBuffer {
 	var tlb = &TranslationLookasideBuffer{
-		MemoryHierarchy:memoryHierarchy,
-		Name:name,
-		Cache:NewEvictableCache(
+		MemoryHierarchy: memoryHierarchy,
+		Name:            name,
+		Cache: NewEvictableCache(
 			mem.NewGeometry(
 				memoryHierarchy.Config().TlbSize,
 				memoryHierarchy.Config().TlbAssoc,

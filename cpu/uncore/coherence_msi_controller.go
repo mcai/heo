@@ -16,7 +16,7 @@ type BaseController struct {
 
 func NewBaseController(memoryHierarchy MemoryHierarchy, name string, deviceType MemoryDeviceType) *BaseController {
 	var controller = &BaseController{
-		BaseMemoryDevice:NewBaseMemoryDevice(memoryHierarchy, name, deviceType),
+		BaseMemoryDevice: NewBaseMemoryDevice(memoryHierarchy, name, deviceType),
 	}
 
 	return controller
@@ -54,7 +54,7 @@ type BaseCacheController struct {
 
 func NewBaseCacheController(memoryHierarchy MemoryHierarchy, name string, deviceType MemoryDeviceType) *BaseCacheController {
 	var controller = &BaseCacheController{
-		BaseController:NewBaseController(memoryHierarchy, name, deviceType),
+		BaseController: NewBaseController(memoryHierarchy, name, deviceType),
 	}
 
 	return controller
@@ -95,4 +95,3 @@ func (controller *BaseCacheController) HitRatio() float64 {
 		return float64(controller.NumDownwardHits()) / float64(controller.NumDownwardAccesses())
 	}
 }
-

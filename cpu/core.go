@@ -56,8 +56,8 @@ type BaseCore struct {
 
 func NewBaseCore(processor *Processor, num int32) *BaseCore {
 	var core = &BaseCore{
-		processor:processor,
-		num:num,
+		processor: processor,
+		num:       num,
 	}
 
 	return core

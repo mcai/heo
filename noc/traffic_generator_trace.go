@@ -27,10 +27,10 @@ type TraceTrafficGenerator struct {
 
 func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, maxPackets int64, traceFileName string) *TraceTrafficGenerator {
 	var generator = &TraceTrafficGenerator{
-		Network:network,
-		PacketInjectionRate:packetInjectionRate,
-		MaxPackets:maxPackets,
-		TraceFileName:traceFileName,
+		Network:             network,
+		PacketInjectionRate: packetInjectionRate,
+		MaxPackets:          maxPackets,
+		TraceFileName:       traceFileName,
 	}
 
 	traceFile, err := os.Open(traceFileName)
@@ -51,7 +51,7 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 		if err != nil {
 			log.Fatal(err)
 		}
-		if int(threadId) >= network.Config.NumNodes - 2 {
+		if int(threadId) >= network.Config.NumNodes-2 {
 			log.Printf("threadId is out of range, corresponding line: %s, threadId: %d, numNodes: %d\n", line, threadId, network.Config.NumNodes)
 			continue
 		}
@@ -69,10 +69,10 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 		}
 
 		var traceFileLine = &TraceFileLine{
-			ThreadId:int32(threadId),
-			Pc:pc,
-			Read:read,
-			Ea:ea,
+			ThreadId: int32(threadId),
+			Pc:       pc,
+			Read:     read,
+			Ea:       ea,
 		}
 
 		generator.TraceFileLines = append(generator.TraceFileLines, traceFileLine)

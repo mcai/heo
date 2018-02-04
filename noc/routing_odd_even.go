@@ -6,7 +6,7 @@ type OddEvenRoutingAlgorithm struct {
 
 func NewOddEvenRoutingAlgorithm(node *Node) *OddEvenRoutingAlgorithm {
 	var routingAlgorithm = &OddEvenRoutingAlgorithm{
-		Node:node,
+		Node: node,
 	}
 
 	return routingAlgorithm
@@ -37,7 +37,7 @@ func (routingAlgorithm *OddEvenRoutingAlgorithm) NextHop(packet Packet, parent i
 			if e1 == 0 {
 				directions = append(directions, DIRECTION_EAST)
 			} else {
-				if c0 % 2 == 1 || c0 == s0 {
+				if c0%2 == 1 || c0 == s0 {
 					if e1 > 0 {
 						directions = append(directions, DIRECTION_NORTH)
 					} else {
@@ -45,13 +45,13 @@ func (routingAlgorithm *OddEvenRoutingAlgorithm) NextHop(packet Packet, parent i
 					}
 				}
 
-				if d0 % 2 == 1 || e0 != 1 {
+				if d0%2 == 1 || e0 != 1 {
 					directions = append(directions, DIRECTION_EAST)
 				}
 			}
 		} else {
 			directions = append(directions, DIRECTION_WEST)
-			if c0 % 2 == 0 {
+			if c0%2 == 0 {
 				if e1 > 0 {
 					directions = append(directions, DIRECTION_NORTH)
 				}

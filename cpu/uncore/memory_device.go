@@ -3,9 +3,9 @@ package uncore
 type MemoryDeviceType string
 
 const (
-	MemoryDeviceType_L1I_CONTROLLER = MemoryDeviceType("l1i")
-	MemoryDeviceType_L1D_CONTROLLER = MemoryDeviceType("l1d")
-	MemoryDeviceType_L2_CONTROLLER = MemoryDeviceType("l2")
+	MemoryDeviceType_L1I_CONTROLLER    = MemoryDeviceType("l1i")
+	MemoryDeviceType_L1D_CONTROLLER    = MemoryDeviceType("l1d")
+	MemoryDeviceType_L2_CONTROLLER     = MemoryDeviceType("l2")
 	MemoryDeviceType_MEMORY_CONTROLLER = MemoryDeviceType("mem")
 )
 
@@ -24,9 +24,9 @@ type BaseMemoryDevice struct {
 
 func NewBaseMemoryDevice(memoryHierarchy MemoryHierarchy, name string, deviceType MemoryDeviceType) *BaseMemoryDevice {
 	var memoryDevice = &BaseMemoryDevice{
-		memoryHierarchy:memoryHierarchy,
-		name:name,
-		deviceType:deviceType,
+		memoryHierarchy: memoryHierarchy,
+		name:            name,
+		deviceType:      deviceType,
 	}
 
 	return memoryDevice

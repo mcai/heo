@@ -51,7 +51,7 @@ type WaitForProcessIdCriterion struct {
 
 func NewWaitForProcessIdCriterion(processId int32) *WaitForProcessIdCriterion {
 	var criterion = &WaitForProcessIdCriterion{
-		ProcessId:processId,
+		ProcessId: processId,
 	}
 
 	return criterion
@@ -90,10 +90,10 @@ func (criterion *WaitForFileDescriptorCriterion) NeedProcess(context *Context) b
 }
 
 const (
-	SystemEventType_READ = 0
-	SystemEventType_RESUME = 1
-	SystemEventType_WAIT = 2
-	SystemEventType_POLL = 3
+	SystemEventType_READ           = 0
+	SystemEventType_RESUME         = 1
+	SystemEventType_WAIT           = 2
+	SystemEventType_POLL           = 3
 	SystemEventType_SIGNAL_SUSPEND = 4
 )
 
@@ -113,8 +113,8 @@ type BaseSystemEvent struct {
 
 func NewBaseSystemEvent(context *Context, eventType SystemEventType) *BaseSystemEvent {
 	var event = &BaseSystemEvent{
-		context:context,
-		eventType:eventType,
+		context:   context,
+		eventType: eventType,
 	}
 
 	return event
@@ -136,8 +136,8 @@ type PollEvent struct {
 
 func NewPollEvent(context *Context) *PollEvent {
 	var event = &PollEvent{
-		BaseSystemEvent:NewBaseSystemEvent(context, SystemEventType_POLL),
-		TimeCriterion:NewTimeCriterion(),
+		BaseSystemEvent:                NewBaseSystemEvent(context, SystemEventType_POLL),
+		TimeCriterion:                  NewTimeCriterion(),
 		WaitForFileDescriptorCriterion: NewWaitForFileDescriptorCriterion(),
 	}
 
@@ -151,7 +151,7 @@ func (event *PollEvent) NeedProcess() bool {
 
 func (event *PollEvent) Process() {
 	if !event.WaitForFileDescriptorCriterion.Buffer.IsEmpty() {
-		event.Context().Process.Memory().WriteHalfWordAt(event.WaitForFileDescriptorCriterion.Pufds + 6, 1)
+		event.Context().Process.Memory().WriteHalfWordAt(event.WaitForFileDescriptorCriterion.Pufds+6, 1)
 		event.Context().Regs().Gpr[regs.REGISTER_V0] = 1
 	} else {
 		event.Context().Regs().Gpr[regs.REGISTER_V0] = 0
@@ -168,8 +168,8 @@ type ReadEvent struct {
 
 func NewReadEvent(context *Context) *ReadEvent {
 	var event = &ReadEvent{
-		BaseSystemEvent: NewBaseSystemEvent(context, SystemEventType_READ),
-		WaitForFileDescriptorCriterion:NewWaitForFileDescriptorCriterion(),
+		BaseSystemEvent:                NewBaseSystemEvent(context, SystemEventType_READ),
+		WaitForFileDescriptorCriterion: NewWaitForFileDescriptorCriterion(),
 	}
 
 	return event
@@ -200,7 +200,7 @@ type ResumeEvent struct {
 func NewResumeEvent(context *Context) *ResumeEvent {
 	var event = &ResumeEvent{
 		BaseSystemEvent: NewBaseSystemEvent(context, SystemEventType_RESUME),
-		TimeCriterion:NewTimeCriterion(),
+		TimeCriterion:   NewTimeCriterion(),
 	}
 
 	return event
@@ -222,7 +222,7 @@ type SignalSuspendEvent struct {
 func NewSignalSuspendEvent(context *Context) *SignalSuspendEvent {
 	var event = &SignalSuspendEvent{
 		BaseSystemEvent: NewBaseSystemEvent(context, SystemEventType_SIGNAL_SUSPEND),
-		SignalCriterion:NewSignalCriterion(),
+		SignalCriterion: NewSignalCriterion(),
 	}
 
 	return event
@@ -248,9 +248,9 @@ type WaitEvent struct {
 
 func NewWaitEvent(context *Context, processId int32) *WaitEvent {
 	var event = &WaitEvent{
-		BaseSystemEvent: NewBaseSystemEvent(context, SystemEventType_WAIT),
+		BaseSystemEvent:           NewBaseSystemEvent(context, SystemEventType_WAIT),
 		WaitForProcessIdCriterion: NewWaitForProcessIdCriterion(processId),
-		SignalCriterion: NewSignalCriterion(),
+		SignalCriterion:           NewSignalCriterion(),
 	}
 
 	return event
@@ -267,5 +267,3 @@ func (event *WaitEvent) Process() {
 	event.Context().Regs().Gpr[regs.REGISTER_V0] = uint32(event.WaitForProcessIdCriterion.ProcessId)
 	event.Context().Regs().Gpr[regs.REGISTER_A3] = 0
 }
-
-

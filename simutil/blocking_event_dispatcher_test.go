@@ -12,7 +12,7 @@ type HelloEvent struct {
 
 func NewHelloEvent(name string) *HelloEvent {
 	var helloEvent = &HelloEvent{
-		Name:name,
+		Name: name,
 	}
 
 	return helloEvent

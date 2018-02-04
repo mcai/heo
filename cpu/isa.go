@@ -9,8 +9,8 @@ import (
 const (
 	FMT_SINGLE = 16
 	FMT_DOUBLE = 17
-	FMT_WORD = 20
-	FMT_LONG = 21
+	FMT_WORD   = 20
+	FMT_LONG   = 21
 )
 
 type ISA struct {
@@ -66,7 +66,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if fPCC(context, machInst.BranchCc()) == 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -86,7 +86,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if fPCC(context, machInst.BranchCc()) != 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -427,7 +427,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			relBranch(context, machInst.Imm() << 2)
+			relBranch(context, machInst.Imm()<<2)
 		},
 	)
 
@@ -447,7 +447,7 @@ func (isa *ISA) addMnemonics() {
 		},
 		func(context *Context, machInst MachInst) {
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
-			relBranch(context, machInst.Imm() << 2)
+			relBranch(context, machInst.Imm()<<2)
 		},
 	)
 
@@ -468,7 +468,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Gpr[machInst.Rs()] == context.Regs().Gpr[machInst.Rt()] {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -489,7 +489,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Sgpr(machInst.Rs()) >= 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -514,7 +514,7 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
 			if context.Regs().Sgpr(machInst.Rs()) >= 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -535,7 +535,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Sgpr(machInst.Rs()) > 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -556,7 +556,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Sgpr(machInst.Rs()) <= 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -577,7 +577,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Sgpr(machInst.Rs()) < 0 {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -599,7 +599,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
 			if context.Regs().Gpr[machInst.Rs()] != context.Regs().Gpr[machInst.Rt()] {
-				relBranch(context, machInst.Imm() << 2)
+				relBranch(context, machInst.Imm()<<2)
 			}
 		},
 	)
@@ -963,7 +963,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.Bits32(context.Regs().Pc + 4, 32, 28) << 28) | (machInst.Target() << 2)
+			var dest = (cpuutil.Bits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
 			branch(context, dest)
 		},
 	)
@@ -984,7 +984,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_RA,
 		},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.Bits32(context.Regs().Pc + 4, 32, 28) << 28) | (machInst.Target() << 2)
+			var dest = (cpuutil.Bits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
 			branch(context, dest)
 		},
@@ -1264,7 +1264,7 @@ func (isa *ISA) addMnemonics() {
 			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[machInst.Rt()])
 
 			for i := uint32(0); i < size; i++ {
-				dst[3 - i] = src[i]
+				dst[3-i] = src[i]
 			}
 
 			var rt = context.Process.Memory().ByteOrder.Uint32(dst)
@@ -1295,14 +1295,14 @@ func (isa *ISA) addMnemonics() {
 
 			var size = 1 + (addr & 3)
 
-			var src = context.Process.Memory().ReadBlockAt(addr - size + 1, size)
+			var src = context.Process.Memory().ReadBlockAt(addr-size+1, size)
 
 			var dst = make([]byte, 4)
 
 			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[machInst.Rt()])
 
 			for i := uint32(0); i < size; i++ {
-				dst[size - i - 1] = src[i]
+				dst[size-i-1] = src[i]
 			}
 
 			var rt = context.Process.Memory().ByteOrder.Uint32(dst)
@@ -1333,8 +1333,8 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var temp1 = int64(context.Regs().Sgpr(machInst.Rs()))
 			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
-			var temp3 = (int64(context.Regs().Hi << 32) | int64(context.Regs().Lo))
-			var temp = temp1 * temp2 + temp3
+			var temp3 = (int64(context.Regs().Hi<<32) | int64(context.Regs().Lo))
+			var temp = temp1*temp2 + temp3
 			context.Regs().Hi = uint32(cpuutil.Bits64(uint64(temp), 63, 32))
 			context.Regs().Lo = uint32(cpuutil.Bits64(uint64(temp), 31, 0))
 		},
@@ -1444,8 +1444,8 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var temp1 = int64(context.Regs().Sgpr(machInst.Rs()))
 			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
-			var temp3 = int64(context.Regs().Hi << 32) | int64(context.Regs().Lo)
-			var temp = temp3 - temp1 * temp2 + temp3
+			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
+			var temp = temp3 - temp1*temp2 + temp3
 			context.Regs().Hi = uint32(cpuutil.Bits64(uint64(temp), 63, 32))
 			context.Regs().Lo = uint32(cpuutil.Bits64(uint64(temp), 31, 0))
 		},
@@ -2176,7 +2176,7 @@ func (isa *ISA) addMnemonics() {
 			var dst = make([]byte, 4)
 
 			for i := uint32(0); i < size; i++ {
-				dst[i] = src[3 - i]
+				dst[i] = src[3-i]
 			}
 
 			context.Process.Memory().WriteBlockAt(addr, size, dst)
@@ -2210,10 +2210,10 @@ func (isa *ISA) addMnemonics() {
 			var dst = make([]byte, 4)
 
 			for i := uint32(0); i < size; i++ {
-				dst[i] = src[size - i - 1]
+				dst[i] = src[size-i-1]
 			}
 
-			context.Process.Memory().WriteBlockAt(addr - size + 1, size, dst)
+			context.Process.Memory().WriteBlockAt(addr-size+1, size, dst)
 		},
 	)
 
@@ -2301,7 +2301,7 @@ func relBranch(context *Context, v int32) {
 
 func fPCC(context *Context, c uint32) uint32 {
 	if c != 0 {
-		return cpuutil.GetBit32(context.Regs().Fcsr, 24 + c)
+		return cpuutil.GetBit32(context.Regs().Fcsr, 24+c)
 	} else {
 		return cpuutil.GetBit32(context.Regs().Fcsr, 23)
 	}
@@ -2309,7 +2309,7 @@ func fPCC(context *Context, c uint32) uint32 {
 
 func setFPCC(context *Context, c uint32, v bool) {
 	if c != 0 {
-		context.Regs().Fcsr = cpuutil.SetBitValue32(context.Regs().Fcsr, 24 + c, v)
+		context.Regs().Fcsr = cpuutil.SetBitValue32(context.Regs().Fcsr, 24+c, v)
 	} else {
 		context.Regs().Fcsr = cpuutil.SetBitValue32(context.Regs().Fcsr, 23, v)
 	}

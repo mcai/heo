@@ -5,9 +5,9 @@ import "fmt"
 type PhysicalRegisterState string
 
 const (
-	PhysicalRegisterState_AVAILABLE = PhysicalRegisterState("AVAILABLE")
-	PhysicalRegisterState_RENAME_BUFFER_INVALID = PhysicalRegisterState("RENAME_BUFFER_INVALID")
-	PhysicalRegisterState_RENAME_BUFFER_VALID = PhysicalRegisterState("RENAME_BUFFER_VALID")
+	PhysicalRegisterState_AVAILABLE              = PhysicalRegisterState("AVAILABLE")
+	PhysicalRegisterState_RENAME_BUFFER_INVALID  = PhysicalRegisterState("RENAME_BUFFER_INVALID")
+	PhysicalRegisterState_RENAME_BUFFER_VALID    = PhysicalRegisterState("RENAME_BUFFER_VALID")
 	PhysicalRegisterState_ARCHITECTURAL_REGISTER = PhysicalRegisterState("ARCHITECTURAL_REGISTER")
 )
 
@@ -24,10 +24,10 @@ type PhysicalRegister struct {
 
 func NewPhysicalRegister(physicalRegisterFile *PhysicalRegisterFile, num uint32) *PhysicalRegister {
 	var physicalReg = &PhysicalRegister{
-		PhysicalRegisterFile:physicalRegisterFile,
-		Num:num,
-		State:PhysicalRegisterState_AVAILABLE,
-		Dependency:-1,
+		PhysicalRegisterFile: physicalRegisterFile,
+		Num:                  num,
+		State:                PhysicalRegisterState_AVAILABLE,
+		Dependency:           -1,
 	}
 
 	return physicalReg
@@ -135,8 +135,8 @@ type PhysicalRegisterFile struct {
 
 func NewPhysicalRegisterFile(registerDependencyType RegisterDependencyType, size uint32) *PhysicalRegisterFile {
 	var physicalRegs = &PhysicalRegisterFile{
-		RegisterDependencyType:registerDependencyType,
-		NumFreePhysicalRegisters:size,
+		RegisterDependencyType:   registerDependencyType,
+		NumFreePhysicalRegisters: size,
 	}
 
 	for i := uint32(0); i < size; i++ {

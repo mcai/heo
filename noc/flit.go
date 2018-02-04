@@ -15,13 +15,13 @@ type Flit struct {
 
 func NewFlit(packet Packet, num int, head bool, tail bool) *Flit {
 	var flit = &Flit{
-		Packet:packet,
-		Num:num,
-		Head:head,
-		Tail:tail,
-		state:FLIT_STATE_UNKNOWN,
+		Packet:             packet,
+		Num:                num,
+		Head:               head,
+		Tail:               tail,
+		state:              FLIT_STATE_UNKNOWN,
 		prevStateTimestamp: packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle,
-		Timestamp: packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle,
+		Timestamp:          packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle,
 	}
 
 	packet.SetFlits(append(packet.Flits(), flit))
@@ -43,7 +43,7 @@ func (flit *Flit) SetNodeAndState(node *Node, state FlitState) {
 	}
 
 	if flit.state != FLIT_STATE_UNKNOWN {
-		flit.Packet.Network().LogFlitPerStateDelay(flit.state, int(flit.Packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle - flit.prevStateTimestamp))
+		flit.Packet.Network().LogFlitPerStateDelay(flit.state, int(flit.Packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle-flit.prevStateTimestamp))
 
 		if flit.GetNumInflightFlits()[flit.state] == 0 {
 			panic("Impossible")

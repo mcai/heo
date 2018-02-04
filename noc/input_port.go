@@ -8,8 +8,8 @@ type InputPort struct {
 
 func NewInputPort(router *Router, direction Direction) *InputPort {
 	var inputPort = &InputPort{
-		Router:router,
-		Direction:direction,
+		Router:    router,
+		Direction: direction,
 	}
 
 	for i := 0; i < router.Node.Network.Config.NumVirtualChannels; i++ {

@@ -3,10 +3,10 @@ package cpu
 type FUType string
 
 const (
-	FUType_INT_ALU = FUType("INT_ALU")
+	FUType_INT_ALU      = FUType("INT_ALU")
 	FUType_INT_MULT_DIV = FUType("INT_MULT_DIV")
 
-	FUType_FP_ADD = FUType("FP_ADD")
+	FUType_FP_ADD      = FUType("FP_ADD")
 	FUType_FP_MULT_DIV = FUType("FP_MULT_DIV")
 
 	FUType_MEM_PORT = FUType("MEM_PORT")
@@ -27,18 +27,18 @@ type FUOperationType string
 const (
 	FUOperationType_NONE = FUOperationType("NONE")
 
-	FUOperationType_INT_ALU = FUOperationType("INT_ALU")
+	FUOperationType_INT_ALU  = FUOperationType("INT_ALU")
 	FUOperationType_INT_MULT = FUOperationType("INT_MULT")
-	FUOperationType_INT_DIV = FUOperationType("INT_DIV")
+	FUOperationType_INT_DIV  = FUOperationType("INT_DIV")
 
-	FUOperationType_FP_ADD = FUOperationType("FP_ADD")
-	FUOperationType_FP_CMP = FUOperationType("FP_CMP")
-	FUOperationType_FP_CVT = FUOperationType("FP_CVT")
+	FUOperationType_FP_ADD  = FUOperationType("FP_ADD")
+	FUOperationType_FP_CMP  = FUOperationType("FP_CMP")
+	FUOperationType_FP_CVT  = FUOperationType("FP_CVT")
 	FUOperationType_FP_MULT = FUOperationType("FP_MULT")
-	FUOperationType_FP_DIV = FUOperationType("FP_DIV")
+	FUOperationType_FP_DIV  = FUOperationType("FP_DIV")
 	FUOperationType_FP_SQRT = FUOperationType("FP_SQRT")
 
-	FUOperationType_READ_PORT = FUOperationType("READ_PORT")
+	FUOperationType_READ_PORT  = FUOperationType("READ_PORT")
 	FUOperationType_WRITE_PORT = FUOperationType("WRITE_PORT")
 )
 
@@ -67,8 +67,8 @@ type FUOperation struct {
 
 func NewFUOperation(operationLatency uint32, issueLatency uint32) *FUOperation {
 	var fuOperation = &FUOperation{
-		OperationLatency:operationLatency,
-		IssueLatency:issueLatency,
+		OperationLatency: operationLatency,
+		IssueLatency:     issueLatency,
 	}
 
 	return fuOperation
@@ -84,11 +84,11 @@ type FUDescriptor struct {
 
 func NewFUDescriptor(fuPool *FUPool, fuType FUType, quantity uint32) *FUDescriptor {
 	var fuDescriptor = &FUDescriptor{
-		FUPool:fuPool,
-		FUType:fuType,
-		Quantity:quantity,
-		NumFree:quantity,
-		Operations:make(map[FUOperationType]*FUOperation),
+		FUPool:     fuPool,
+		FUType:     fuType,
+		Quantity:   quantity,
+		NumFree:    quantity,
+		Operations: make(map[FUOperationType]*FUOperation),
 	}
 
 	return fuDescriptor
@@ -116,8 +116,8 @@ type FUPool struct {
 
 func NewFUPool(core Core) *FUPool {
 	var fuPool = &FUPool{
-		Core:core,
-		Descriptors:make(map[FUType]*FUDescriptor),
+		Core:                 core,
+		Descriptors:          make(map[FUType]*FUDescriptor),
 		FUOperationToFUTypes: make(map[FUOperationType]FUType),
 	}
 

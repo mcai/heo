@@ -24,8 +24,8 @@ type BaseCacheLineStateProvider struct {
 
 func NewBaseCacheLineStateProvider(state interface{}, valid func(state interface{}) bool) *BaseCacheLineStateProvider {
 	var stateProvider = &BaseCacheLineStateProvider{
-		state:state,
-		valid:valid,
+		state: state,
+		valid: valid,
 	}
 
 	return stateProvider
@@ -44,25 +44,25 @@ func (stateProvider *BaseCacheLineStateProvider) Valid() bool {
 }
 
 type CacheLine struct {
-	Cache         *Cache
+	Cache *Cache
 
-	Set           uint32
-	Way           uint32
+	Set uint32
+	Way uint32
 
-	Tag           int32
+	Tag int32
 
-	Access        *MemoryHierarchyAccess
+	Access *MemoryHierarchyAccess
 
 	StateProvider CacheLineStateProvider
 }
 
 func newCacheLine(cache *Cache, set uint32, way uint32, stateProvider CacheLineStateProvider) *CacheLine {
 	var cacheLine = &CacheLine{
-		Cache:cache,
-		Set:set,
-		Way:way,
-		Tag:INVALID_TAG,
-		StateProvider:stateProvider,
+		Cache:         cache,
+		Set:           set,
+		Way:           way,
+		Tag:           INVALID_TAG,
+		StateProvider: stateProvider,
 	}
 
 	return cacheLine
@@ -84,8 +84,8 @@ type CacheSet struct {
 
 func newCacheSet(cache *Cache, assoc uint32, num uint32) *CacheSet {
 	var cacheSet = &CacheSet{
-		Cache:cache,
-		Num:num,
+		Cache: cache,
+		Num:   num,
 	}
 
 	for i := uint32(0); i < assoc; i++ {
@@ -110,8 +110,8 @@ type Cache struct {
 
 func NewCache(geometry *mem.Geometry, lineStateProviderFactory func(set uint32, way uint32) CacheLineStateProvider) *Cache {
 	var cache = &Cache{
-		Geometry:geometry,
-		LineStateProviderFactory:lineStateProviderFactory,
+		Geometry:                 geometry,
+		LineStateProviderFactory: lineStateProviderFactory,
 	}
 
 	for i := uint32(0); i < geometry.NumSets; i++ {

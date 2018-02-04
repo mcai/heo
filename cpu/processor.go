@@ -8,8 +8,8 @@ type Processor struct {
 
 func NewProcessor(experiment *CPUExperiment) *Processor {
 	var processor = &Processor{
-		Experiment:experiment,
-		ContextToThreadMappings:make(map[*Context]Thread),
+		Experiment:              experiment,
+		ContextToThreadMappings: make(map[*Context]Thread),
 	}
 
 	for i := int32(0); i < experiment.CPUConfig.NumCores; i++ {

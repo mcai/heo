@@ -1,25 +1,25 @@
 package cpu
 
 type RoundRobinScheduler struct {
-	Resources  []interface{}
-	Predicate  func(resource interface{}) bool
-	Consume    func(resource interface{}) bool
-	Quant      uint32
+	Resources []interface{}
+	Predicate func(resource interface{}) bool
+	Consume   func(resource interface{}) bool
+	Quant     uint32
 
 	ResourceId int32
 
-	Stalled    map[int32]bool
+	Stalled map[int32]bool
 }
 
 func NewRoundRobinScheduler(resources []interface{}, predicate func(resource interface{}) bool, consume func(resource interface{}) bool, quant uint32) *RoundRobinScheduler {
 	var scheduler = &RoundRobinScheduler{
-		Resources:resources,
-		Predicate:predicate,
-		Consume:consume,
-		Quant:quant,
+		Resources: resources,
+		Predicate: predicate,
+		Consume:   consume,
+		Quant:     quant,
 
-		ResourceId:0,
-		Stalled:make(map[int32]bool),
+		ResourceId: 0,
+		Stalled:    make(map[int32]bool),
 	}
 
 	for i := int32(0); i < int32(len(resources)); i++ {

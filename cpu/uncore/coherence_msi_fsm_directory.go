@@ -31,13 +31,13 @@ type DirectoryControllerFiniteStateMachine struct {
 
 func NewDirectoryControllerFiniteStateMachine(set uint32, way uint32, directoryController *DirectoryController) *DirectoryControllerFiniteStateMachine {
 	var fsm = &DirectoryControllerFiniteStateMachine{
-		BaseFiniteStateMachine:simutil.NewBaseFiniteStateMachine(DirectoryControllerState_I),
-		DirectoryController:directoryController,
-		DirectoryEntry:NewDirectoryEntry(),
-		Set:set,
-		Way:way,
-		EvicterTag:INVALID_TAG,
-		VictimTag:INVALID_TAG,
+		BaseFiniteStateMachine: simutil.NewBaseFiniteStateMachine(DirectoryControllerState_I),
+		DirectoryController:    directoryController,
+		DirectoryEntry:         NewDirectoryEntry(),
+		Set:                    set,
+		Way:                    way,
+		EvicterTag:             INVALID_TAG,
+		VictimTag:              INVALID_TAG,
 	}
 
 	return fsm
@@ -188,7 +188,7 @@ func (directoryControllerFsm *DirectoryControllerFiniteStateMachine) OnEventData
 func (fsm *DirectoryControllerFiniteStateMachine) SendDataToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController, numInvAcks int32) {
 	fsm.DirectoryController.TransferMessage(
 		requester,
-		fsm.DirectoryController.Cache.LineSize() + 8,
+		fsm.DirectoryController.Cache.LineSize()+8,
 		NewDataMessage(
 			fsm.DirectoryController,
 			producerFlow,
@@ -425,7 +425,7 @@ type DirectoryControllerFiniteStateMachineFactory struct {
 
 func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFiniteStateMachineFactory {
 	var fsmFactory = &DirectoryControllerFiniteStateMachineFactory{
-		FiniteStateMachineFactory:simutil.NewFiniteStateMachineFactory(),
+		FiniteStateMachineFactory: simutil.NewFiniteStateMachineFactory(),
 	}
 
 	var actionWhenStateChanged = func(fsm simutil.FiniteStateMachine) {
@@ -1082,4 +1082,3 @@ func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFinit
 
 	return fsmFactory
 }
-

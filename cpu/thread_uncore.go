@@ -10,8 +10,8 @@ type MemoryHierarchyThread struct {
 
 func NewMemoryHierarchyThread(core Core, num int32) *MemoryHierarchyThread {
 	var memoryHierarchyThread = &MemoryHierarchyThread{
-		BaseThread:NewBaseThread(core, num),
-		LastFetchedCacheLine:-1,
+		BaseThread:           NewBaseThread(core, num),
+		LastFetchedCacheLine: -1,
 	}
 
 	return memoryHierarchyThread

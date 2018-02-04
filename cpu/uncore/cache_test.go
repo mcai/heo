@@ -8,7 +8,7 @@ import (
 )
 
 func TestCache(t *testing.T) {
-	var geometry = mem.NewGeometry(32 * uncoreutil.KB, 16, 64)
+	var geometry = mem.NewGeometry(32*uncoreutil.KB, 16, 64)
 
 	var cache = NewCache(
 		geometry,

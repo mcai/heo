@@ -7,8 +7,8 @@ type Counter struct {
 
 func NewCounter(initialValue uint32) *Counter {
 	var counter = &Counter{
-		initialValue:initialValue,
-		value:initialValue,
+		initialValue: initialValue,
+		value:        initialValue,
 	}
 
 	return counter

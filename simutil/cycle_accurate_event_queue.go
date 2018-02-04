@@ -12,10 +12,10 @@ type CycleAccurateEvent struct {
 }
 
 type CycleAccurateEventQueue struct {
-	Events                   []*CycleAccurateEvent
-	PerCycleEvents           []func()
-	CurrentCycle             int64
-	currentEventId           int64
+	Events         []*CycleAccurateEvent
+	PerCycleEvents []func()
+	CurrentCycle   int64
+	currentEventId int64
 
 	lastEventDispatchedCycle int64
 }
@@ -42,8 +42,8 @@ func (q *CycleAccurateEventQueue) Push(x interface{}) {
 func (q *CycleAccurateEventQueue) Pop() interface{} {
 	old := q.Events
 	n := len(old)
-	item := old[n - 1]
-	q.Events = old[0 : n - 1]
+	item := old[n-1]
+	q.Events = old[0: n-1]
 	return item
 }
 
@@ -58,10 +58,10 @@ func (q *CycleAccurateEventQueue) Schedule(action func(), delay int) {
 	q.currentEventId++
 
 	var event = &CycleAccurateEvent{
-		eventQueue:q,
-		When:q.CurrentCycle + int64(delay),
-		Action:action,
-		Id:q.currentEventId,
+		eventQueue: q,
+		When:       q.CurrentCycle + int64(delay),
+		Action:     action,
+		Id:         q.currentEventId,
 	}
 
 	heap.Push(q, event)

@@ -7,7 +7,7 @@ import (
 
 const (
 	CLOCKS_PER_SEC = 1000000
-	CPU_FREQUENCY = 300000
+	CPU_FREQUENCY  = 300000
 )
 
 func Getuid() int32 {

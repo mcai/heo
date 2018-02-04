@@ -7,8 +7,8 @@ type SwitchArbiter struct {
 
 func NewSwitchArbiter(outputPort *OutputPort) *SwitchArbiter {
 	var arbiter = &SwitchArbiter{
-		OutputPort:outputPort,
-		InputVirtualChannelRing:NewInputVirtualChannelRing(outputPort.Router),
+		OutputPort:              outputPort,
+		InputVirtualChannelRing: NewInputVirtualChannelRing(outputPort.Router),
 	}
 
 	return arbiter

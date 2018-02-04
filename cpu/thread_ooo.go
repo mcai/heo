@@ -8,23 +8,23 @@ import (
 type OoOThread struct {
 	*MemoryHierarchyThread
 
-	BranchPredictor                        BranchPredictor
+	BranchPredictor BranchPredictor
 
-	IntPhysicalRegs                        *PhysicalRegisterFile
-	FpPhysicalRegs                         *PhysicalRegisterFile
-	MiscPhysicalRegs                       *PhysicalRegisterFile
+	IntPhysicalRegs  *PhysicalRegisterFile
+	FpPhysicalRegs   *PhysicalRegisterFile
+	MiscPhysicalRegs *PhysicalRegisterFile
 
-	RenameTable                            map[uint32]*PhysicalRegister
+	RenameTable map[uint32]*PhysicalRegister
 
-	DecodeBuffer                           *PipelineBuffer
-	ReorderBuffer                          *PipelineBuffer
-	LoadStoreQueue                         *PipelineBuffer
+	DecodeBuffer   *PipelineBuffer
+	ReorderBuffer  *PipelineBuffer
+	LoadStoreQueue *PipelineBuffer
 
-	FetchNpc                               uint32
-	FetchNnpc                              uint32
+	FetchNpc  uint32
+	FetchNnpc uint32
 
-	lastDecodedDynamicInst                 *DynamicInst
-	lastDecodedDynamicInstCommitted        bool
+	lastDecodedDynamicInst          *DynamicInst
+	lastDecodedDynamicInstCommitted bool
 
 	LastCommitCycle                        int64
 	noDynamicInstCommittedCounterThreshold int64
@@ -32,17 +32,17 @@ type OoOThread struct {
 
 func NewOoOThread(core Core, num int32) *OoOThread {
 	var thread = &OoOThread{
-		MemoryHierarchyThread:NewMemoryHierarchyThread(core, num),
+		MemoryHierarchyThread: NewMemoryHierarchyThread(core, num),
 
-		IntPhysicalRegs:NewPhysicalRegisterFile(RegisterDependencyType_INT, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
-		FpPhysicalRegs:NewPhysicalRegisterFile(RegisterDependencyType_FP, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
-		MiscPhysicalRegs:NewPhysicalRegisterFile(RegisterDependencyType_MISC, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
+		IntPhysicalRegs:  NewPhysicalRegisterFile(RegisterDependencyType_INT, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
+		FpPhysicalRegs:   NewPhysicalRegisterFile(RegisterDependencyType_FP, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
+		MiscPhysicalRegs: NewPhysicalRegisterFile(RegisterDependencyType_MISC, core.Processor().Experiment.CPUConfig.PhysicalRegisterFileSize),
 
-		RenameTable:make(map[uint32]*PhysicalRegister),
+		RenameTable: make(map[uint32]*PhysicalRegister),
 
-		DecodeBuffer:NewPipelineBuffer(core.Processor().Experiment.CPUConfig.DecodeBufferSize),
-		ReorderBuffer:NewPipelineBuffer(core.Processor().Experiment.CPUConfig.ReorderBufferSize),
-		LoadStoreQueue:NewPipelineBuffer(core.Processor().Experiment.CPUConfig.LoadStoreQueueSize),
+		DecodeBuffer:   NewPipelineBuffer(core.Processor().Experiment.CPUConfig.DecodeBufferSize),
+		ReorderBuffer:  NewPipelineBuffer(core.Processor().Experiment.CPUConfig.ReorderBufferSize),
+		LoadStoreQueue: NewPipelineBuffer(core.Processor().Experiment.CPUConfig.LoadStoreQueueSize),
 	}
 
 	switch core.Processor().Experiment.CPUConfig.BranchPredictorType {
@@ -164,7 +164,7 @@ func (thread *OoOThread) Fetch() {
 			thread.lastDecodedDynamicInstCommitted = false
 		}
 
-		if (thread.FetchNpc + 4) % thread.Core().L1IController().Cache.LineSize() == 0 {
+		if (thread.FetchNpc+4)%thread.Core().L1IController().Cache.LineSize() == 0 {
 			hasDone = true
 		}
 
@@ -175,10 +175,10 @@ func (thread *OoOThread) Fetch() {
 		if dynamicInst.StaticInst.Mnemonic.StaticInstType.IsControl() {
 			thread.FetchNnpc, returnAddressStackRecoverTop, branchPredictorUpdate = thread.BranchPredictor.Predict(thread.FetchNpc, dynamicInst.StaticInst.Mnemonic)
 		} else {
-			thread.FetchNnpc, returnAddressStackRecoverTop, branchPredictorUpdate = thread.FetchNpc + 4, 0, NewTwoBitBranchPredictorUpdate()
+			thread.FetchNnpc, returnAddressStackRecoverTop, branchPredictorUpdate = thread.FetchNpc+4, 0, NewTwoBitBranchPredictorUpdate()
 		}
 
-		if thread.FetchNnpc != thread.FetchNpc + 4 {
+		if thread.FetchNnpc != thread.FetchNpc+4 {
 			hasDone = true
 		}
 
@@ -462,7 +462,7 @@ func (thread *OoOThread) DumpQueues() {
 		)
 	}
 
-	for dependency := uint32(0); dependency < regs.NUM_INT_REGISTERS + regs.NUM_FP_REGISTERS + regs.NUM_MISC_REGISTERS; dependency++ {
+	for dependency := uint32(0); dependency < regs.NUM_INT_REGISTERS+regs.NUM_FP_REGISTERS+regs.NUM_MISC_REGISTERS; dependency++ {
 		var physicalReg = thread.RenameTable[dependency]
 
 		fmt.Printf("thread.renameTable[%d]=PhysicalRegister{type=%s, num=%d, dependency=%d, state=%s}\n",
@@ -573,7 +573,7 @@ func (thread *OoOThread) DumpQueues() {
 func (thread *OoOThread) Commit() {
 	var commitTimeout = int64(1000000)
 
-	if thread.Core().Processor().Experiment.CycleAccurateEventQueue().CurrentCycle - thread.LastCommitCycle > commitTimeout {
+	if thread.Core().Processor().Experiment.CycleAccurateEventQueue().CurrentCycle-thread.LastCommitCycle > commitTimeout {
 		if thread.noDynamicInstCommittedCounterThreshold > 5 {
 			thread.DumpQueues()
 			thread.Core().Processor().Experiment.MemoryHierarchy.DumpPendingFlowTree()
@@ -632,7 +632,7 @@ func (thread *OoOThread) Commit() {
 			thread.BranchPredictor.Update(
 				reorderBufferEntry.DynamicInst().Pc,
 				reorderBufferEntry.Nnpc(),
-				reorderBufferEntry.Nnpc() != reorderBufferEntry.Npc() + 4,
+				reorderBufferEntry.Nnpc() != reorderBufferEntry.Npc()+4,
 				reorderBufferEntry.PredictedNnpc() == reorderBufferEntry.Nnpc(),
 				reorderBufferEntry.DynamicInst().StaticInst.Mnemonic,
 				reorderBufferEntry.BranchPredictorUpdate(),
@@ -669,7 +669,7 @@ func (thread *OoOThread) removeFromLoadStoreQueue(entryToRemove *LoadStoreQueueE
 
 func (thread *OoOThread) Squash() {
 	for !thread.ReorderBuffer.Empty() {
-		var reorderBufferEntry = thread.ReorderBuffer.Entries[len(thread.ReorderBuffer.Entries) - 1].(*ReorderBufferEntry)
+		var reorderBufferEntry = thread.ReorderBuffer.Entries[len(thread.ReorderBuffer.Entries)-1].(*ReorderBufferEntry)
 
 		if reorderBufferEntry.EffectiveAddressComputation {
 			var loadStoreQueueEntry = reorderBufferEntry.LoadStoreBufferEntry
@@ -690,7 +690,7 @@ func (thread *OoOThread) Squash() {
 
 		reorderBufferEntry.SetTargetPhysicalRegisters(make(map[uint32]*PhysicalRegister))
 
-		thread.ReorderBuffer.Entries = thread.ReorderBuffer.Entries[:len(thread.ReorderBuffer.Entries) - 1]
+		thread.ReorderBuffer.Entries = thread.ReorderBuffer.Entries[:len(thread.ReorderBuffer.Entries)-1]
 	}
 
 	if !thread.ReorderBuffer.Empty() || !thread.LoadStoreQueue.Empty() {

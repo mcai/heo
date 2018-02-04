@@ -35,10 +35,10 @@ func (utsname *Utsname) GetBytes(littleEndian bool) []byte {
 
 	memory.WriteBlockAt(0, uint32(len(sysname_buf)), sysname_buf)
 	memory.WriteBlockAt(_sysname_size, uint32(len(nodename_buf)), nodename_buf)
-	memory.WriteBlockAt(_sysname_size * 2, uint32(len(release_buf)), release_buf)
-	memory.WriteBlockAt(_sysname_size * 3, uint32(len(version_buf)), version_buf)
-	memory.WriteBlockAt(_sysname_size * 4, uint32(len(machine_buf)), machine_buf)
-	memory.WriteBlockAt(_sysname_size * 5, uint32(len(domainname_buf)), domainname_buf)
+	memory.WriteBlockAt(_sysname_size*2, uint32(len(release_buf)), release_buf)
+	memory.WriteBlockAt(_sysname_size*3, uint32(len(version_buf)), version_buf)
+	memory.WriteBlockAt(_sysname_size*4, uint32(len(machine_buf)), machine_buf)
+	memory.WriteBlockAt(_sysname_size*5, uint32(len(domainname_buf)), domainname_buf)
 
 	return buf
 }

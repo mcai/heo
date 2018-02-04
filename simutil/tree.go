@@ -14,7 +14,7 @@ func _printNode(node interface{}, prefix string, tail bool, value func(node inte
 	fmt.Printf("%s%s%s\n", prefix, line, value(node))
 
 	if len(children(node)) > 0 {
-		for i := 0; i < len(children(node)) - 1; i++ {
+		for i := 0; i < len(children(node))-1; i++ {
 			var childNode = children(node)[i]
 
 			if tail {
@@ -26,7 +26,7 @@ func _printNode(node interface{}, prefix string, tail bool, value func(node inte
 			_printNode(childNode, fmt.Sprintf("%s%s", prefix, line), false, value, children)
 		}
 		if len(children(node)) >= 1 {
-			var lastNode = children(node)[len(children(node)) - 1]
+			var lastNode = children(node)[len(children(node))-1]
 
 			if tail {
 				line = "    "

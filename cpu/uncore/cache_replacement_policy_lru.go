@@ -8,7 +8,7 @@ type LRUPolicy struct {
 func NewLRUPolicy(cache *EvictableCache) *LRUPolicy {
 	var lruPolicy = &LRUPolicy{
 		BaseCacheReplacementPolicy: NewBaseCacheReplacementPolicy(cache),
-		lruStack:NewCache(
+		lruStack: NewCache(
 			cache.Geometry,
 			func(set uint32, way uint32) CacheLineStateProvider {
 				return NewBaseCacheLineStateProvider(
@@ -31,7 +31,7 @@ func (lruPolicy *LRUPolicy) SetStackPosition(set uint32, way uint32, stackPositi
 
 	var lines = lruPolicy.lruStack.Sets[set].Lines
 
-	lines = append(lines[:oldStackPosition], lines[oldStackPosition + 1:]...)
+	lines = append(lines[:oldStackPosition], lines[oldStackPosition+1:]...)
 	lines = append(lines, stackEntry)
 
 	lruPolicy.lruStack.Sets[set].Lines = lines
@@ -42,7 +42,7 @@ func (lruPolicy *LRUPolicy) SetMRU(set uint32, way uint32) {
 }
 
 func (lruPolicy *LRUPolicy) SetLRU(set uint32, way uint32) {
-	lruPolicy.SetStackPosition(set, way, lruPolicy.cache.Assoc() - 1)
+	lruPolicy.SetStackPosition(set, way, lruPolicy.cache.Assoc()-1)
 }
 
 func (lruPolicy *LRUPolicy) GetStackPositionOfWay(set uint32, way uint32) uint32 {
@@ -64,7 +64,7 @@ func (lruPolicy *LRUPolicy) GetMRU(set uint32) uint32 {
 }
 
 func (lruPolicy *LRUPolicy) GetLRU(set uint32) uint32 {
-	return lruPolicy.GetWayInStackPosition(set, lruPolicy.cache.Assoc() - 1)
+	return lruPolicy.GetWayInStackPosition(set, lruPolicy.cache.Assoc()-1)
 }
 
 func (lruPolicy *LRUPolicy) HandleReplacement(access *MemoryHierarchyAccess, set uint32, tag uint32) *CacheAccess {

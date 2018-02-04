@@ -9,8 +9,8 @@ type OutputPort struct {
 
 func NewOutputPort(router *Router, direction Direction) *OutputPort {
 	var outputPort = &OutputPort{
-		Router:router,
-		Direction:direction,
+		Router:    router,
+		Direction: direction,
 	}
 
 	for i := 0; i < router.Node.Network.Config.NumVirtualChannels; i++ {

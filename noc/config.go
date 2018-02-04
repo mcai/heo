@@ -51,67 +51,67 @@ var SELECTIONS = []SelectionType{
 }
 
 type NoCConfig struct {
-	OutputDirectory         string
+	OutputDirectory string
 
-	NumNodes                int
+	NumNodes int
 
-	MaxCycles               int64
+	MaxCycles int64
 
-	MaxPackets              int64
+	MaxPackets int64
 
-	DrainPackets            bool
+	DrainPackets bool
 
-	Routing                 RoutingType
+	Routing RoutingType
 
-	Selection               SelectionType
+	Selection SelectionType
 
-	MaxInjectionBufferSize  int
+	MaxInjectionBufferSize int
 
-	MaxInputBufferSize      int
+	MaxInputBufferSize int
 
-	NumVirtualChannels      int
+	NumVirtualChannels int
 
-	LinkWidth               int
-	LinkDelay               int
+	LinkWidth int
+	LinkDelay int
 
 	DataPacketTraffic       TrafficType
 	DataPacketInjectionRate float64
 	DataPacketSize          int
 
-	AntPacketTraffic        TrafficType
-	AntPacketInjectionRate  float64
-	AntPacketSize           int
+	AntPacketTraffic       TrafficType
+	AntPacketInjectionRate float64
+	AntPacketSize          int
 
-	AcoSelectionAlpha       float64
-	ReinforcementFactor     float64
+	AcoSelectionAlpha   float64
+	ReinforcementFactor float64
 
-	TraceFileName           string
+	TraceFileName string
 }
 
 func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, maxPackets int64, drainPackets bool) *NoCConfig {
 	var nocConfig = &NoCConfig{
-		OutputDirectory:outputDirectory,
+		OutputDirectory: outputDirectory,
 
-		NumNodes:numNodes,
+		NumNodes: numNodes,
 
-		MaxCycles:maxCycles,
+		MaxCycles: maxCycles,
 
-		MaxPackets:maxPackets,
+		MaxPackets: maxPackets,
 
-		DrainPackets:drainPackets,
+		DrainPackets: drainPackets,
 
 		Routing: RoutingOddEven,
 
 		Selection: SelectionBufferLevel,
 
-		MaxInjectionBufferSize:32,
+		MaxInjectionBufferSize: 32,
 
-		MaxInputBufferSize:4,
+		MaxInputBufferSize: 4,
 
-		NumVirtualChannels:4,
+		NumVirtualChannels: 4,
 
-		LinkWidth:4,
-		LinkDelay:1,
+		LinkWidth: 4,
+		LinkDelay: 1,
 
 		DataPacketTraffic:       TrafficTranspose1,
 		DataPacketInjectionRate: 0.01,
@@ -121,8 +121,8 @@ func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, maxPack
 		AntPacketInjectionRate: 0.01,
 		AntPacketSize:          4,
 
-		AcoSelectionAlpha:0.5,
-		ReinforcementFactor:0.05,
+		AcoSelectionAlpha:   0.5,
+		ReinforcementFactor: 0.05,
 	}
 
 	return nocConfig

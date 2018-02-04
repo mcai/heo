@@ -112,7 +112,7 @@ func (dataSet DataSet) NormalizedFloat64Values(column int) []float64 {
 
 	for row := range dataSet {
 		var value = values[row]
-		normalizedFloat64Values = append(normalizedFloat64Values, (value - min) / (max - min))
+		normalizedFloat64Values = append(normalizedFloat64Values, (value-min)/(max-min))
 	}
 
 	return normalizedFloat64Values
@@ -136,7 +136,7 @@ func (dataSet DataSet) StandardDeviation(column int) float64 {
 	var variance []float64
 
 	for _, value := range dataSet.Float64Values(column) {
-		variance = append(variance, math.Pow(value - mean, 2))
+		variance = append(variance, math.Pow(value-mean, 2))
 	}
 
 	var standardDeviation = float64(0)
@@ -145,7 +145,7 @@ func (dataSet DataSet) StandardDeviation(column int) float64 {
 		standardDeviation += v
 	}
 
-	standardDeviation = math.Sqrt(standardDeviation / float64(len(dataSet) - 1))
+	standardDeviation = math.Sqrt(standardDeviation / float64(len(dataSet)-1))
 
 	return standardDeviation
 }
@@ -160,7 +160,7 @@ func (dataSet DataSet) StandardizedFloat64Values(column int) []float64 {
 
 	for row := range dataSet {
 		var value = values[row]
-		standardizedFloat64Values = append(standardizedFloat64Values, (value - mean) / standardDeviation)
+		standardizedFloat64Values = append(standardizedFloat64Values, (value-mean)/standardDeviation)
 	}
 
 	return standardizedFloat64Values
@@ -177,7 +177,7 @@ func (dataSet DataSet) TrainTestSplit(split float64) (DataSet, DataSet) {
 
 		var row = test[index]
 
-		test = append(test[:index], test[index + 1:]...)
+		test = append(test[:index], test[index+1:]...)
 
 		train = append(train, row)
 	}
@@ -200,7 +200,7 @@ func (dataSet DataSet) CrossValidationSplit(folds int) []DataSet {
 
 			var row = dataSetCopy[index]
 
-			dataSetCopy = append(dataSetCopy[:index], dataSetCopy[index + 1: ]...)
+			dataSetCopy = append(dataSetCopy[:index], dataSetCopy[index+1: ]...)
 
 			fold = append(fold, row)
 		}

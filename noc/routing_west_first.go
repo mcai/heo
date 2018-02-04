@@ -7,8 +7,8 @@ type WestFirstRoutingAlgorithm struct {
 
 func NewWestFirstRoutingAlgorithm(node *Node) *WestFirstRoutingAlgorithm {
 	var routingAlgorithm = &WestFirstRoutingAlgorithm{
-		Node:node,
-		XYRoutingAlgorithm:NewXYRoutingAlgorithm(node),
+		Node:               node,
+		XYRoutingAlgorithm: NewXYRoutingAlgorithm(node),
 	}
 
 	return routingAlgorithm

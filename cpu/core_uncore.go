@@ -11,7 +11,7 @@ type MemoryHierarchyCore struct {
 
 func NewMemoryHierarchyCore(processor *Processor, num int32) *MemoryHierarchyCore {
 	var core = &MemoryHierarchyCore{
-		BaseCore:NewBaseCore(processor, num),
+		BaseCore: NewBaseCore(processor, num),
 	}
 
 	return core

@@ -7,7 +7,7 @@ type PipelineBuffer struct {
 
 func NewPipelineBuffer(size uint32) *PipelineBuffer {
 	var buffer = &PipelineBuffer{
-		Size:size,
+		Size: size,
 	}
 
 	return buffer

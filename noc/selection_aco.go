@@ -7,8 +7,8 @@ type ACOSelectionAlgorithm struct {
 
 func NewACOSelectionAlgorithm(node *Node) *ACOSelectionAlgorithm {
 	var selectionAlgorithm = &ACOSelectionAlgorithm{
-		Node:node,
-		PheromoneTable:NewPheromoneTable(node),
+		Node:           node,
+		PheromoneTable: NewPheromoneTable(node),
 	}
 
 	var pheromoneValue = 1.0 / float64(len(node.Neighbors))
@@ -45,7 +45,7 @@ func (selectionAlgorithm *ACOSelectionAlgorithm) BackwardAntPacket(packet *AntPa
 		}
 	}
 
-	var prev = packet.memory[i - 1].NodeId
+	var prev = packet.memory[i-1].NodeId
 
 	for direction, neighbor := range selectionAlgorithm.Node.Neighbors {
 		if neighbor == prev {
@@ -86,8 +86,8 @@ func (selectionAlgorithm *ACOSelectionAlgorithm) Select(packet Packet, ivc int, 
 		var maxInputBufferSize = selectionAlgorithm.Node.Network.Config.MaxInputBufferSize
 		var numNeighbors = len(selectionAlgorithm.Node.Neighbors)
 
-		var probability = (pheromone.Value + acoSelectionAlpha * (float64(freeSlots) / float64(maxInputBufferSize))) /
-			(1 + acoSelectionAlpha * float64(numNeighbors - 1))
+		var probability = (pheromone.Value + acoSelectionAlpha*(float64(freeSlots)/float64(maxInputBufferSize))) /
+			(1 + acoSelectionAlpha*float64(numNeighbors-1))
 
 		if probability > maxProbability {
 			maxProbability = probability

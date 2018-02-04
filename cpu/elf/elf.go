@@ -55,7 +55,7 @@ func NewElfFile(fileName string) *ElfFile {
 
 	for i := uint16(0); i < elfFile.Header.SectionHeaderTableEntryCount; i++ {
 		elfFile.Data.ReadPosition = elfFile.Header.SectionHeaderTableOffset +
-			uint32(i * elfFile.Header.SectionHeaderTableEntrySize)
+			uint32(i*elfFile.Header.SectionHeaderTableEntrySize)
 		elfFile.SectionHeaders = append(elfFile.SectionHeaders, NewElfSectionHeader(elfFile))
 	}
 
@@ -181,8 +181,8 @@ type ElfClass string
 
 const (
 	ElfClassNone ElfClass = "ElfClassNone"
-	ElfClass32 ElfClass = "ElfClass32"
-	ElfClass64 ElfClass = "ElfClass64"
+	ElfClass32   ElfClass = "ElfClass32"
+	ElfClass64   ElfClass = "ElfClass64"
 )
 
 type ElfData string
@@ -275,25 +275,25 @@ func NewElfHeader(elfFile *ElfFile) *ElfHeader {
 type ElfSectionHeaderType uint32
 
 const (
-	SHT_NULL ElfSectionHeaderType = 0
+	SHT_NULL     ElfSectionHeaderType = 0
 	SHT_PROGBITS ElfSectionHeaderType = 1
-	SHT_SYMTAB ElfSectionHeaderType = 2
-	SHT_STRTAB ElfSectionHeaderType = 3
-	SHT_RELA ElfSectionHeaderType = 4
-	SHT_HASH ElfSectionHeaderType = 5
-	SHT_DYNAMIC ElfSectionHeaderType = 6
-	SHT_NOTE ElfSectionHeaderType = 7
-	SHT_NOBITS ElfSectionHeaderType = 8
-	SHT_REL ElfSectionHeaderType = 9
-	SHT_SHLIB ElfSectionHeaderType = 10
-	SHT_DYNSYM ElfSectionHeaderType = 11
+	SHT_SYMTAB   ElfSectionHeaderType = 2
+	SHT_STRTAB   ElfSectionHeaderType = 3
+	SHT_RELA     ElfSectionHeaderType = 4
+	SHT_HASH     ElfSectionHeaderType = 5
+	SHT_DYNAMIC  ElfSectionHeaderType = 6
+	SHT_NOTE     ElfSectionHeaderType = 7
+	SHT_NOBITS   ElfSectionHeaderType = 8
+	SHT_REL      ElfSectionHeaderType = 9
+	SHT_SHLIB    ElfSectionHeaderType = 10
+	SHT_DYNSYM   ElfSectionHeaderType = 11
 )
 
 type ElfSectionHeaderFlag uint32
 
 const (
-	SHF_WRITE ElfSectionHeaderFlag = 0x1
-	SHF_ALLOC ElfSectionHeaderFlag = 0x2
+	SHF_WRITE     ElfSectionHeaderFlag = 0x1
+	SHF_ALLOC     ElfSectionHeaderFlag = 0x2
 	SHF_EXECINSTR ElfSectionHeaderFlag = 0x4
 )
 
@@ -452,7 +452,7 @@ type Symbol struct {
 
 func NewSymbol(elfFile *ElfFile, symbolSectionHeader *ElfSectionHeader) *Symbol {
 	var symbol = &Symbol{
-		SymbolSectionHeader:symbolSectionHeader,
+		SymbolSectionHeader: symbolSectionHeader,
 	}
 
 	symbol.NameIndex = elfFile.Data.ReadWord()

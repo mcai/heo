@@ -5,35 +5,35 @@ import "github.com/mcai/heo/cpu/regs"
 type StaticInstFlag string
 
 const (
-	StaticInstFlag_INT_COMP = StaticInstFlag("INT_COMP")
-	StaticInstFlag_FP_COMP = StaticInstFlag("FP_COMP")
-	StaticInstFlag_UNCOND = StaticInstFlag("UNCOND")
-	StaticInstFlag_COND = StaticInstFlag("COND")
-	StaticInstFlag_LD = StaticInstFlag("LD")
-	StaticInstFlag_ST = StaticInstFlag("ST")
-	StaticInstFlag_DIRECT_JMP = StaticInstFlag("DIRECT_JUMP")
-	StaticInstFlag_INDIRECT_JMP = StaticInstFlag("INDIRECT_JUMP")
-	StaticInstFlag_FUNC_CALL = StaticInstFlag("FUNC_CALL")
-	StaticInstFlag_FUNC_RET = StaticInstFlag("FUNC_RET")
-	StaticInstFlag_IMM = StaticInstFlag("IMM")
+	StaticInstFlag_INT_COMP             = StaticInstFlag("INT_COMP")
+	StaticInstFlag_FP_COMP              = StaticInstFlag("FP_COMP")
+	StaticInstFlag_UNCOND               = StaticInstFlag("UNCOND")
+	StaticInstFlag_COND                 = StaticInstFlag("COND")
+	StaticInstFlag_LD                   = StaticInstFlag("LD")
+	StaticInstFlag_ST                   = StaticInstFlag("ST")
+	StaticInstFlag_DIRECT_JMP           = StaticInstFlag("DIRECT_JUMP")
+	StaticInstFlag_INDIRECT_JMP         = StaticInstFlag("INDIRECT_JUMP")
+	StaticInstFlag_FUNC_CALL            = StaticInstFlag("FUNC_CALL")
+	StaticInstFlag_FUNC_RET             = StaticInstFlag("FUNC_RET")
+	StaticInstFlag_IMM                  = StaticInstFlag("IMM")
 	StaticInstFlag_DISPLACED_ADDRESSING = StaticInstFlag("DISPLACED_ADDRESSING")
-	StaticInstFlag_TRAP = StaticInstFlag("TRAP")
-	StaticInstFlag_NOP = StaticInstFlag("NOP")
+	StaticInstFlag_TRAP                 = StaticInstFlag("TRAP")
+	StaticInstFlag_NOP                  = StaticInstFlag("NOP")
 )
 
 type StaticInstType string
 
 const (
-	StaticInstType_INT_COMP = StaticInstType("INT_COMP")
-	StaticInstType_FP_COMP = StaticInstType("FP_COMP")
-	StaticInstType_COND = StaticInstType("COND")
-	StaticInstType_UNCOND = StaticInstType("UNCOND")
-	StaticInstType_LD = StaticInstType("LD")
-	StaticInstType_ST = StaticInstType("ST")
+	StaticInstType_INT_COMP  = StaticInstType("INT_COMP")
+	StaticInstType_FP_COMP   = StaticInstType("FP_COMP")
+	StaticInstType_COND      = StaticInstType("COND")
+	StaticInstType_UNCOND    = StaticInstType("UNCOND")
+	StaticInstType_LD        = StaticInstType("LD")
+	StaticInstType_ST        = StaticInstType("ST")
 	StaticInstType_FUNC_CALL = StaticInstType("FUNC_CALL")
-	StaticInstType_FUNC_RET = StaticInstType("FUNC_RET")
-	StaticInstType_TRAP = StaticInstType("TRAP")
-	StaticInstType_NOP = StaticInstType("NOP")
+	StaticInstType_FUNC_RET  = StaticInstType("FUNC_RET")
+	StaticInstType_TRAP      = StaticInstType("TRAP")
+	StaticInstType_NOP       = StaticInstType("NOP")
 )
 
 func (staticInstType StaticInstType) IsControl() bool {
@@ -51,15 +51,15 @@ func (staticInstType StaticInstType) IsLoadOrStore() bool {
 type RegisterDependencyType string
 
 const (
-	RegisterDependencyType_INT = RegisterDependencyType("INT")
-	RegisterDependencyType_FP = RegisterDependencyType("FP")
+	RegisterDependencyType_INT  = RegisterDependencyType("INT")
+	RegisterDependencyType_FP   = RegisterDependencyType("FP")
 	RegisterDependencyType_MISC = RegisterDependencyType("MISC")
 )
 
 func RegisterDependencyFromInt(i uint32) (RegisterDependencyType, uint32) {
 	if i < regs.NUM_INT_REGISTERS {
 		return RegisterDependencyType_INT, i
-	} else if i < regs.NUM_INT_REGISTERS + regs.NUM_FP_REGISTERS {
+	} else if i < regs.NUM_INT_REGISTERS+regs.NUM_FP_REGISTERS {
 		return RegisterDependencyType_FP, i - regs.NUM_INT_REGISTERS
 	} else {
 		return RegisterDependencyType_MISC, i - regs.NUM_INT_REGISTERS - regs.NUM_FP_REGISTERS
@@ -82,16 +82,16 @@ func RegisterDependencyToInt(dependencyType RegisterDependencyType, num uint32) 
 type StaticInstDependency string
 
 const (
-	StaticInstDependency_RS = StaticInstDependency("RS")
-	StaticInstDependency_RT = StaticInstDependency("RT")
-	StaticInstDependency_RD = StaticInstDependency("RD")
-	StaticInstDependency_FS = StaticInstDependency("FS")
-	StaticInstDependency_FT = StaticInstDependency("FT")
-	StaticInstDependency_FD = StaticInstDependency("FD")
-	StaticInstDependency_REGISTER_RA = StaticInstDependency("REGISTER_RA")
-	StaticInstDependency_REGISTER_V0 = StaticInstDependency("REGISTER_V0")
-	StaticInstDependency_REGISTER_HI = StaticInstDependency("REGISTER_HI")
-	StaticInstDependency_REGISTER_LO = StaticInstDependency("REGISTER_LO")
+	StaticInstDependency_RS            = StaticInstDependency("RS")
+	StaticInstDependency_RT            = StaticInstDependency("RT")
+	StaticInstDependency_RD            = StaticInstDependency("RD")
+	StaticInstDependency_FS            = StaticInstDependency("FS")
+	StaticInstDependency_FT            = StaticInstDependency("FT")
+	StaticInstDependency_FD            = StaticInstDependency("FD")
+	StaticInstDependency_REGISTER_RA   = StaticInstDependency("REGISTER_RA")
+	StaticInstDependency_REGISTER_V0   = StaticInstDependency("REGISTER_V0")
+	StaticInstDependency_REGISTER_HI   = StaticInstDependency("REGISTER_HI")
+	StaticInstDependency_REGISTER_LO   = StaticInstDependency("REGISTER_LO")
 	StaticInstDependency_REGISTER_FCSR = StaticInstDependency("REGISTER_FCSR")
 )
 

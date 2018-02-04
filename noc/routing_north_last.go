@@ -7,8 +7,8 @@ type NorthLastRoutingAlgorithm struct {
 
 func NewNorthLastRoutingAlgorithm(node *Node) *NorthLastRoutingAlgorithm {
 	var routingAlgorithm = &NorthLastRoutingAlgorithm{
-		Node:node,
-		XYRoutingAlgorithm:NewXYRoutingAlgorithm(node),
+		Node:               node,
+		XYRoutingAlgorithm: NewXYRoutingAlgorithm(node),
 	}
 
 	return routingAlgorithm

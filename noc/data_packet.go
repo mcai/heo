@@ -19,15 +19,15 @@ type DataPacket struct {
 
 func NewDataPacket(network *Network, src int, dest int, size int, hasPayload bool, onCompletedCallback func()) *DataPacket {
 	var packet = &DataPacket{
-		network:network,
-		id:network.CurrentPacketId,
-		beginCycle:network.Driver.CycleAccurateEventQueue().CurrentCycle,
-		endCycle:-1,
-		src:src,
-		dest:dest,
-		size:size,
-		onCompletedCallback:onCompletedCallback,
-		hasPayload:hasPayload,
+		network:             network,
+		id:                  network.CurrentPacketId,
+		beginCycle:          network.Driver.CycleAccurateEventQueue().CurrentCycle,
+		endCycle:            -1,
+		src:                 src,
+		dest:                dest,
+		size:                size,
+		onCompletedCallback: onCompletedCallback,
+		hasPayload:          hasPayload,
 	}
 
 	network.CurrentPacketId++
@@ -108,7 +108,7 @@ func (packet *DataPacket) DoRouteComputation(inputVirtualChannel *InputVirtualCh
 	var parent = -1
 
 	if len(packet.memory) > 0 {
-		parent = packet.memory[len(packet.memory) - 1].NodeId
+		parent = packet.memory[len(packet.memory)-1].NodeId
 	}
 
 	packet.Memorize(inputVirtualChannel.InputPort.Router.Node)
@@ -126,8 +126,8 @@ func (packet *DataPacket) Memorize(node *Node) {
 	}
 
 	packet.memory = append(packet.memory, &PacketMemoryEntry{
-		NodeId:node.Id,
-		Timestamp:packet.network.Driver.CycleAccurateEventQueue().CurrentCycle,
+		NodeId:    node.Id,
+		Timestamp: packet.network.Driver.CycleAccurateEventQueue().CurrentCycle,
 	})
 }
 

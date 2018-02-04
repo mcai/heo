@@ -11,7 +11,7 @@ type OoO struct {
 
 func NewOoO(driver OoODriver) *OoO {
 	var ooo = &OoO{
-		Driver:driver,
+		Driver: driver,
 	}
 
 	return ooo

@@ -8,7 +8,7 @@ type RandomSelectionAlgorithm struct {
 
 func NewRandomSelectionAlgorithm(node *Node) *RandomSelectionAlgorithm {
 	var selectionAlgorithm = &RandomSelectionAlgorithm{
-		Node:node,
+		Node: node,
 	}
 
 	return selectionAlgorithm

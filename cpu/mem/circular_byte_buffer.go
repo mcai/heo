@@ -13,8 +13,8 @@ type CircularByteBuffer struct {
 
 func NewCircularByteBuffer(size uint32) *CircularByteBuffer {
 	var buffer = &CircularByteBuffer{
-		data:make(chan byte, size),
-		Size:size,
+		data: make(chan byte, size),
+		Size: size,
 	}
 
 	return buffer
@@ -39,7 +39,7 @@ func (buffer *CircularByteBuffer) Read(count uint32) []byte {
 }
 
 func (buffer *CircularByteBuffer) Write(src []byte) {
-	if uint32(len(src)) > buffer.Size - buffer.Count {
+	if uint32(len(src)) > buffer.Size-buffer.Count {
 		panic("Requested write is greater than the buffer")
 	}
 

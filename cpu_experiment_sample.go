@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	numCores = int32(2)
+	numCores          = int32(2)
 	numThreadsPerCore = int32(2)
 
 	//maxFastForwardDynamicInsts = int64(100000000)

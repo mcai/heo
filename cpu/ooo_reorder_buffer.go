@@ -52,47 +52,47 @@ func SignalCompleted(reorderBufferEntry GeneralReorderBufferEntry) {
 }
 
 type BaseReorderBufferEntry struct {
-	id                           int32
-	thread                       Thread
-	dynamicInst                  *DynamicInst
+	id          int32
+	thread      Thread
+	dynamicInst *DynamicInst
 
-	npc                          uint32
-	nnpc                         uint32
-	predictedNnpc                uint32
+	npc           uint32
+	nnpc          uint32
+	predictedNnpc uint32
 
 	returnAddressStackRecoverTop uint32
 	branchPredictorUpdate        interface{}
 	speculative                  bool
 
-	oldPhysicalRegisters         map[uint32]*PhysicalRegister
-	targetPhysicalRegisters      map[uint32]*PhysicalRegister
-	sourcePhysicalRegisters      map[uint32]*PhysicalRegister
+	oldPhysicalRegisters    map[uint32]*PhysicalRegister
+	targetPhysicalRegisters map[uint32]*PhysicalRegister
+	sourcePhysicalRegisters map[uint32]*PhysicalRegister
 
-	dispatched                   bool
-	issued                       bool
-	completed                    bool
-	squashed                     bool
+	dispatched bool
+	issued     bool
+	completed  bool
+	squashed   bool
 
-	notReadyOperands             []uint32
+	notReadyOperands []uint32
 }
 
 func NewBaseReorderBufferEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverTop uint32, branchPredictorUpdate interface{}, speculative bool) *BaseReorderBufferEntry {
 	var reorderBufferEntry = &BaseReorderBufferEntry{
-		id:thread.Core().Processor().Experiment.OoO.CurrentReorderBufferEntryId,
-		thread:thread,
-		dynamicInst:dynamicInst,
+		id:          thread.Core().Processor().Experiment.OoO.CurrentReorderBufferEntryId,
+		thread:      thread,
+		dynamicInst: dynamicInst,
 
-		npc:npc,
-		nnpc:nnpc,
-		predictedNnpc:predictedNnpc,
+		npc:           npc,
+		nnpc:          nnpc,
+		predictedNnpc: predictedNnpc,
 
-		returnAddressStackRecoverTop:returnAddressStackRecoverTop,
-		branchPredictorUpdate:branchPredictorUpdate,
-		speculative:speculative,
+		returnAddressStackRecoverTop: returnAddressStackRecoverTop,
+		branchPredictorUpdate:        branchPredictorUpdate,
+		speculative:                  speculative,
 
-		oldPhysicalRegisters:make(map[uint32]*PhysicalRegister),
-		targetPhysicalRegisters:make(map[uint32]*PhysicalRegister),
-		sourcePhysicalRegisters:make(map[uint32]*PhysicalRegister),
+		oldPhysicalRegisters:    make(map[uint32]*PhysicalRegister),
+		targetPhysicalRegisters: make(map[uint32]*PhysicalRegister),
+		sourcePhysicalRegisters: make(map[uint32]*PhysicalRegister),
 	}
 
 	thread.Core().Processor().Experiment.OoO.CurrentReorderBufferEntryId++
@@ -230,7 +230,7 @@ type ReorderBufferEntry struct {
 
 func NewReorderBufferEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *ReorderBufferEntry {
 	var reorderBufferEntry = &ReorderBufferEntry{
-		BaseReorderBufferEntry:NewBaseReorderBufferEntry(
+		BaseReorderBufferEntry: NewBaseReorderBufferEntry(
 			thread,
 			dynamicInst,
 			npc,
@@ -268,7 +268,7 @@ type LoadStoreQueueEntry struct {
 
 func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *LoadStoreQueueEntry {
 	var loadStoreQueueEntry = &LoadStoreQueueEntry{
-		BaseReorderBufferEntry:NewBaseReorderBufferEntry(
+		BaseReorderBufferEntry: NewBaseReorderBufferEntry(
 			thread,
 			dynamicInst,
 			npc,
@@ -279,7 +279,7 @@ func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32,
 			speculative,
 		),
 
-		EffectiveAddress:-1,
+		EffectiveAddress: -1,
 	}
 
 	return loadStoreQueueEntry

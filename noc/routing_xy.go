@@ -6,7 +6,7 @@ type XYRoutingAlgorithm struct {
 
 func NewXYRoutingAlgorithm(node *Node) *XYRoutingAlgorithm {
 	var routingAlgorithm = &XYRoutingAlgorithm{
-		Node:node,
+		Node: node,
 	}
 
 	return routingAlgorithm

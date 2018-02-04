@@ -13,7 +13,7 @@ type BaseFiniteStateMachine struct {
 
 func NewBaseFiniteStateMachine(state interface{}) *BaseFiniteStateMachine {
 	var fsm = &BaseFiniteStateMachine{
-		state:state,
+		state: state,
 	}
 
 	return fsm
@@ -50,10 +50,10 @@ type StateTransition struct {
 
 func NewStateTransition(state interface{}, condition interface{}, newState interface{}, action func(fsm FiniteStateMachine, condition interface{}, params interface{})) *StateTransition {
 	var stateTransition = &StateTransition{
-		State:state,
-		Condition:condition,
-		NewState:newState,
-		Action:action,
+		State:     state,
+		Condition: condition,
+		NewState:  newState,
+		Action:    action,
 	}
 
 	return stateTransition
@@ -68,9 +68,9 @@ type StateTransitions struct {
 
 func NewStateTransitions(fsmFactory *FiniteStateMachineFactory, state interface{}) *StateTransitions {
 	var stateTransitions = &StateTransitions{
-		fsmFactory:fsmFactory,
-		state:state,
-		perStateTransitions:make(map[interface{}]*StateTransition),
+		fsmFactory:          fsmFactory,
+		state:               state,
+		perStateTransitions: make(map[interface{}]*StateTransition),
 	}
 
 	return stateTransitions
@@ -106,7 +106,7 @@ type FiniteStateMachineFactory struct {
 
 func NewFiniteStateMachineFactory() *FiniteStateMachineFactory {
 	var fsmFactory = &FiniteStateMachineFactory{
-		transitions:make(map[interface{}]*StateTransitions),
+		transitions: make(map[interface{}]*StateTransitions),
 	}
 
 	return fsmFactory

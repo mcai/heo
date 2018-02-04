@@ -11,10 +11,10 @@ type BaseSyntheticTrafficGenerator struct {
 
 func NewBaseSyntheticTrafficGenerator(network *Network, packetInjectionRate float64, maxPackets int64, newPacket func(src int, dest int) Packet) *BaseSyntheticTrafficGenerator {
 	var baseSyntheticTrafficGenerator = &BaseSyntheticTrafficGenerator{
-		Network:network,
-		PacketInjectionRate:packetInjectionRate,
-		MaxPackets:maxPackets,
-		NewPacket:newPacket,
+		Network:             network,
+		PacketInjectionRate: packetInjectionRate,
+		MaxPackets:          maxPackets,
+		NewPacket:           newPacket,
 	}
 
 	return baseSyntheticTrafficGenerator

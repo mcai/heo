@@ -33,9 +33,9 @@ type BaseThread struct {
 
 func NewBaseThread(core Core, num int32) *BaseThread {
 	var thread = &BaseThread{
-		core:core,
-		num:num,
-		id:core.Num() * core.Processor().Experiment.CPUConfig.NumThreadsPerCore + num,
+		core: core,
+		num:  num,
+		id:   core.Num()*core.Processor().Experiment.CPUConfig.NumThreadsPerCore + num,
 	}
 
 	return thread

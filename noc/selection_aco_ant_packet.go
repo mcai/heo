@@ -7,8 +7,8 @@ type AntPacket struct {
 
 func NewAntPacket(network *Network, src int, dest int, size int, onCompletedCallback func(), forward bool) *AntPacket {
 	var packet = &AntPacket{
-		DataPacket:NewDataPacket(network, src, dest, size, false, onCompletedCallback),
-		Forward:forward,
+		DataPacket: NewDataPacket(network, src, dest, size, false, onCompletedCallback),
+		Forward:    forward,
 	}
 
 	return packet

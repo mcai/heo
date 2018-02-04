@@ -8,34 +8,34 @@ import (
 )
 
 type CPUExperiment struct {
-	CPUConfig                 *CPUConfig
-	UncoreConfig              *uncore.UncoreConfig
-	NocConfig                 *noc.NoCConfig
+	CPUConfig    *CPUConfig
+	UncoreConfig *uncore.UncoreConfig
+	NocConfig    *noc.NoCConfig
 
-	cycleAccurateEventQueue   *simutil.CycleAccurateEventQueue
-	blockingEventDispatcher   *simutil.BlockingEventDispatcher
+	cycleAccurateEventQueue *simutil.CycleAccurateEventQueue
+	blockingEventDispatcher *simutil.BlockingEventDispatcher
 
-	ISA                       *ISA
+	ISA *ISA
 
-	Kernel                    *Kernel
-	Processor                 *Processor
+	Kernel    *Kernel
+	Processor *Processor
 
-	MemoryHierarchy           uncore.MemoryHierarchy
-	OoO                       *OoO
+	MemoryHierarchy uncore.MemoryHierarchy
+	OoO             *OoO
 
-	BeginTime, EndTime        time.Time
+	BeginTime, EndTime time.Time
 
-	Stats                     simutil.Stats
-	statMap                   map[string]interface{}
+	Stats   simutil.Stats
+	statMap map[string]interface{}
 
 	L2PrefetchRequestProfiler *L2PrefetchRequestProfiler
 }
 
 func NewCPUExperiment(config *CPUConfig) *CPUExperiment {
 	var experiment = &CPUExperiment{
-		CPUConfig:config,
-		UncoreConfig:uncore.NewUncoreConfig(config.NumCores, config.NumThreadsPerCore),
-		NocConfig:noc.NewNoCConfig(config.OutputDirectory, -1, -1, -1, false),
+		CPUConfig:    config,
+		UncoreConfig: uncore.NewUncoreConfig(config.NumCores, config.NumThreadsPerCore),
+		NocConfig:    noc.NewNoCConfig(config.OutputDirectory, -1, -1, -1, false),
 	}
 
 	experiment.ISA = NewISA()

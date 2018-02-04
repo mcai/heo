@@ -3,18 +3,18 @@ package uncore
 type CoherenceMessageType string
 
 const (
-	CoherenceMessageType_GETS = CoherenceMessageType("GETS")
-	CoherenceMessageType_GETM = CoherenceMessageType("GETM")
-	CoherenceMessageType_PUTS = CoherenceMessageType("PUTS")
+	CoherenceMessageType_GETS          = CoherenceMessageType("GETS")
+	CoherenceMessageType_GETM          = CoherenceMessageType("GETM")
+	CoherenceMessageType_PUTS          = CoherenceMessageType("PUTS")
 	CoherenceMessageType_PUTM_AND_DATA = CoherenceMessageType("PUTM_AND_DATA")
-	CoherenceMessageType_FWD_GETS = CoherenceMessageType("FWD_GETS")
-	CoherenceMessageType_FWD_GETM = CoherenceMessageType("FWD_GETM")
-	CoherenceMessageType_INV = CoherenceMessageType("INV")
-	CoherenceMessageType_RECALL = CoherenceMessageType("RECALL")
-	CoherenceMessageType_PUT_ACK = CoherenceMessageType("PUT_ACK")
-	CoherenceMessageType_DATA = CoherenceMessageType("DATA")
-	CoherenceMessageType_INV_ACK = CoherenceMessageType("INV_ACK")
-	CoherenceMessageType_RECALL_ACK = CoherenceMessageType("RECALL_ACK")
+	CoherenceMessageType_FWD_GETS      = CoherenceMessageType("FWD_GETS")
+	CoherenceMessageType_FWD_GETM      = CoherenceMessageType("FWD_GETM")
+	CoherenceMessageType_INV           = CoherenceMessageType("INV")
+	CoherenceMessageType_RECALL        = CoherenceMessageType("RECALL")
+	CoherenceMessageType_PUT_ACK       = CoherenceMessageType("PUT_ACK")
+	CoherenceMessageType_DATA          = CoherenceMessageType("DATA")
+	CoherenceMessageType_INV_ACK       = CoherenceMessageType("INV_ACK")
+	CoherenceMessageType_RECALL_ACK    = CoherenceMessageType("RECALL_ACK")
 )
 
 type CoherenceMessage interface {
@@ -32,8 +32,8 @@ type BaseCoherenceMessage struct {
 
 func NewBaseCoherenceMessage(generator Controller, producerFlow CacheCoherenceFlow, messageType CoherenceMessageType, access *MemoryHierarchyAccess, tag uint32) *BaseCoherenceMessage {
 	var message = &BaseCoherenceMessage{
-		BaseCacheCoherenceFlow:NewBaseCacheCoherenceFlow(generator, producerFlow, access, tag),
-		messageType:messageType,
+		BaseCacheCoherenceFlow: NewBaseCacheCoherenceFlow(generator, producerFlow, access, tag),
+		messageType:            messageType,
 	}
 
 	return message
@@ -59,9 +59,9 @@ type DataMessage struct {
 
 func NewDataMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, sender Controller, numInvAcks int32) *DataMessage {
 	var message = &DataMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_DATA, access, tag),
-		Sender:sender,
-		NumInvAcks:numInvAcks,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_DATA, access, tag),
+		Sender:               sender,
+		NumInvAcks:           numInvAcks,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -76,8 +76,8 @@ type FwdGetMMessage struct {
 
 func NewFwdGetMMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *FwdGetMMessage {
 	var message = &FwdGetMMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_FWD_GETM, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_FWD_GETM, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -92,8 +92,8 @@ type FwdGetSMessage struct {
 
 func NewFwdGetSMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *FwdGetSMessage {
 	var message = &FwdGetSMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_FWD_GETS, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_FWD_GETS, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -108,8 +108,8 @@ type GetMMessage struct {
 
 func NewGetMMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *GetMMessage {
 	var message = &GetMMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_GETM, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_GETM, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -124,8 +124,8 @@ type GetSMessage struct {
 
 func NewGetSMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *GetSMessage {
 	var message = &GetSMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_GETS, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_GETS, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -140,8 +140,8 @@ type InvAckMessage struct {
 
 func NewInvAckMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, sender *CacheController) *InvAckMessage {
 	var message = &InvAckMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_INV_ACK, access, tag),
-		Sender:sender,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_INV_ACK, access, tag),
+		Sender:               sender,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -156,8 +156,8 @@ type InvMessage struct {
 
 func NewInvMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *InvMessage {
 	var message = &InvMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_INV, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_INV, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -171,7 +171,7 @@ type PutAckMessage struct {
 
 func NewPutAckMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32) *PutAckMessage {
 	var message = &PutAckMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUT_ACK, access, tag),
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUT_ACK, access, tag),
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -186,8 +186,8 @@ type PutMAndDataMessage struct {
 
 func NewPutMAndDataMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *PutMAndDataMessage {
 	var message = &PutMAndDataMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUTM_AND_DATA, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUTM_AND_DATA, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -202,8 +202,8 @@ type PutSMessage struct {
 
 func NewPutSMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, requester *CacheController) *PutSMessage {
 	var message = &PutSMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUTS, access, tag),
-		Requester:requester,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_PUTS, access, tag),
+		Requester:            requester,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -218,8 +218,8 @@ type RecallAckMessage struct {
 
 func NewRecallAckMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32, sender *CacheController) *RecallAckMessage {
 	var message = &RecallAckMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_RECALL_ACK, access, tag),
-		Sender:sender,
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_RECALL_ACK, access, tag),
+		Sender:               sender,
 	}
 
 	SetupCacheCoherenceFlowTree(message)
@@ -233,7 +233,7 @@ type RecallMessage struct {
 
 func NewRecallMessage(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32) *RecallMessage {
 	var message = &RecallMessage{
-		BaseCoherenceMessage:NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_RECALL, access, tag),
+		BaseCoherenceMessage: NewBaseCoherenceMessage(generator, producerFlow, CoherenceMessageType_RECALL, access, tag),
 	}
 
 	SetupCacheCoherenceFlowTree(message)

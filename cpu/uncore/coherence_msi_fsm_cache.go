@@ -17,9 +17,9 @@ type CacheControllerFiniteStateMachine struct {
 func NewCacheControllerFiniteStateMachine(set uint32, way uint32, cacheController *CacheController) *CacheControllerFiniteStateMachine {
 	var fsm = &CacheControllerFiniteStateMachine{
 		BaseFiniteStateMachine: simutil.NewBaseFiniteStateMachine(CacheControllerState_I),
-		Set:set,
-		Way:way,
-		CacheController:cacheController,
+		Set:                    set,
+		Way:                    way,
+		CacheController:        cacheController,
 	}
 
 	return fsm
@@ -196,7 +196,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendPutSToDir(producerFlow CacheCo
 func (fsm *CacheControllerFiniteStateMachine) SendPutMAndDataToDir(producerFlow CacheCoherenceFlow, tag uint32) {
 	fsm.CacheController.TransferMessage(
 		fsm.CacheController.Next().(*DirectoryController),
-		fsm.CacheController.Cache.LineSize() + 8,
+		fsm.CacheController.Cache.LineSize()+8,
 		NewPutMAndDataMessage(
 			fsm.CacheController,
 			producerFlow,
@@ -223,7 +223,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendDataToRequesterAndDir(producer
 
 	fsm.CacheController.TransferMessage(
 		fsm.CacheController.Next().(*DirectoryController),
-		fsm.CacheController.Cache.LineSize() + 8,
+		fsm.CacheController.Cache.LineSize()+8,
 		NewDataMessage(
 			fsm.CacheController,
 			producerFlow,
@@ -238,7 +238,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendDataToRequesterAndDir(producer
 func (fsm *CacheControllerFiniteStateMachine) SendDataToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
 	fsm.CacheController.TransferMessage(
 		requester,
-		fsm.CacheController.Cache.LineSize() + 8,
+		fsm.CacheController.Cache.LineSize()+8,
 		NewDataMessage(
 			fsm.CacheController,
 			producerFlow,
@@ -339,7 +339,7 @@ type CacheControllerFiniteStateMachineFactory struct {
 
 func NewCacheControllerFiniteStateMachineFactory() *CacheControllerFiniteStateMachineFactory {
 	var fsmFactory = &CacheControllerFiniteStateMachineFactory{
-		FiniteStateMachineFactory:simutil.NewFiniteStateMachineFactory(),
+		FiniteStateMachineFactory: simutil.NewFiniteStateMachineFactory(),
 	}
 
 	var actionWhenStateChanged = func(fsm simutil.FiniteStateMachine) {
@@ -886,7 +886,7 @@ func NewCacheControllerFiniteStateMachineFactory() *CacheControllerFiniteStateMa
 			cacheControllerFsm.SendRecallAckToDir(
 				event,
 				event.Tag(),
-				cacheControllerFsm.CacheController.Cache.LineSize() + 8,
+				cacheControllerFsm.CacheController.Cache.LineSize()+8,
 			)
 			cacheControllerFsm.Line().Access = nil
 			cacheControllerFsm.Line().Tag = INVALID_TAG

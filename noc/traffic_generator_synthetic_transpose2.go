@@ -17,6 +17,6 @@ func (generator *Transpose2TrafficGenerator) AdvanceOneCycle() {
 		var srcX, srcY = generator.Network.GetX(src), generator.Network.GetY(src)
 		var destX, destY = srcY, srcX
 
-		return destY * generator.Network.Width + destX
+		return destY*generator.Network.Width + destX
 	})
 }

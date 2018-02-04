@@ -13,13 +13,13 @@ type CacheBasedPredictorLineValueProvider struct {
 
 func NewCacheBasedPredictorLineValueProvider(counterThreshold uint32, counterMaxValue uint32) *CacheBasedPredictorLineValueProvider {
 	var valueProvider = &CacheBasedPredictorLineValueProvider{
-		BaseCacheLineStateProvider:NewBaseCacheLineStateProvider(
+		BaseCacheLineStateProvider: NewBaseCacheLineStateProvider(
 			false,
 			func(state interface{}) bool {
 				return state != false
 			},
 		),
-		Confidence:simutil.NewSaturatingCounter(0, counterThreshold, counterMaxValue, 0),
+		Confidence: simutil.NewSaturatingCounter(0, counterThreshold, counterMaxValue, 0),
 	}
 
 	return valueProvider
@@ -34,7 +34,7 @@ type CacheBasedPredictor struct {
 
 func NewCacheBasedPredictor(capacity uint32, counterThreshold uint32, counterMaxValue uint32) *CacheBasedPredictor {
 	var predictor = &CacheBasedPredictor{
-		Cache:NewEvictableCache(
+		Cache: NewEvictableCache(
 			mem.NewGeometry(
 				capacity,
 				capacity,

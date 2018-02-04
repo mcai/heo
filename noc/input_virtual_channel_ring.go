@@ -10,7 +10,7 @@ type InputVirtualChannelRing struct {
 
 func NewInputVirtualChannelRing(router *Router) *InputVirtualChannelRing {
 	var inputVirtualChannelRing = &InputVirtualChannelRing{
-		Router:router,
+		Router: router,
 	}
 
 	return inputVirtualChannelRing

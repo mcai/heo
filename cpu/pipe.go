@@ -9,8 +9,8 @@ type Pipe struct {
 
 func NewPipe(fileDescriptors []int32) *Pipe {
 	var pipe = &Pipe{
-		FileDescriptors:fileDescriptors,
-		Buffer:mem.NewCircularByteBuffer(1024),
+		FileDescriptors: fileDescriptors,
+		Buffer:          mem.NewCircularByteBuffer(1024),
 	}
 
 	return pipe

@@ -9,9 +9,9 @@ type DynamicInst struct {
 
 func NewDynamicInst(thread Thread, pc uint32, staticInst *StaticInst) *DynamicInst {
 	var dynamicInst = &DynamicInst{
-		Thread:thread,
-		Pc:pc,
-		StaticInst:staticInst,
+		Thread:     thread,
+		Pc:         pc,
+		StaticInst: staticInst,
 	}
 
 	if staticInst.Mnemonic.StaticInstType == StaticInstType_LD ||
@@ -23,5 +23,3 @@ func NewDynamicInst(thread Thread, pc uint32, staticInst *StaticInst) *DynamicIn
 
 	return dynamicInst
 }
-
-

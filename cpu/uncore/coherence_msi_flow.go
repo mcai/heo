@@ -38,11 +38,11 @@ type BaseCacheCoherenceFlow struct {
 
 func NewBaseCacheCoherenceFlow(generator Controller, producerFlow CacheCoherenceFlow, access *MemoryHierarchyAccess, tag uint32) *BaseCacheCoherenceFlow {
 	var flow = &BaseCacheCoherenceFlow{
-		id:generator.MemoryHierarchy().CurrentCacheCoherenceFlowId(),
-		generator:generator,
-		producerFlow:producerFlow,
-		access:access,
-		tag:tag,
+		id:           generator.MemoryHierarchy().CurrentCacheCoherenceFlowId(),
+		generator:    generator,
+		producerFlow: producerFlow,
+		access:       access,
+		tag:          tag,
 	}
 
 	generator.MemoryHierarchy().SetCurrentCacheCoherenceFlowId(
@@ -136,7 +136,7 @@ type LoadFlow struct {
 
 func NewLoadFlow(generator *CacheController, access *MemoryHierarchyAccess, tag uint32, onCompletedCallback func()) *LoadFlow {
 	var flow = &LoadFlow{
-		BaseCacheCoherenceFlow:NewBaseCacheCoherenceFlow(generator, nil, access, tag),
+		BaseCacheCoherenceFlow: NewBaseCacheCoherenceFlow(generator, nil, access, tag),
 	}
 
 	flow.OnCompletedCallback = func() {
@@ -166,7 +166,7 @@ type StoreFlow struct {
 
 func NewStoreFlow(generator *CacheController, access *MemoryHierarchyAccess, tag uint32, onCompletedCallback func()) *StoreFlow {
 	var flow = &StoreFlow{
-		BaseCacheCoherenceFlow:NewBaseCacheCoherenceFlow(generator, nil, access, tag),
+		BaseCacheCoherenceFlow: NewBaseCacheCoherenceFlow(generator, nil, access, tag),
 	}
 
 	flow.OnCompletedCallback = func() {

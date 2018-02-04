@@ -9,17 +9,17 @@ import (
 type NoCExperiment struct {
 	cycleAccurateEventQueue *simutil.CycleAccurateEventQueue
 
-	Network                 *Network
+	Network *Network
 
-	BeginTime, EndTime      time.Time
+	BeginTime, EndTime time.Time
 
-	Stats                   simutil.Stats
-	statMap                 map[string]interface{}
+	Stats   simutil.Stats
+	statMap map[string]interface{}
 }
 
 func NewNoCExperiment(config *NoCConfig) *NoCExperiment {
 	var experiment = &NoCExperiment{
-		cycleAccurateEventQueue:simutil.NewCycleAccurateEventQueue(),
+		cycleAccurateEventQueue: simutil.NewCycleAccurateEventQueue(),
 	}
 
 	experiment.Network = NewNetwork(experiment, config)

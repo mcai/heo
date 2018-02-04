@@ -10,10 +10,10 @@ type SaturatingCounter struct {
 
 func NewSaturatingCounter(minValue uint32, threshold uint32, maxValue uint32, initialValue uint32) *SaturatingCounter {
 	var saturatingCounter = &SaturatingCounter{
-		minValue:minValue,
-		threshold:threshold,
-		maxValue:maxValue,
-		initialValue:initialValue,
+		minValue:     minValue,
+		threshold:    threshold,
+		maxValue:     maxValue,
+		initialValue: initialValue,
 	}
 
 	return saturatingCounter

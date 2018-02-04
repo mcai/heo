@@ -13,7 +13,7 @@ type SignalMask struct {
 
 func NewSignalMask() *SignalMask {
 	var signalMask = &SignalMask{
-		signals:make([]uint32, MAX_SIGNAL / 2),
+		signals: make([]uint32, MAX_SIGNAL/2),
 	}
 
 	return signalMask
@@ -32,7 +32,7 @@ func (signalMask *SignalMask) Set(signal uint32) {
 
 	signal--
 
-	signalMask.signals[signal / 32] = cpuutil.SetBit32(signalMask.signals[signal / 32], signal % 32)
+	signalMask.signals[signal/32] = cpuutil.SetBit32(signalMask.signals[signal/32], signal%32)
 }
 
 func (signalMask *SignalMask) Clear(signal uint32) {
@@ -42,7 +42,7 @@ func (signalMask *SignalMask) Clear(signal uint32) {
 
 	signal--
 
-	signalMask.signals[signal / 32] = cpuutil.ClearBit32(signalMask.signals[signal / 32], signal % 32)
+	signalMask.signals[signal/32] = cpuutil.ClearBit32(signalMask.signals[signal/32], signal%32)
 }
 
 func (signalMask *SignalMask) Contains(signal uint32) bool {
@@ -52,18 +52,18 @@ func (signalMask *SignalMask) Contains(signal uint32) bool {
 
 	signal--
 
-	return cpuutil.GetBit32(signalMask.signals[signal / 32], signal % 32) != 0
+	return cpuutil.GetBit32(signalMask.signals[signal/32], signal%32) != 0
 }
 
 func (signalMask *SignalMask) LoadFrom(memory *mem.PagedMemory, virtualAddress uint32) {
-	for i := uint32(0); i < MAX_SIGNAL / 32; i++ {
-		signalMask.signals[i] = memory.ReadWordAt(virtualAddress + i * 4)
+	for i := uint32(0); i < MAX_SIGNAL/32; i++ {
+		signalMask.signals[i] = memory.ReadWordAt(virtualAddress + i*4)
 	}
 }
 
 func (signalMask *SignalMask) SaveTo(memory *mem.PagedMemory, virtualAddress uint32) {
-	for i := uint32(0); i < MAX_SIGNAL / 32; i++ {
-		memory.WriteWordAt(virtualAddress + i * 4, signalMask.signals[i])
+	for i := uint32(0); i < MAX_SIGNAL/32; i++ {
+		memory.WriteWordAt(virtualAddress+i*4, signalMask.signals[i])
 	}
 }
 
@@ -75,18 +75,18 @@ type SignalMasks struct {
 
 func NewSignalMasks() *SignalMasks {
 	var signalMasks = &SignalMasks{
-		Pending:NewSignalMask(),
-		Blocked:NewSignalMask(),
-		Backup:NewSignalMask(),
+		Pending: NewSignalMask(),
+		Blocked: NewSignalMask(),
+		Backup:  NewSignalMask(),
 	}
 
 	return signalMasks
 }
 
 const (
-	SignalAction_HANDLER_OFFSET = 4
+	SignalAction_HANDLER_OFFSET  = 4
 	SignalAction_RESTORER_OFFSET = 136
-	SignalAction_MASK_OFFSET = 8
+	SignalAction_MASK_OFFSET     = 8
 )
 
 type SignalAction struct {
@@ -98,7 +98,7 @@ type SignalAction struct {
 
 func NewSignalAction() *SignalAction {
 	var signalAction = &SignalAction{
-		Mask:NewSignalMask(),
+		Mask: NewSignalMask(),
 	}
 
 	return signalAction
@@ -108,12 +108,12 @@ func (signalAction *SignalAction) LoadFrom(memory *mem.PagedMemory, virtualAddre
 	signalAction.Flags = memory.ReadWordAt(virtualAddress)
 	signalAction.Handler = memory.ReadWordAt(virtualAddress + SignalAction_HANDLER_OFFSET)
 	signalAction.Restorer = memory.ReadWordAt(virtualAddress + SignalAction_RESTORER_OFFSET)
-	signalAction.Mask.LoadFrom(memory, virtualAddress + SignalAction_MASK_OFFSET)
+	signalAction.Mask.LoadFrom(memory, virtualAddress+SignalAction_MASK_OFFSET)
 }
 
 func (signalAction *SignalAction) SaveTo(memory *mem.PagedMemory, virtualAddress uint32) {
 	memory.WriteWordAt(virtualAddress, signalAction.Flags)
-	memory.WriteWordAt(virtualAddress + SignalAction_HANDLER_OFFSET, signalAction.Handler)
-	memory.WriteWordAt(virtualAddress + SignalAction_RESTORER_OFFSET, signalAction.Restorer)
-	signalAction.Mask.SaveTo(memory, virtualAddress + SignalAction_MASK_OFFSET)
+	memory.WriteWordAt(virtualAddress+SignalAction_HANDLER_OFFSET, signalAction.Handler)
+	memory.WriteWordAt(virtualAddress+SignalAction_RESTORER_OFFSET, signalAction.Restorer)
+	signalAction.Mask.SaveTo(memory, virtualAddress+SignalAction_MASK_OFFSET)
 }

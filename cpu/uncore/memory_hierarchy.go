@@ -45,33 +45,33 @@ type MemoryHierarchy interface {
 }
 
 type BaseMemoryHierarchy struct {
-	driver                         UncoreDriver
-	config                         *UncoreConfig
+	driver UncoreDriver
+	config *UncoreConfig
 
 	currentMemoryHierarchyAccessId int32
 	currentCacheCoherenceFlowId    int32
 
-	pendingFlows                   []CacheCoherenceFlow
+	pendingFlows []CacheCoherenceFlow
 
-	memoryController               *MemoryController
-	l2Controller                   *DirectoryController
-	l1IControllers                 []*L1IController
-	l1DControllers                 []*L1DController
+	memoryController *MemoryController
+	l2Controller     *DirectoryController
+	l1IControllers   []*L1IController
+	l1DControllers   []*L1DController
 
-	iTlbs                          []*TranslationLookasideBuffer
-	dTlbs                          []*TranslationLookasideBuffer
+	iTlbs []*TranslationLookasideBuffer
+	dTlbs []*TranslationLookasideBuffer
 
-	p2pReorderBuffers              map[Controller](map[Controller]*P2PReorderBuffer)
+	p2pReorderBuffers map[Controller](map[Controller]*P2PReorderBuffer)
 
-	network                        *noc.Network
-	DevicesToNodeIds               map[interface{}]uint32
+	network          *noc.Network
+	DevicesToNodeIds map[interface{}]uint32
 }
 
 func NewBaseMemoryHierarchy(driver UncoreDriver, config *UncoreConfig, nocConfig *noc.NoCConfig) *BaseMemoryHierarchy {
 	var memoryHierarchy = &BaseMemoryHierarchy{
-		driver:driver,
-		config:config,
-		DevicesToNodeIds:make(map[interface{}]uint32),
+		driver:           driver,
+		config:           config,
+		DevicesToNodeIds: make(map[interface{}]uint32),
 	}
 
 	memoryHierarchy.memoryController = NewMemoryController(memoryHierarchy)
@@ -131,7 +131,7 @@ func NewBaseMemoryHierarchy(driver UncoreDriver, config *UncoreConfig, nocConfig
 
 	var width = uint32(math.Sqrt(float64(numNodes)))
 
-	if width * width != numNodes {
+	if width*width != numNodes {
 		numNodes = (width + 1) * (width + 1)
 	}
 
@@ -277,9 +277,9 @@ type P2PReorderBuffer struct {
 
 func NewP2PReorderBuffer(from Controller, to Controller) *P2PReorderBuffer {
 	var buffer = &P2PReorderBuffer{
-		From:from,
-		To:to,
-		LastCompletedMessageId:-1,
+		From:                   from,
+		To:                     to,
+		LastCompletedMessageId: -1,
 	}
 
 	return buffer

@@ -241,9 +241,9 @@ func Disassemble(pc uint32, mnemonicName string, machInst MachInst) string {
 		if (machInst.IsCVT()) {
 			buf.WriteString(fmt.Sprintf("$f%d, $f%d", fd, fs))
 		} else if (machInst.IsCompare()) {
-			buf.WriteString(fmt.Sprintf("%d, $f%d, $f%d", fd >> 2, fs, ft))
+			buf.WriteString(fmt.Sprintf("%d, $f%d, $f%d", fd>>2, fs, ft))
 		} else if (machInst.IsFpBranch()) {
-			buf.WriteString(fmt.Sprintf("%d, %d", fd >> 2, imm))
+			buf.WriteString(fmt.Sprintf("%d, %d", fd>>2, imm))
 		} else if (machInst.IsGprFpMove()) {
 			buf.WriteString(fmt.Sprintf("$%s, $f%d", regs.GPR_NAMES[rt], fs))
 		} else if (machInst.IsGprFcrMove()) {

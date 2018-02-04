@@ -11,50 +11,50 @@ type NetworkDriver interface {
 }
 
 type Network struct {
-	Driver                       NetworkDriver
-	Config                       *NoCConfig
+	Driver NetworkDriver
+	Config *NoCConfig
 
-	CurrentPacketId              int64
-	NumNodes                     int
-	Nodes                        []*Node
-	Width                        int
-	AcceptPacket                 bool
-	trafficGenerators            []TrafficGenerator
+	CurrentPacketId   int64
+	NumNodes          int
+	Nodes             []*Node
+	Width             int
+	AcceptPacket      bool
+	trafficGenerators []TrafficGenerator
 
-	NumPacketsReceived           int64
-	NumPacketsTransmitted        int64
+	NumPacketsReceived    int64
+	NumPacketsTransmitted int64
 
-	totalPacketDelays            int64
-	MaxPacketDelay               int
+	totalPacketDelays int64
+	MaxPacketDelay    int
 
-	totalPacketHops              int64
-	MaxPacketHops                int
+	totalPacketHops int64
+	MaxPacketHops   int
 
 	NumPayloadPacketsReceived    int64
 	NumPayloadPacketsTransmitted int64
 
-	totalPayloadPacketDelays     int64
-	MaxPayloadPacketDelay        int
+	totalPayloadPacketDelays int64
+	MaxPayloadPacketDelay    int
 
-	totalPayloadPacketHops       int64
-	MaxPayloadPacketHops         int
+	totalPayloadPacketHops int64
+	MaxPayloadPacketHops   int
 
-	numFlitPerStateDelaySamples  map[FlitState]int64
-	totalFlitPerStateDelays      map[FlitState]int64
-	MaxFlitPerStateDelay         map[FlitState]int
+	numFlitPerStateDelaySamples map[FlitState]int64
+	totalFlitPerStateDelays     map[FlitState]int64
+	MaxFlitPerStateDelay        map[FlitState]int
 }
 
 func NewNetwork(driver NetworkDriver, config *NoCConfig) *Network {
 	var network = &Network{
-		Driver:driver,
-		Config:config,
-		NumNodes:config.NumNodes,
-		Width:int(math.Sqrt(float64(config.NumNodes))),
-		AcceptPacket:true,
+		Driver:       driver,
+		Config:       config,
+		NumNodes:     config.NumNodes,
+		Width:        int(math.Sqrt(float64(config.NumNodes))),
+		AcceptPacket: true,
 
-		numFlitPerStateDelaySamples:make(map[FlitState]int64),
-		totalFlitPerStateDelays:make(map[FlitState]int64),
-		MaxFlitPerStateDelay:make(map[FlitState]int),
+		numFlitPerStateDelaySamples: make(map[FlitState]int64),
+		totalFlitPerStateDelays:     make(map[FlitState]int64),
+		MaxFlitPerStateDelay:        make(map[FlitState]int),
 	}
 
 	for i := 0; i < network.NumNodes; i++ {
@@ -95,7 +95,7 @@ func (network *Network) GetX(id int) int {
 }
 
 func (network *Network) GetY(id int) int {
-	return (id - id % network.Width) / network.Width
+	return (id - id%network.Width) / network.Width
 }
 
 func (network *Network) TrafficGenerators() []TrafficGenerator {

@@ -8,7 +8,7 @@ type BufferLevelSelectionAlgorithm struct {
 
 func NewBufferLevelSelectionAlgorithm(node *Node) *BufferLevelSelectionAlgorithm {
 	var selectionAlgorithm = &BufferLevelSelectionAlgorithm{
-		Node:node,
+		Node: node,
 	}
 
 	return selectionAlgorithm

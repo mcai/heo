@@ -10,9 +10,9 @@ type InjectionBuffer struct {
 
 func NewInjectionBuffer(router *Router) *InjectionBuffer {
 	var injectionBuffer = &InjectionBuffer{
-		Router:router,
-		Packets:list.New(),
-		Size: router.Node.Network.Config.MaxInjectionBufferSize,
+		Router:  router,
+		Packets: list.New(),
+		Size:    router.Node.Network.Config.MaxInjectionBufferSize,
 	}
 
 	return injectionBuffer

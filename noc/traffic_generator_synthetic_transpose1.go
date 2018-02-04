@@ -15,8 +15,8 @@ func NewTranspose1TrafficGenerator(network *Network, packetInjectionRate float64
 func (generator *Transpose1TrafficGenerator) AdvanceOneCycle() {
 	generator.BaseSyntheticTrafficGenerator.AdvanceOneCycle(func(src int) int {
 		var srcX, srcY = generator.Network.GetX(src), generator.Network.GetY(src)
-		var destX, destY = generator.Network.Width - 1 - srcY, generator.Network.Width - 1 - srcX
+		var destX, destY = generator.Network.Width-1-srcY, generator.Network.Width-1-srcX
 
-		return destY * generator.Network.Width + destX
+		return destY*generator.Network.Width + destX
 	})
 }

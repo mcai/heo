@@ -7,8 +7,8 @@ type NegativeFirstRoutingAlgorithm struct {
 
 func NewNegativeFirstRoutingAlgorithm(node *Node) *NegativeFirstRoutingAlgorithm {
 	var routingAlgorithm = &NegativeFirstRoutingAlgorithm{
-		Node:node,
-		XYRoutingAlgorithm:NewXYRoutingAlgorithm(node),
+		Node:               node,
+		XYRoutingAlgorithm: NewXYRoutingAlgorithm(node),
 	}
 
 	return routingAlgorithm

@@ -9,10 +9,10 @@ type Pheromone struct {
 
 func NewPheromone(pheromoneTable *PheromoneTable, dest int, direction Direction, value float64) *Pheromone {
 	var pheromone = &Pheromone{
-		PheromoneTable:pheromoneTable,
-		Dest:dest,
-		Direction:direction,
-		Value:value,
+		PheromoneTable: pheromoneTable,
+		Dest:           dest,
+		Direction:      direction,
+		Value:          value,
 	}
 
 	return pheromone

@@ -10,7 +10,7 @@ type BlockingEventDispatcher struct {
 
 func NewBlockingEventDispatcher() *BlockingEventDispatcher {
 	var dispatcher = &BlockingEventDispatcher{
-		Listeners:make(map[reflect.Type]([](func(event interface{})))),
+		Listeners: make(map[reflect.Type]([](func(event interface{})))),
 	}
 
 	return dispatcher

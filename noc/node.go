@@ -16,26 +16,26 @@ type Node struct {
 
 func NewNode(network *Network, id int) *Node {
 	var node = &Node{
-		Network:network,
-		Id:id,
-		X:network.GetX(id),
-		Y:network.GetY(id),
-		Neighbors:make(map[Direction]int),
+		Network:   network,
+		Id:        id,
+		X:         network.GetX(id),
+		Y:         network.GetY(id),
+		Neighbors: make(map[Direction]int),
 	}
 
-	if id / network.Width > 0 {
+	if id/network.Width > 0 {
 		node.Neighbors[DIRECTION_NORTH] = id - network.Width
 	}
 
-	if (id % network.Width) != network.Width - 1 {
+	if (id % network.Width) != network.Width-1 {
 		node.Neighbors[DIRECTION_EAST] = id + 1
 	}
 
-	if id / network.Width < network.Width - 1 {
+	if id/network.Width < network.Width-1 {
 		node.Neighbors[DIRECTION_SOUTH] = id + network.Width
 	}
 
-	if id % network.Width != 0 {
+	if id%network.Width != 0 {
 		node.Neighbors[DIRECTION_WEST] = id - 1
 	}
 

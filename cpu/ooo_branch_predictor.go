@@ -32,8 +32,8 @@ type BranchTargetBuffer struct {
 
 func NewBranchTargetBuffer(numSets uint32, assoc uint32) *BranchTargetBuffer {
 	var branchTargetBuffer = &BranchTargetBuffer{
-		NumSets:numSets,
-		Assoc:assoc,
+		NumSets: numSets,
+		Assoc:   assoc,
 	}
 
 	for i := uint32(0); i < numSets; i++ {
@@ -83,7 +83,7 @@ func (branchTargetBuffer *BranchTargetBuffer) Update(branchAddress uint32, branc
 	}
 
 	if entryFound == nil {
-		entryFound = branchTargetBuffer.Entries[set][branchTargetBuffer.Assoc - 1]
+		entryFound = branchTargetBuffer.Entries[set][branchTargetBuffer.Assoc-1]
 		entryFound.Source = branchAddress
 	}
 
@@ -117,8 +117,8 @@ type ReturnAddressStack struct {
 
 func NewReturnAddressStack(size uint32) *ReturnAddressStack {
 	var returnAddressStack = &ReturnAddressStack{
-		size:size,
-		top:size - 1,
+		size: size,
+		top:  size - 1,
 	}
 
 	for i := uint32(0); i < size; i++ {
@@ -179,7 +179,7 @@ type BaseBranchPredictor struct {
 
 func NewBaseBranchPredictor(thread Thread) *BaseBranchPredictor {
 	var branchPredictor = &BaseBranchPredictor{
-		thread:thread,
+		thread: thread,
 	}
 
 	return branchPredictor

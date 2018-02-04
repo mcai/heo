@@ -10,9 +10,9 @@ type OutputVirtualChannel struct {
 
 func NewOutputVirtualChannel(outputPort *OutputPort, num int) *OutputVirtualChannel {
 	var outputVirtualChannel = &OutputVirtualChannel{
-		OutputPort:outputPort,
-		Num: num,
-		Credits:10,
+		OutputPort: outputPort,
+		Num:        num,
+		Credits:    10,
 	}
 
 	outputVirtualChannel.Arbiter = NewVirtualChannelArbiter(outputVirtualChannel)

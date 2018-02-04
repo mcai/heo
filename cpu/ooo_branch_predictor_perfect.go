@@ -6,7 +6,7 @@ type PerfectBranchPredictor struct {
 
 func NewPerfectBranchPredictor(thread Thread) *PerfectBranchPredictor {
 	var branchPredictor = &PerfectBranchPredictor{
-		BaseBranchPredictor:NewBaseBranchPredictor(thread),
+		BaseBranchPredictor: NewBaseBranchPredictor(thread),
 	}
 
 	return branchPredictor

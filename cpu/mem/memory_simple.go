@@ -12,8 +12,8 @@ type SimpleMemory struct {
 
 func NewSimpleMemory(littleEndian bool, data []byte) *SimpleMemory {
 	var memory = &SimpleMemory{
-		LittleEndian:littleEndian,
-		Data:data,
+		LittleEndian: littleEndian,
+		Data:         data,
 	}
 
 	if littleEndian {
@@ -168,8 +168,8 @@ func (memory *SimpleMemory) WriteBlock(size uint32, data []byte) {
 
 func (memory *SimpleMemory) access(virtualAddress uint32, size uint32, buffer *[]byte, write bool) {
 	if write {
-		copy(memory.Data[virtualAddress:virtualAddress + size], (*buffer)[0:size])
+		copy(memory.Data[virtualAddress:virtualAddress+size], (*buffer)[0:size])
 	} else {
-		copy((*buffer)[0:size], memory.Data[virtualAddress:virtualAddress + size])
+		copy((*buffer)[0:size], memory.Data[virtualAddress:virtualAddress+size])
 	}
 }

@@ -13,7 +13,7 @@ type BaseCacheReplacementPolicy struct {
 
 func NewBaseCacheReplacementPolicy(cache *EvictableCache) *BaseCacheReplacementPolicy {
 	var replacementPolicy = &BaseCacheReplacementPolicy{
-		cache:cache,
+		cache: cache,
 	}
 
 	return replacementPolicy

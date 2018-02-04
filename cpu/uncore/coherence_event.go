@@ -11,12 +11,12 @@ type GeneralCacheControllerServiceNonblockingRequestEvent struct {
 
 func NewGeneralCacheControllerServiceNonblockingRequestEvent(cacheController MemoryDevice, access *MemoryHierarchyAccess, tag uint32, set uint32, way uint32, hitInCache bool) *GeneralCacheControllerServiceNonblockingRequestEvent {
 	var event = &GeneralCacheControllerServiceNonblockingRequestEvent{
-		CacheController:cacheController,
-		Access:access,
-		Tag:tag,
-		Set:set,
-		Way:way,
-		HitInCache:hitInCache,
+		CacheController: cacheController,
+		Access:          access,
+		Tag:             tag,
+		Set:             set,
+		Way:             way,
+		HitInCache:      hitInCache,
 	}
 
 	return event
@@ -32,11 +32,11 @@ type GeneralCacheControllerNonblockingRequestHitToTransientTagEvent struct {
 
 func NewGeneralCacheControllerNonblockingRequestHitToTransientTagEvent(cacheController MemoryDevice, access *MemoryHierarchyAccess, tag uint32, set uint32, way uint32) *GeneralCacheControllerNonblockingRequestHitToTransientTagEvent {
 	var event = &GeneralCacheControllerNonblockingRequestHitToTransientTagEvent{
-		CacheController:cacheController,
-		Access:access,
-		Tag:tag,
-		Set:set,
-		Way:way,
+		CacheController: cacheController,
+		Access:          access,
+		Tag:             tag,
+		Set:             set,
+		Way:             way,
 	}
 
 	return event
@@ -52,11 +52,11 @@ type GeneralCacheControllerLineReplacementEvent struct {
 
 func NewGeneralCacheControllerLineReplacementEvent(cacheController MemoryDevice, access *MemoryHierarchyAccess, tag uint32, set uint32, way uint32) *GeneralCacheControllerLineReplacementEvent {
 	var event = &GeneralCacheControllerLineReplacementEvent{
-		CacheController:cacheController,
-		Access:access,
-		Tag:tag,
-		Set:set,
-		Way:way,
+		CacheController: cacheController,
+		Access:          access,
+		Tag:             tag,
+		Set:             set,
+		Way:             way,
 	}
 
 	return event
@@ -72,11 +72,11 @@ type GeneralCacheControllerLastPutSOrPutMAndDataFromOwnerEvent struct {
 
 func NewGeneralCacheControllerLastPutSOrPutMAndDataFromOwnerEvent(cacheController MemoryDevice, access *MemoryHierarchyAccess, tag uint32, set uint32, way uint32) *GeneralCacheControllerLastPutSOrPutMAndDataFromOwnerEvent {
 	var event = &GeneralCacheControllerLastPutSOrPutMAndDataFromOwnerEvent{
-		CacheController:cacheController,
-		Access:access,
-		Tag:tag,
-		Set:set,
-		Way:way,
+		CacheController: cacheController,
+		Access:          access,
+		Tag:             tag,
+		Set:             set,
+		Way:             way,
 	}
 
 	return event
@@ -93,12 +93,12 @@ type LastLevelCacheControllerLineInsertEvent struct {
 
 func NewLastLevelCacheControllerLineInsertEvent(cacheController MemoryDevice, access *MemoryHierarchyAccess, tag uint32, set uint32, way uint32, victimTag int32) *LastLevelCacheControllerLineInsertEvent {
 	var event = &LastLevelCacheControllerLineInsertEvent{
-		CacheController:cacheController,
-		Access:access,
-		Tag:tag,
-		Set:set,
-		Way:way,
-		VictimTag:victimTag,
+		CacheController: cacheController,
+		Access:          access,
+		Tag:             tag,
+		Set:             set,
+		Way:             way,
+		VictimTag:       victimTag,
 	}
 
 	return event

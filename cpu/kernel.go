@@ -6,14 +6,14 @@ import (
 )
 
 type Kernel struct {
-	Experiment          *CPUExperiment
+	Experiment *CPUExperiment
 
-	Pipes               []*Pipe
-	SystemEvents        []SystemEvent
-	SignalActions       []*SignalAction
-	Contexts            []*Context
-	Processes           []*Process
-	SyscallEmulation    *SyscallEmulation
+	Pipes            []*Pipe
+	SystemEvents     []SystemEvent
+	SignalActions    []*SignalAction
+	Contexts         []*Context
+	Processes        []*Process
+	SyscallEmulation *SyscallEmulation
 
 	CurrentPid          int32
 	CurrentProcessId    int32
@@ -25,12 +25,12 @@ type Kernel struct {
 
 func NewKernel(experiment *CPUExperiment) *Kernel {
 	var kernel = &Kernel{
-		Experiment:experiment,
-		SyscallEmulation:NewSyscallEmulation(),
-		CurrentPid:1000,
-		CurrentMemoryId:0,
-		CurrentContextId:0,
-		CurrentFd:100,
+		Experiment:       experiment,
+		SyscallEmulation: NewSyscallEmulation(),
+		CurrentPid:       1000,
+		CurrentMemoryId:  0,
+		CurrentContextId: 0,
+		CurrentFd:        100,
 	}
 
 	for i := 0; i < MAX_SIGNAL; i++ {
@@ -91,7 +91,7 @@ func (kernel *Kernel) Map(contextToMap *Context, predicate func(candidateThreadI
 
 	for coreNum := int32(0); coreNum < kernel.Experiment.CPUConfig.NumCores; coreNum++ {
 		for threadNum := int32(0); threadNum < kernel.Experiment.CPUConfig.NumThreadsPerCore; threadNum++ {
-			var threadId = coreNum * kernel.Experiment.CPUConfig.NumThreadsPerCore + threadNum
+			var threadId = coreNum*kernel.Experiment.CPUConfig.NumThreadsPerCore + threadNum
 
 			var hasMapped = false
 
@@ -173,7 +173,7 @@ func (kernel *Kernel) GetWriteBuffer(fileDescriptor int32) *mem.CircularByteBuff
 }
 
 func (kernel *Kernel) RunSignalHandler(context *Context, signal uint32) {
-	if kernel.SignalActions[signal - 1].Handler == 0 {
+	if kernel.SignalActions[signal-1].Handler == 0 {
 		panic("Impossible")
 	}
 
@@ -182,9 +182,9 @@ func (kernel *Kernel) RunSignalHandler(context *Context, signal uint32) {
 	var oldRegs = context.Regs().Clone()
 
 	context.Regs().Gpr[regs.REGISTER_A0] = signal
-	context.Regs().Gpr[regs.REGISTER_T9] = kernel.SignalActions[signal - 1].Handler
+	context.Regs().Gpr[regs.REGISTER_T9] = kernel.SignalActions[signal-1].Handler
 	context.Regs().Gpr[regs.REGISTER_RA] = 0xffffffff
-	context.Regs().Npc = kernel.SignalActions[signal - 1].Handler
+	context.Regs().Npc = kernel.SignalActions[signal-1].Handler
 	context.Regs().Nnpc = context.Regs().Npc + 4
 
 	for context.State == ContextState_RUNNING && context.Regs().Npc != 0xffffffff {
@@ -199,7 +199,7 @@ func (kernel *Kernel) MustProcessSignal(context *Context, signal uint32) bool {
 }
 
 func (kernel *Kernel) AdvanceOneCycle() {
-	if kernel.Experiment.CycleAccurateEventQueue().CurrentCycle % 1000 == 0 {
+	if kernel.Experiment.CycleAccurateEventQueue().CurrentCycle%1000 == 0 {
 		kernel.ProcessSystemEvents()
 		kernel.ProcessSignals()
 	}

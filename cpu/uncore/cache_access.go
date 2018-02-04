@@ -12,11 +12,11 @@ type CacheAccess struct {
 
 func NewCacheAccess(cache *EvictableCache, access *MemoryHierarchyAccess, set uint32, way uint32, tag uint32) *CacheAccess {
 	var cacheAccess = &CacheAccess{
-		Cache:cache,
-		Access:access,
-		Set:set,
-		Way:way,
-		Line:cache.Sets[set].Lines[way],
+		Cache:  cache,
+		Access: access,
+		Set:    set,
+		Way:    way,
+		Line:   cache.Sets[set].Lines[way],
 	}
 
 	cacheAccess.HitInCache = cacheAccess.Line.Tag == int32(tag)

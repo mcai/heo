@@ -12,7 +12,7 @@ type EvictableCache struct {
 
 func NewEvictableCache(geometry *mem.Geometry, lineStateProviderFactory func(set uint32, way uint32) CacheLineStateProvider, replacementPolicyType CacheReplacementPolicyType) *EvictableCache {
 	var evictableCache = &EvictableCache{
-		Cache:NewCache(geometry, lineStateProviderFactory),
+		Cache: NewCache(geometry, lineStateProviderFactory),
 	}
 
 	switch replacementPolicyType {

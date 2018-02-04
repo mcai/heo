@@ -21,31 +21,31 @@ const (
 )
 
 type Process struct {
-	Kernel                 *Kernel
+	Kernel *Kernel
 
-	Id                     int32
+	Id int32
 
-	ContextMapping         *ContextMapping
+	ContextMapping *ContextMapping
 
-	Environments           []string
+	Environments []string
 
-	StdInFileDescriptor    int32
-	StdOutFileDescriptor   int32
+	StdInFileDescriptor  int32
+	StdOutFileDescriptor int32
 
-	StackBase              uint32
-	StackSize              uint32
-	TextSize               uint32
-	EnvironmentBase        uint32
-	HeapTop                uint32
-	DataTop                uint32
-	ProgramEntry           uint32
+	StackBase       uint32
+	StackSize       uint32
+	TextSize        uint32
+	EnvironmentBase uint32
+	HeapTop         uint32
+	DataTop         uint32
+	ProgramEntry    uint32
 
-	LittleEndian           bool
+	LittleEndian bool
 
-	memory                 *mem.PagedMemory
-	speculativeMemory      *mem.PagedMemory
+	memory            *mem.PagedMemory
+	speculativeMemory *mem.PagedMemory
 
-	Speculative            bool
+	Speculative bool
 
 	pcToMachInsts          map[uint32]MachInst
 	machInstsToStaticInsts map[MachInst]*StaticInst
@@ -53,16 +53,16 @@ type Process struct {
 
 func NewProcess(kernel *Kernel, contextMapping *ContextMapping) *Process {
 	var process = &Process{
-		Kernel:kernel,
+		Kernel: kernel,
 
-		Id:kernel.CurrentProcessId,
+		Id: kernel.CurrentProcessId,
 
-		ContextMapping:contextMapping,
+		ContextMapping: contextMapping,
 
-		StdInFileDescriptor:0,
-		StdOutFileDescriptor:1,
+		StdInFileDescriptor:  0,
+		StdOutFileDescriptor: 1,
 
-		memory:mem.NewPagedMemory(false),
+		memory: mem.NewPagedMemory(false),
 	}
 
 	kernel.CurrentProcessId++
@@ -78,7 +78,7 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 	process.pcToMachInsts = make(map[uint32]MachInst)
 	process.machInstsToStaticInsts = make(map[MachInst]*StaticInst)
 
-	var cmdArgs = strings.Split(contextMapping.Executable + " " + contextMapping.Arguments, " ")
+	var cmdArgs = strings.Split(contextMapping.Executable+" "+contextMapping.Arguments, " ")
 
 	var elfFileName = cmdArgs[0]
 
@@ -90,13 +90,13 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 		}
 
 		if sectionHeader.HeaderType == elf.SHT_PROGBITS || sectionHeader.HeaderType == elf.SHT_NOBITS {
-			if sectionHeader.Size > 0 && (sectionHeader.Flags & uint32(elf.SHF_ALLOC)) != 0 {
+			if sectionHeader.Size > 0 && (sectionHeader.Flags&uint32(elf.SHF_ALLOC)) != 0 {
 				if sectionHeader.HeaderType == elf.SHT_NOBITS {
 					process.memory.Zero(sectionHeader.Address, sectionHeader.Size)
 				} else {
 					process.memory.WriteBlockAt(sectionHeader.Address, sectionHeader.Size, sectionHeader.ReadContent(elfFile))
 
-					if sectionHeader.Flags & uint32(elf.SHF_EXECINSTR) != 0 {
+					if sectionHeader.Flags&uint32(elf.SHF_EXECINSTR) != 0 {
 						for i := uint32(0); i < sectionHeader.Size; i += 4 {
 							var pc = sectionHeader.Address + i
 							process.predecode(pc)
@@ -105,7 +105,7 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 				}
 
 				if sectionHeader.Address >= DATA_BASE {
-					process.DataTop = uint32(math.Max(float64(process.DataTop), float64(sectionHeader.Address + sectionHeader.Size - 1)))
+					process.DataTop = uint32(math.Max(float64(process.DataTop), float64(sectionHeader.Address+sectionHeader.Size-1)))
 				}
 			}
 		}
@@ -122,7 +122,7 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 	process.StackSize = MAX_ENVIRON
 	process.EnvironmentBase = STACK_BASE - MAX_ENVIRON
 
-	process.memory.Zero(process.StackBase - process.StackSize, process.StackSize)
+	process.memory.Zero(process.StackBase-process.StackSize, process.StackSize)
 
 	var stackPointer = process.EnvironmentBase
 	process.memory.WriteWordAt(stackPointer, uint32(len(cmdArgs)))
@@ -135,18 +135,18 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 	stackPointer += (uint32(len(process.Environments)) + 1) * 4
 
 	for i := uint32(0); i < uint32(len(cmdArgs)); i++ {
-		process.memory.WriteWordAt(argAddr + i * 4, stackPointer)
+		process.memory.WriteWordAt(argAddr+i*4, stackPointer)
 		process.memory.WriteStringAt(stackPointer, cmdArgs[i])
 		stackPointer += uint32(len([]byte(cmdArgs[i] + "\x00")))
 	}
-	process.memory.WriteWordAt(argAddr + uint32(len(cmdArgs)) * 4, 0)
+	process.memory.WriteWordAt(argAddr+uint32(len(cmdArgs))*4, 0)
 
 	for i := uint32(0); i < uint32(len(process.Environments)); i++ {
-		process.memory.WriteWordAt(environmentAddr + i * 4, stackPointer)
+		process.memory.WriteWordAt(environmentAddr+i*4, stackPointer)
 		process.memory.WriteStringAt(stackPointer, process.Environments[i])
 		stackPointer += uint32(len([]byte(process.Environments[i] + "\x00")))
 	}
-	process.memory.WriteWordAt(environmentAddr + uint32(len(process.Environments)) * 4, 0)
+	process.memory.WriteWordAt(environmentAddr+uint32(len(process.Environments))*4, 0)
 
 	if stackPointer > process.StackBase {
 		panic("'environ' overflow, increment MAX_ENVIRON")
@@ -195,7 +195,7 @@ func (process *Process) CloseProgram() {
 
 func (process *Process) decode(machInst MachInst) *StaticInst {
 	for _, mnemonic := range process.Kernel.Experiment.ISA.Mnemonics {
-		if (uint32(machInst) & mnemonic.Mask) == mnemonic.Bits && (mnemonic.ExtraBitField == nil || machInst.ValueOf(mnemonic.ExtraBitField) == mnemonic.ExtraBitFieldValue) {
+		if (uint32(machInst)&mnemonic.Mask) == mnemonic.Bits && (mnemonic.ExtraBitField == nil || machInst.ValueOf(mnemonic.ExtraBitField) == mnemonic.ExtraBitFieldValue) {
 			return NewStaticInst(mnemonic, machInst)
 		}
 	}

@@ -15,11 +15,11 @@ type Router struct {
 
 func NewRouter(node *Node) *Router {
 	var router = &Router{
-		Node:node,
-		InputPorts:make(map[Direction]*InputPort),
-		OutputPorts:make(map[Direction]*OutputPort),
-		NumInflightHeadFlits:make(map[FlitState]int),
-		NumInflightNonHeadFlits:make(map[FlitState]int),
+		Node:                    node,
+		InputPorts:              make(map[Direction]*InputPort),
+		OutputPorts:             make(map[Direction]*OutputPort),
+		NumInflightHeadFlits:    make(map[FlitState]int),
+		NumInflightNonHeadFlits: make(map[FlitState]int),
 	}
 
 	router.InjectionBuffer = NewInjectionBuffer(router)
@@ -199,7 +199,6 @@ func (router *Router) stageRouteComputation() {
 func (router *Router) localPacketInjection() {
 	for {
 		var requestInserted = false;
-
 		for ivc := 0; ivc < router.Node.Network.Config.NumVirtualChannels; ivc++ {
 			if router.InjectionBuffer.Count() == 0 {
 				return
@@ -213,7 +212,7 @@ func (router *Router) localPacketInjection() {
 
 			if numFlits <= inputBuffer.FreeSlots() {
 				for i := 0; i < numFlits; i++ {
-					var flit = NewFlit(packet, i, i == 0, i == numFlits - 1)
+					var flit = NewFlit(packet, i, i == 0, i == numFlits-1)
 					router.InsertFlit(flit, DIRECTION_LOCAL, ivc)
 				}
 

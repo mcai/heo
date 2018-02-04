@@ -139,8 +139,8 @@ type OpenFlagMapping struct {
 
 func NewOpenFlagMapping(targetFlag TargetOpenFlag, hostFlag OpenFlag) *OpenFlagMapping {
 	var openFlagMapping = &OpenFlagMapping{
-		TargetFlag:targetFlag,
-		HostFlag:hostFlag,
+		TargetFlag: targetFlag,
+		HostFlag:   hostFlag,
 	}
 
 	return openFlagMapping
@@ -154,9 +154,9 @@ type SyscallHandler struct {
 
 func NewSyscallHandler(index uint32, name string, run func(context *Context)) *SyscallHandler {
 	var syscallHandler = &SyscallHandler{
-		Index:index,
-		Name:name,
-		Run:run,
+		Index: index,
+		Name:  name,
+		Run:   run,
 	}
 
 	return syscallHandler
@@ -171,7 +171,7 @@ type SyscallEmulation struct {
 
 func NewSyscallEmulation() *SyscallEmulation {
 	var syscallEmulation = &SyscallEmulation{
-		Handlers:make(map[uint32]*SyscallHandler),
+		Handlers:   make(map[uint32]*SyscallHandler),
 		StackLimit: 0x800000,
 	}
 
@@ -518,7 +518,7 @@ func (syscallEmulation *SyscallEmulation) getrlimit_impl(context *Context) {
 	}
 
 	context.Process.Memory().WriteWordAt(prlimit, syscallEmulation.StackLimit)
-	context.Process.Memory().WriteWordAt(prlimit + 4, 0xffffffff)
+	context.Process.Memory().WriteWordAt(prlimit+4, 0xffffffff)
 
 	context.Regs().Gpr[regs.REGISTER_A3] = 0
 	context.Regs().Gpr[regs.REGISTER_V0] = 0
@@ -558,7 +558,7 @@ func (syscallEmulation *SyscallEmulation) clone_impl(context *Context) {
 	var cloneFlags = context.Regs().Gpr[regs.REGISTER_A0]
 	var newSp = context.Regs().Gpr[regs.REGISTER_A1]
 
-	var newContext *Context = NewContextFromParent(context, context.Regs().Clone(), cloneFlags & 0xff)
+	var newContext *Context = NewContextFromParent(context, context.Regs().Clone(), cloneFlags&0xff)
 
 	if !context.Kernel.Map(newContext, func(candidateThreadId int32) bool {
 		return true
@@ -610,7 +610,7 @@ func (syscallEmulation *SyscallEmulation) _llseek_impl(context *Context) {
 }
 
 func (syscallEmulation *SyscallEmulation) _sysctl_impl(context *Context) {
-	var buf = context.Process.Memory().ReadBlockAt(context.Regs().Gpr[regs.REGISTER_A0], 4 * 6)
+	var buf = context.Process.Memory().ReadBlockAt(context.Regs().Gpr[regs.REGISTER_A0], 4*6)
 	var memory = mem.NewSimpleMemory(context.Process.LittleEndian, buf)
 
 	var args = NewSysctlArgs()
@@ -621,7 +621,7 @@ func (syscallEmulation *SyscallEmulation) _sysctl_impl(context *Context) {
 	args.Newval = memory.ReadWord()
 	args.Newlen = memory.ReadWord()
 
-	var buf2 = context.Process.Memory().ReadBlockAt(args.Name, 4 * 10)
+	var buf2 = context.Process.Memory().ReadBlockAt(args.Name, 4*10)
 	var memory2 = mem.NewSimpleMemory(context.Process.LittleEndian, buf2)
 
 	var name = make([]uint32, 10)
@@ -644,7 +644,7 @@ func (syscallEmulation *SyscallEmulation) nanosleep_impl(context *Context) {
 	var sec = context.Process.Memory().ReadWordAt(preq)
 	var nsec = context.Process.Memory().ReadWordAt(preq + 4)
 
-	var total = int64(sec * native.CLOCKS_PER_SEC + nsec / 1e9 * native.CLOCKS_PER_SEC)
+	var total = int64(sec*native.CLOCKS_PER_SEC + nsec/1e9*native.CLOCKS_PER_SEC)
 
 	var e = NewResumeEvent(context)
 	e.TimeCriterion.When = native.Clock(context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle + total)
@@ -682,7 +682,7 @@ func (syscallEmulation *SyscallEmulation) poll_impl(context *Context) {
 		}
 
 		var e = NewPollEvent(context)
-		e.TimeCriterion.When = native.Clock(context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle) + int64(timeout * native.CLOCKS_PER_SEC / 1000)
+		e.TimeCriterion.When = native.Clock(context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle) + int64(timeout*native.CLOCKS_PER_SEC/1000)
 		e.WaitForFileDescriptorCriterion.Buffer = context.Kernel.GetReadBuffer(fd)
 
 		if e.WaitForFileDescriptorCriterion.Buffer == nil {
@@ -704,11 +704,11 @@ func (syscallEmulation *SyscallEmulation) rt_sigaction_impl(context *Context) {
 	var poact = context.Regs().Gpr[regs.REGISTER_A2]
 
 	if poact != 0 {
-		context.Kernel.SignalActions[signum - 1].SaveTo(context.Process.Memory(), poact)
+		context.Kernel.SignalActions[signum-1].SaveTo(context.Process.Memory(), poact)
 	}
 
 	if pact != 0 {
-		context.Kernel.SignalActions[signum - 1].LoadFrom(context.Process.Memory(), pact)
+		context.Kernel.SignalActions[signum-1].LoadFrom(context.Process.Memory(), pact)
 	}
 
 	context.Regs().Gpr[regs.REGISTER_A3] = 0

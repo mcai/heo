@@ -15,11 +15,11 @@ type CacheController struct {
 
 func NewCacheController(memoryHierarchy MemoryHierarchy, name string, deviceType MemoryDeviceType, geometry *mem.Geometry, replacementPolicyType CacheReplacementPolicyType, numReadPorts uint32, numWritePorts uint32, hitLatency uint32) *CacheController {
 	var cacheController = &CacheController{
-		NumReadPorts:numReadPorts,
-		NumWritePorts:numWritePorts,
-		hitLatency:hitLatency,
-		PendingAccesses:make(map[uint32]*MemoryHierarchyAccess),
-		NumPendingAccessesPerType:make(map[MemoryHierarchyAccessType]uint32),
+		NumReadPorts:              numReadPorts,
+		NumWritePorts:             numWritePorts,
+		hitLatency:                hitLatency,
+		PendingAccesses:           make(map[uint32]*MemoryHierarchyAccess),
+		NumPendingAccessesPerType: make(map[MemoryHierarchyAccessType]uint32),
 	}
 
 	cacheController.Cache = NewEvictableCache(

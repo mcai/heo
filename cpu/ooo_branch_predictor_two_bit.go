@@ -26,12 +26,12 @@ type TwoBitBranchPredictor struct {
 
 func NewTwoBitBranchPredictor(thread Thread, branchTargetBufferNumSets uint32, branchTargetBufferAssoc uint32, returnAddressStackSize uint32, size uint32) *TwoBitBranchPredictor {
 	var branchPredictor = &TwoBitBranchPredictor{
-		BaseBranchPredictor:NewBaseBranchPredictor(thread),
+		BaseBranchPredictor: NewBaseBranchPredictor(thread),
 
-		branchTargetBuffer:NewBranchTargetBuffer(branchTargetBufferNumSets, branchTargetBufferAssoc),
-		returnAddressStack:NewReturnAddressStack(returnAddressStackSize),
+		branchTargetBuffer: NewBranchTargetBuffer(branchTargetBufferNumSets, branchTargetBufferAssoc),
+		returnAddressStack: NewReturnAddressStack(returnAddressStackSize),
 
-		size:size,
+		size: size,
 	}
 
 	var flipFlop = uint32(1)

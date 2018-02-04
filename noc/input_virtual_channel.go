@@ -10,9 +10,9 @@ type InputVirtualChannel struct {
 
 func NewInputVirtualChannel(inputPort *InputPort, num int) *InputVirtualChannel {
 	var inputVirtualChannel = &InputVirtualChannel{
-		InputPort:inputPort,
-		Num:num,
-		Route:DIRECTION_UNKNOWN,
+		InputPort: inputPort,
+		Num:       num,
+		Route:     DIRECTION_UNKNOWN,
 	}
 
 	inputVirtualChannel.InputBuffer = NewInputBuffer(inputVirtualChannel)

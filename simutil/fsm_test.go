@@ -18,6 +18,6 @@ func TestFiniteStateMachineFactory(t *testing.T) {
 	var fsm = NewBaseFiniteStateMachine(0)
 
 	fsmFactory.FireTransition(fsm, "hello", map[string]string{
-		"a":"testA",
+		"a": "testA",
 	})
 }

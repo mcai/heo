@@ -395,14 +395,14 @@ func (core *OoOCore) Commit() {
 
 func (core *OoOCore) RemoveFromQueues(entryToRemove GeneralReorderBufferEntry) {
 	var waitingInstructionQueueToReserve []GeneralReorderBufferEntry
-	var readyInstructionQueueToReserve   []GeneralReorderBufferEntry
+	var readyInstructionQueueToReserve []GeneralReorderBufferEntry
 
-	var readyLoadQueueToReserve          []GeneralReorderBufferEntry
+	var readyLoadQueueToReserve []GeneralReorderBufferEntry
 
-	var waitingStoreQueueToReserve       []GeneralReorderBufferEntry
-	var readyStoreQueueToReserve         []GeneralReorderBufferEntry
+	var waitingStoreQueueToReserve []GeneralReorderBufferEntry
+	var readyStoreQueueToReserve []GeneralReorderBufferEntry
 
-	var oooEventQueueToReserve           []GeneralReorderBufferEntry
+	var oooEventQueueToReserve []GeneralReorderBufferEntry
 
 	for _, entry := range core.waitingInstructionQueue {
 		if entry != entryToRemove {

@@ -42,7 +42,7 @@ func (memoryController *MemoryController) ReceiveMemReadRequest(source MemoryDev
 		func() {
 			memoryController.Transfer(
 				source,
-				source.(*DirectoryController).Cache.LineSize() + 8,
+				source.(*DirectoryController).Cache.LineSize()+8,
 				onCompletedCallback,
 			)
 		},

@@ -7,8 +7,8 @@ type VirtualChannelArbiter struct {
 
 func NewVirtualChannelArbiter(outputVirtualChannel *OutputVirtualChannel) *VirtualChannelArbiter {
 	var arbiter = &VirtualChannelArbiter{
-		OutputVirtualChannel:outputVirtualChannel,
-		InputVirtualChannelRing:NewInputVirtualChannelRing(outputVirtualChannel.OutputPort.Router),
+		OutputVirtualChannel:    outputVirtualChannel,
+		InputVirtualChannelRing: NewInputVirtualChannelRing(outputVirtualChannel.OutputPort.Router),
 	}
 
 	return arbiter

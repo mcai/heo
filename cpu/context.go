@@ -7,29 +7,29 @@ import (
 )
 
 const (
-	ContextState_IDLE = ContextState("IDLE")
-	ContextState_BLOCKED = ContextState("BLOCKED")
-	ContextState_RUNNING = ContextState("RUNNING")
+	ContextState_IDLE     = ContextState("IDLE")
+	ContextState_BLOCKED  = ContextState("BLOCKED")
+	ContextState_RUNNING  = ContextState("RUNNING")
 	ContextState_FINISHED = ContextState("FINISHED")
 )
 
 type ContextState string
 
 type Context struct {
-	Id               int32
-	State            ContextState
+	Id    int32
+	State ContextState
 
-	SignalMasks      *SignalMasks
-	SignalFinish     uint32
+	SignalMasks  *SignalMasks
+	SignalFinish uint32
 
-	regs             *regs.ArchitecturalRegisterFile
-	speculativeRegs  *regs.ArchitecturalRegisterFile
+	regs            *regs.ArchitecturalRegisterFile
+	speculativeRegs *regs.ArchitecturalRegisterFile
 
-	Speculative      bool
+	Speculative bool
 
-	Kernel           *Kernel
+	Kernel *Kernel
 
-	ThreadId         int32
+	ThreadId int32
 
 	UserId           int32
 	EffectiveUserId  int32
@@ -37,27 +37,27 @@ type Context struct {
 	EffectiveGroupId int32
 	ProcessId        int32
 
-	Process          *Process
+	Process *Process
 
-	Parent           *Context
+	Parent *Context
 }
 
 func NewContext(kernel *Kernel, process *Process, parent *Context, regs *regs.ArchitecturalRegisterFile, signalFinish uint32) *Context {
 	var context = &Context{
-		Kernel:kernel,
-		Parent:parent,
-		regs:regs,
-		SignalFinish:signalFinish,
-		Id: kernel.CurrentContextId,
-		ThreadId:-1,
-		UserId:native.Getuid(),
-		EffectiveUserId:native.Geteuid(),
-		GroupId:native.Getgid(),
-		EffectiveGroupId:native.Getegid(),
-		ProcessId:kernel.CurrentPid,
-		SignalMasks:NewSignalMasks(),
-		State:ContextState_IDLE,
-		Process:process,
+		Kernel:           kernel,
+		Parent:           parent,
+		regs:             regs,
+		SignalFinish:     signalFinish,
+		Id:               kernel.CurrentContextId,
+		ThreadId:         -1,
+		UserId:           native.Getuid(),
+		EffectiveUserId:  native.Geteuid(),
+		GroupId:          native.Getgid(),
+		EffectiveGroupId: native.Getegid(),
+		ProcessId:        kernel.CurrentPid,
+		SignalMasks:      NewSignalMasks(),
+		State:            ContextState_IDLE,
+		Process:          process,
 	}
 
 	kernel.CurrentContextId++
@@ -172,9 +172,9 @@ type ContextMapping struct {
 
 func NewContextMapping(threadId int32, executable string, arguments string) *ContextMapping {
 	var contextMapping = &ContextMapping{
-		ThreadId:threadId,
-		Executable:executable,
-		Arguments:arguments,
+		ThreadId:   threadId,
+		Executable: executable,
+		Arguments:  arguments,
 	}
 
 	return contextMapping

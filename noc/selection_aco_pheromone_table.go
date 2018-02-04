@@ -7,8 +7,8 @@ type PheromoneTable struct {
 
 func NewPheromoneTable(node *Node) *PheromoneTable {
 	var pheromoneTable = &PheromoneTable{
-		Node:node,
-		Pheromones:make(map[int](map[Direction]*Pheromone)),
+		Node:       node,
+		Pheromones: make(map[int](map[Direction]*Pheromone)),
 	}
 
 	return pheromoneTable
