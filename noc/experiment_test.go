@@ -10,13 +10,13 @@ func TestNoCExperiment(t *testing.T) {
 
 	var config = NewNoCConfig("test_results/synthetic/aco", numNodes, maxCycles, maxPackets, drainPackets)
 
-	config.Routing = ROUTING_ODD_EVEN
-	config.Selection = SELECTION_ACO
+	config.Routing = RoutingOddEven
+	config.Selection = SelectionAco
 
-	config.DataPacketTraffic = TRAFFIC_TRANSPOSE1
+	config.DataPacketTraffic = TrafficTranspose1
 	config.DataPacketInjectionRate = 0.06
 
-	config.AntPacketTraffic = TRAFFIC_UNIFORM
+	config.AntPacketTraffic = TrafficUniform
 	config.AntPacketInjectionRate = 0.0002
 
 	config.AcoSelectionAlpha = 0.45

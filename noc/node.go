@@ -42,26 +42,26 @@ func NewNode(network *Network, id int) *Node {
 	node.Router = NewRouter(node)
 
 	switch routing := network.Config.Routing; routing {
-	case ROUTING_XY:
+	case RoutingXY:
 		node.RoutingAlgorithm = NewXYRoutingAlgorithm(node)
-	case ROUTING_NEGATIVE_FIRST:
+	case RoutingNegativeFirst:
 		node.RoutingAlgorithm = NewNegativeFirstRoutingAlgorithm(node)
-	case ROUTING_WEST_FIRST:
+	case RoutingWestFirst:
 		node.RoutingAlgorithm = NewWestFirstRoutingAlgorithm(node)
-	case ROUTING_NORTH_LAST:
+	case RoutingNorthLast:
 		node.RoutingAlgorithm = NewNorthLastRoutingAlgorithm(node)
-	case ROUTING_ODD_EVEN:
+	case RoutingOddEven:
 		node.RoutingAlgorithm = NewOddEvenRoutingAlgorithm(node)
 	default:
 		panic(fmt.Sprintf("Not supported: %s", routing))
 	}
 
 	switch selection := network.Config.Selection; selection {
-	case SELECTION_RANDOM:
+	case SelectionRandom:
 		node.SelectionAlgorithm = NewRandomSelectionAlgorithm(node)
-	case SELECTION_BUFFER_LEVEL:
+	case SelectionBufferLevel:
 		node.SelectionAlgorithm = NewBufferLevelSelectionAlgorithm(node)
-	case SELECTION_ACO:
+	case SelectionAco:
 		node.SelectionAlgorithm = NewACOSelectionAlgorithm(node)
 	default:
 		panic(fmt.Sprintf("Not supported: %s", selection))

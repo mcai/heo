@@ -62,17 +62,17 @@ func NewNetwork(driver NetworkDriver, config *NoCConfig) *Network {
 		network.Nodes = append(network.Nodes, node)
 	}
 	switch selection := config.Selection; selection {
-	case SELECTION_ACO:
+	case SelectionAco:
 		switch antPacketTraffic := config.AntPacketTraffic; antPacketTraffic {
-		case TRAFFIC_UNIFORM:
+		case TrafficUniform:
 			network.AddTrafficGenerator(NewUniformTrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))
-		case TRAFFIC_TRANSPOSE1:
+		case TrafficTranspose1:
 			network.AddTrafficGenerator(NewTranspose1TrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))
-		case TRAFFIC_TRANSPOSE2:
+		case TrafficTranspose2:
 			network.AddTrafficGenerator(NewTranspose2TrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))

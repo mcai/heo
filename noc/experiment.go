@@ -25,25 +25,25 @@ func NewNoCExperiment(config *NoCConfig) *NoCExperiment {
 	experiment.Network = NewNetwork(experiment, config)
 
 	switch dataPacketTraffic := config.DataPacketTraffic; dataPacketTraffic {
-	case TRAFFIC_UNIFORM:
+	case TrafficUniform:
 		experiment.Network.AddTrafficGenerator(
 			NewUniformTrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
-	case TRAFFIC_TRANSPOSE1:
+	case TrafficTranspose1:
 		experiment.Network.AddTrafficGenerator(
 			NewTranspose1TrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
-	case TRAFFIC_TRANSPOSE2:
+	case TrafficTranspose2:
 		experiment.Network.AddTrafficGenerator(
 			NewTranspose2TrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
-	case TRAFFIC_TRACE:
+	case TrafficTrace:
 		experiment.Network.AddTrafficGenerator(
 			NewTraceTrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, config.TraceFileName),
 		)

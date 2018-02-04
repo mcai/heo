@@ -5,49 +5,49 @@ import "github.com/mcai/heo/simutil"
 type TrafficType string
 
 const (
-	TRAFFIC_UNIFORM = TrafficType("Uniform")
-	TRAFFIC_TRANSPOSE1 = TrafficType("Transpose1")
-	TRAFFIC_TRANSPOSE2 = TrafficType("Transpose2")
-	TRAFFIC_TRACE = TrafficType("Trace")
+	TrafficUniform    = TrafficType("Uniform")
+	TrafficTranspose1 = TrafficType("Transpose1")
+	TrafficTranspose2 = TrafficType("Transpose2")
+	TrafficTrace      = TrafficType("Trace")
 )
 
 var TRAFFICS = []TrafficType{
-	TRAFFIC_UNIFORM,
-	TRAFFIC_TRANSPOSE1,
-	TRAFFIC_TRANSPOSE2,
-	TRAFFIC_TRACE,
+	TrafficUniform,
+	TrafficTranspose1,
+	TrafficTranspose2,
+	TrafficTrace,
 }
 
 type RoutingType string
 
 const (
-	ROUTING_XY = RoutingType("XY")
-	ROUTING_NEGATIVE_FIRST = RoutingType("NegativeFirst")
-	ROUTING_WEST_FIRST = RoutingType("WestFirst")
-	ROUTING_NORTH_LAST = RoutingType("NorthLast")
-	ROUTING_ODD_EVEN = RoutingType("OddEven")
+	RoutingXY            = RoutingType("XY")
+	RoutingNegativeFirst = RoutingType("NegativeFirst")
+	RoutingWestFirst     = RoutingType("WestFirst")
+	RoutingNorthLast     = RoutingType("NorthLast")
+	RoutingOddEven       = RoutingType("OddEven")
 )
 
 var ROUTINGS = []RoutingType{
-	ROUTING_XY,
-	ROUTING_NEGATIVE_FIRST,
-	ROUTING_WEST_FIRST,
-	ROUTING_NORTH_LAST,
-	ROUTING_ODD_EVEN,
+	RoutingXY,
+	RoutingNegativeFirst,
+	RoutingWestFirst,
+	RoutingNorthLast,
+	RoutingOddEven,
 }
 
 type SelectionType string
 
 const (
-	SELECTION_RANDOM = SelectionType("Random")
-	SELECTION_BUFFER_LEVEL = SelectionType("BufferLevel")
-	SELECTION_ACO = SelectionType("ACO")
+	SelectionRandom      = SelectionType("Random")
+	SelectionBufferLevel = SelectionType("BufferLevel")
+	SelectionAco         = SelectionType("ACO")
 )
 
 var SELECTIONS = []SelectionType{
-	SELECTION_RANDOM,
-	SELECTION_BUFFER_LEVEL,
-	SELECTION_ACO,
+	SelectionRandom,
+	SelectionBufferLevel,
+	SelectionAco,
 }
 
 type NoCConfig struct {
@@ -100,9 +100,9 @@ func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, maxPack
 
 		DrainPackets:drainPackets,
 
-		Routing:ROUTING_ODD_EVEN,
+		Routing: RoutingOddEven,
 
-		Selection:SELECTION_BUFFER_LEVEL,
+		Selection: SelectionBufferLevel,
 
 		MaxInjectionBufferSize:32,
 
@@ -113,13 +113,13 @@ func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, maxPack
 		LinkWidth:4,
 		LinkDelay:1,
 
-		DataPacketTraffic:TRAFFIC_TRANSPOSE1,
-		DataPacketInjectionRate:0.01,
-		DataPacketSize:16,
+		DataPacketTraffic:       TrafficTranspose1,
+		DataPacketInjectionRate: 0.01,
+		DataPacketSize:          16,
 
-		AntPacketTraffic:TRAFFIC_UNIFORM,
-		AntPacketInjectionRate:0.01,
-		AntPacketSize:4,
+		AntPacketTraffic:       TrafficUniform,
+		AntPacketInjectionRate: 0.01,
+		AntPacketSize:          4,
 
 		AcoSelectionAlpha:0.5,
 		ReinforcementFactor:0.05,
