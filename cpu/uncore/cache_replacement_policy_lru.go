@@ -24,19 +24,6 @@ func NewLRUPolicy(cache *EvictableCache) *LRUPolicy {
 	return lruPolicy
 }
 
-func (lruPolicy *LRUPolicy) SetStackPosition(set uint32, way uint32, stackPosition uint32) {
-	var oldStackPosition = lruPolicy.GetStackPositionOfWay(set, way)
-
-	var stackEntry = lruPolicy.lruStack.Sets[set].Lines[oldStackPosition]
-
-	var lines = lruPolicy.lruStack.Sets[set].Lines
-
-	lines = append(lines[:oldStackPosition], lines[oldStackPosition+1:]...)
-	lines = append(lines, stackEntry)
-
-	lruPolicy.lruStack.Sets[set].Lines = lines
-}
-
 func (lruPolicy *LRUPolicy) GetStackPositionOfWay(set uint32, way uint32) uint32 {
 	for i, lruStackEntry := range lruPolicy.lruStack.Sets[set].Lines {
 		if lruStackEntry.State().(uint32) == way {
@@ -52,15 +39,16 @@ func (lruPolicy *LRUPolicy) GetWayInStackPosition(set uint32, stackPosition uint
 }
 
 func (lruPolicy *LRUPolicy) SetMRU(set uint32, way uint32) {
-	lruPolicy.SetStackPosition(set, way, 0)
-}
+	var oldStackPosition = lruPolicy.GetStackPositionOfWay(set, way)
 
-func (lruPolicy *LRUPolicy) SetLRU(set uint32, way uint32) {
-	lruPolicy.SetStackPosition(set, way, lruPolicy.cache.Assoc()-1)
-}
+	var stackEntry = lruPolicy.lruStack.Sets[set].Lines[oldStackPosition]
 
-func (lruPolicy *LRUPolicy) GetMRU(set uint32) uint32 {
-	return lruPolicy.GetWayInStackPosition(set, 0)
+	var lines = lruPolicy.lruStack.Sets[set].Lines
+
+	lines = append(lines[:oldStackPosition], lines[oldStackPosition+1:]...)
+	lines = append([]*CacheLine{stackEntry}, lines...)
+
+	lruPolicy.lruStack.Sets[set].Lines = lines
 }
 
 func (lruPolicy *LRUPolicy) GetLRU(set uint32) uint32 {
