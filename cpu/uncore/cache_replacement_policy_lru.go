@@ -37,14 +37,6 @@ func (lruPolicy *LRUPolicy) SetStackPosition(set uint32, way uint32, stackPositi
 	lruPolicy.lruStack.Sets[set].Lines = lines
 }
 
-func (lruPolicy *LRUPolicy) SetMRU(set uint32, way uint32) {
-	lruPolicy.SetStackPosition(set, way, 0)
-}
-
-func (lruPolicy *LRUPolicy) SetLRU(set uint32, way uint32) {
-	lruPolicy.SetStackPosition(set, way, lruPolicy.cache.Assoc()-1)
-}
-
 func (lruPolicy *LRUPolicy) GetStackPositionOfWay(set uint32, way uint32) uint32 {
 	for i, lruStackEntry := range lruPolicy.lruStack.Sets[set].Lines {
 		if lruStackEntry.State().(uint32) == way {
@@ -57,6 +49,14 @@ func (lruPolicy *LRUPolicy) GetStackPositionOfWay(set uint32, way uint32) uint32
 
 func (lruPolicy *LRUPolicy) GetWayInStackPosition(set uint32, stackPosition uint32) uint32 {
 	return lruPolicy.lruStack.Sets[set].Lines[stackPosition].State().(uint32)
+}
+
+func (lruPolicy *LRUPolicy) SetMRU(set uint32, way uint32) {
+	lruPolicy.SetStackPosition(set, way, 0)
+}
+
+func (lruPolicy *LRUPolicy) SetLRU(set uint32, way uint32) {
+	lruPolicy.SetStackPosition(set, way, lruPolicy.cache.Assoc()-1)
 }
 
 func (lruPolicy *LRUPolicy) GetMRU(set uint32) uint32 {
