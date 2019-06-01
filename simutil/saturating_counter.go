@@ -14,6 +14,7 @@ func NewSaturatingCounter(minValue uint32, threshold uint32, maxValue uint32, in
 		threshold:    threshold,
 		maxValue:     maxValue,
 		initialValue: initialValue,
+		value:        initialValue,
 	}
 
 	return saturatingCounter
