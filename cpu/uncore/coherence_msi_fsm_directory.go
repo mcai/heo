@@ -351,7 +351,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) FireServiceNonblockingRequestE
 		),
 	)
 
-	fsm.DirectoryController.UpdateStats(access.AccessType.IsRead(), hitInCache)
+	fsm.DirectoryController.UpdateStats(access.AccessType.IsWrite(), hitInCache)
 }
 
 func (fsm *DirectoryControllerFiniteStateMachine) FireCacheLineInsertEvent(access *MemoryHierarchyAccess, tag uint32, victimTag int32) {
