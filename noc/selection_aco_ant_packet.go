@@ -28,9 +28,7 @@ func (packet *AntPacket) HandleDestArrived(inputVirtualChannel *InputVirtualChan
 
 	inputVirtualChannel.InputPort.Router.Node.Network.LogPacketTransmitted(packet)
 
-	if packet.OnCompletedCallback != nil {
-		packet.OnCompletedCallback()
-	}
+	packet.OnCompletedCallback()
 }
 
 func (packet *AntPacket) DoRouteComputation(inputVirtualChannel *InputVirtualChannel) Direction {

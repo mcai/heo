@@ -31,6 +31,6 @@ func (direction Direction) GetReflexDirection() Direction {
 	case DIRECTION_WEST:
 		return DIRECTION_EAST
 	default:
-		panic(fmt.Sprintf("Cannot get the reflex direction of %d", direction))
+		panic(fmt.Sprintf("Cannot get the reflex direction of %s", direction))
 	}
 }
