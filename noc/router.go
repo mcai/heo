@@ -67,7 +67,7 @@ func (router *Router) stageLinkTraversal() {
 						var ip = outputPort.Direction.GetReflexDirection()
 						var ivc = outputVirtualChannel.Num
 
-						router.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
+						router.Node.Network.Driver().CycleAccurateEventQueue().Schedule(func() {
 							router.NextHopArrived(flit, nextHop, ip, ivc)
 						}, router.Node.Network.Config().LinkDelay)
 					}
@@ -100,7 +100,7 @@ func (router *Router) NextHopArrived(flit *Flit, nextHop int, ip Direction, ivc 
 	if !inputBuffer.Full() {
 		router.Node.Network.Nodes[nextHop].Router.InsertFlit(flit, ip, ivc)
 	} else {
-		router.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
+		router.Node.Network.Driver().CycleAccurateEventQueue().Schedule(func() {
 			router.NextHopArrived(flit, nextHop, ip, ivc)
 		}, 1)
 	}

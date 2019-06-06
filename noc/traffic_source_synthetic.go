@@ -31,7 +31,7 @@ func (source *BaseSyntheticTrafficSource) AdvanceOneCycle(dest func(src int) int
 			var dest = dest(src)
 
 			if src != dest {
-				source.Network.driver.CycleAccurateEventQueue().Schedule(func() {
+				source.Network.Driver().CycleAccurateEventQueue().Schedule(func() {
 					source.Network.Receive(source.NewPacket(src, dest))
 				}, 1)
 			}

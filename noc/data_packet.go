@@ -95,7 +95,7 @@ func (packet *DataPacket) HasPayload() bool {
 func (packet *DataPacket) HandleDestArrived(inputVirtualChannel *InputVirtualChannel) {
 	packet.Memorize(inputVirtualChannel.InputPort.Router.Node)
 
-	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.driver.CycleAccurateEventQueue().CurrentCycle
+	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.Driver().CycleAccurateEventQueue().CurrentCycle
 
 	inputVirtualChannel.InputPort.Router.Node.Network.LogPacketTransmitted(packet)
 

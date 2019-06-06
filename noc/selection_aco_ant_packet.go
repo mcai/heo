@@ -24,7 +24,7 @@ func (packet *AntPacket) HandleDestArrived(inputVirtualChannel *InputVirtualChan
 		selectionAlgorithm.UpdatePheromoneTable(packet, inputVirtualChannel)
 	}
 
-	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.driver.CycleAccurateEventQueue().CurrentCycle
+	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.Driver().CycleAccurateEventQueue().CurrentCycle
 
 	inputVirtualChannel.InputPort.Router.Node.Network.LogPacketTransmitted(packet)
 

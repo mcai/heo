@@ -106,7 +106,7 @@ func (source *TraceFileBasedTrafficSource) AdvanceOneCycle() {
 
 			var packet = NewDataPacket(source.Network, src, dest, source.Network.Config().DataPacketSize, true, func() {})
 
-			source.Network.driver.CycleAccurateEventQueue().Schedule(func() {
+			source.Network.Driver().CycleAccurateEventQueue().Schedule(func() {
 				source.Network.Receive(packet)
 			}, 1)
 		}

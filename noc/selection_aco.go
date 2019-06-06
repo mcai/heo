@@ -30,7 +30,7 @@ func (selectionAlgorithm *ACOSelectionAlgorithm) CreateAndSendBackwardAntPacket(
 
 	newPacket.memory = packet.memory
 
-	selectionAlgorithm.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
+	selectionAlgorithm.Node.Network.Driver().CycleAccurateEventQueue().Schedule(func() {
 		selectionAlgorithm.Node.Network.Receive(newPacket)
 	}, 1)
 }

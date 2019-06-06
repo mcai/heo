@@ -35,7 +35,7 @@ func (fixedLatencyNetwork *FixedLatencyNetwork) Config() *NoCConfig {
 func (fixedLatencyNetwork *FixedLatencyNetwork) Receive(packet Packet) bool {
 	var fixedLatency = 20
 
-	fixedLatencyNetwork.driver.CycleAccurateEventQueue().Schedule(func() {
+	fixedLatencyNetwork.Driver().CycleAccurateEventQueue().Schedule(func() {
 		packet.OnCompletedCallback()()
 	}, fixedLatency)
 

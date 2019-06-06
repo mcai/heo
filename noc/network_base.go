@@ -116,14 +116,14 @@ func (baseNetwork *BaseNetwork) TrafficSources() []TrafficSource {
 func (baseNetwork *BaseNetwork) AddTrafficSource(trafficSource TrafficSource) {
 	baseNetwork.trafficSources = append(baseNetwork.trafficSources, trafficSource)
 
-	baseNetwork.driver.CycleAccurateEventQueue().AddPerCycleEvent(func() {
+	baseNetwork.Driver().CycleAccurateEventQueue().AddPerCycleEvent(func() {
 		trafficSource.AdvanceOneCycle()
 	})
 }
 
 func (baseNetwork *BaseNetwork) Receive(packet Packet) bool {
 	if !baseNetwork.Nodes[packet.Src()].Router.InjectPacket(packet) {
-		baseNetwork.driver.CycleAccurateEventQueue().Schedule(func() {
+		baseNetwork.Driver().CycleAccurateEventQueue().Schedule(func() {
 			baseNetwork.Receive(packet)
 		}, 1)
 		return false
@@ -187,11 +187,11 @@ func (baseNetwork *BaseNetwork) LogFlitPerStateDelay(state FlitState, delay int)
 }
 
 func (baseNetwork *BaseNetwork) Throughput() float64 {
-	if baseNetwork.driver.CycleAccurateEventQueue().CurrentCycle == 0 {
+	if baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle == 0 {
 		return float64(0)
 	}
 
-	return float64(baseNetwork.NumPacketsTransmitted) / float64(baseNetwork.driver.CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
+	return float64(baseNetwork.NumPacketsTransmitted) / float64(baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
 }
 
 func (baseNetwork *BaseNetwork) AveragePacketDelay() float64 {
@@ -211,11 +211,11 @@ func (baseNetwork *BaseNetwork) AveragePacketHops() float64 {
 }
 
 func (baseNetwork *BaseNetwork) PayloadThroughput() float64 {
-	if baseNetwork.driver.CycleAccurateEventQueue().CurrentCycle == 0 {
+	if baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle == 0 {
 		return float64(0)
 	}
 
-	return float64(baseNetwork.NumPayloadPacketsTransmitted) / float64(baseNetwork.driver.CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
+	return float64(baseNetwork.NumPayloadPacketsTransmitted) / float64(baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
 }
 
 func (baseNetwork *BaseNetwork) AveragePayloadPacketDelay() float64 {
