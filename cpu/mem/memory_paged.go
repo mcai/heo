@@ -1,8 +1,8 @@
 package mem
 
 import (
-	"math"
 	"encoding/binary"
+	"math"
 )
 
 type MemoryPage struct {

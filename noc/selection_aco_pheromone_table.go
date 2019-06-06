@@ -2,13 +2,13 @@ package noc
 
 type PheromoneTable struct {
 	Node       *Node
-	Pheromones map[int](map[Direction]*Pheromone)
+	Pheromones map[int]map[Direction]*Pheromone
 }
 
 func NewPheromoneTable(node *Node) *PheromoneTable {
 	var pheromoneTable = &PheromoneTable{
 		Node:       node,
-		Pheromones: make(map[int](map[Direction]*Pheromone)),
+		Pheromones: make(map[int]map[Direction]*Pheromone),
 	}
 
 	return pheromoneTable

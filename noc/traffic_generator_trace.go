@@ -1,12 +1,12 @@
 package noc
 
 import (
-	"os"
-	"log"
 	"bufio"
-	"strings"
-	"strconv"
+	"log"
 	"math/rand"
+	"os"
+	"strconv"
+	"strings"
 )
 
 type TraceFileLine struct {

@@ -1,9 +1,9 @@
 package uncore
 
 import (
-	"testing"
 	"fmt"
 	"github.com/mcai/heo/cpu/uncore/uncoreutil"
+	"testing"
 )
 
 func TestMemoryHierarchy(t *testing.T) {

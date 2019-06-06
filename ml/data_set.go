@@ -1,13 +1,13 @@
 package ml
 
 import (
-	"os"
-	"log"
 	"bufio"
-	"strings"
-	"strconv"
+	"log"
 	"math"
 	"math/rand"
+	"os"
+	"strconv"
+	"strings"
 )
 
 type DataSet [][]string

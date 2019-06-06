@@ -1,9 +1,9 @@
 package cpu
 
 import (
-	"github.com/mcai/heo/cpu/regs"
-	"github.com/mcai/heo/cpu/native"
 	"fmt"
+	"github.com/mcai/heo/cpu/native"
+	"github.com/mcai/heo/cpu/regs"
 )
 
 const (

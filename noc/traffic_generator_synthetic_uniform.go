@@ -19,7 +19,7 @@ func (generator *UniformTrafficGenerator) AdvanceOneCycle() {
 		for {
 			var i = rand.Intn(generator.Network.NumNodes)
 			if i != src {
-				return i;
+				return i
 			}
 		}
 	})

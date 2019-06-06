@@ -1,9 +1,9 @@
 package noc
 
 import (
-	"time"
-	"github.com/mcai/heo/simutil"
 	"fmt"
+	"github.com/mcai/heo/simutil"
+	"time"
 )
 
 type NoCExperiment struct {

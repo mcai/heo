@@ -1,8 +1,8 @@
 package ml
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestFromCSV(t *testing.T) {

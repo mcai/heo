@@ -1,8 +1,8 @@
 package regs
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestFloatingPointRegisters(t *testing.T) {

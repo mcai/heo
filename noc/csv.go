@@ -1,10 +1,10 @@
 package noc
 
 import (
-	"fmt"
 	"encoding/csv"
-	"os"
+	"fmt"
 	"github.com/mcai/heo/simutil"
+	"os"
 )
 
 type CSVField struct {

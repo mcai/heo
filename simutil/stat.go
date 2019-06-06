@@ -1,8 +1,8 @@
 package simutil
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 )
 
 const STATS_JSON_FILE_NAME = "stats.json"

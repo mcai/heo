@@ -1,13 +1,13 @@
 package cpu
 
 import (
-	"syscall"
-	"github.com/mcai/heo/cpu/mem"
-	"strings"
-	"github.com/mcai/heo/cpu/elf"
-	"math"
-	"github.com/mcai/heo/cpu/cpuutil"
 	"fmt"
+	"github.com/mcai/heo/cpu/cpuutil"
+	"github.com/mcai/heo/cpu/elf"
+	"github.com/mcai/heo/cpu/mem"
+	"math"
+	"strings"
+	"syscall"
 )
 
 const (

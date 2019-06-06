@@ -1,10 +1,10 @@
 package uncore
 
 import (
-	"testing"
+	"fmt"
 	"github.com/mcai/heo/cpu/mem"
 	"github.com/mcai/heo/cpu/uncore/uncoreutil"
-	"fmt"
+	"testing"
 )
 
 func TestCache(t *testing.T) {

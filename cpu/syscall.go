@@ -2,10 +2,10 @@ package cpu
 
 import (
 	"fmt"
-	"math"
-	"github.com/mcai/heo/cpu/regs"
-	"github.com/mcai/heo/cpu/native"
 	"github.com/mcai/heo/cpu/mem"
+	"github.com/mcai/heo/cpu/native"
+	"github.com/mcai/heo/cpu/regs"
+	"math"
 )
 
 type ErrNo uint32
@@ -558,7 +558,7 @@ func (syscallEmulation *SyscallEmulation) clone_impl(context *Context) {
 	var cloneFlags = context.Regs().Gpr[regs.REGISTER_A0]
 	var newSp = context.Regs().Gpr[regs.REGISTER_A1]
 
-	var newContext *Context = NewContextFromParent(context, context.Regs().Clone(), cloneFlags&0xff)
+	var newContext = NewContextFromParent(context, context.Regs().Clone(), cloneFlags&0xff)
 
 	if !context.Kernel.Map(newContext, func(candidateThreadId int32) bool {
 		return true

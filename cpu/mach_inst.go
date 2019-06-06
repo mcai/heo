@@ -3,9 +3,9 @@ package cpu
 import (
 	"bytes"
 	"fmt"
-	"strings"
-	"github.com/mcai/heo/cpu/regs"
 	"github.com/mcai/heo/cpu/cpuutil"
+	"github.com/mcai/heo/cpu/regs"
+	"strings"
 )
 
 const (
@@ -228,40 +228,40 @@ func Disassemble(pc uint32, mnemonicName string, machInst MachInst) string {
 	case MachInstType_J:
 		buf.WriteString(fmt.Sprintf("%x", target))
 	case MachInstType_I:
-		if (machInst.IsOneOpBranch()) {
+		if machInst.IsOneOpBranch() {
 			buf.WriteString(fmt.Sprintf("$%s, %d", regs.GPR_NAMES[rs], imm))
-		} else if (machInst.IsLoadStore()) {
+		} else if machInst.IsLoadStore() {
 			buf.WriteString(fmt.Sprintf("$%s, %d($%s)", regs.GPR_NAMES[rt], imm, regs.GPR_NAMES[rs]))
-		} else if (machInst.IsFPLoadStore()) {
+		} else if machInst.IsFPLoadStore() {
 			buf.WriteString(fmt.Sprintf("$f%d, %d($%s)", ft, imm, regs.GPR_NAMES[rs]))
 		} else {
 			buf.WriteString(fmt.Sprintf("$%s, $%s, %d", regs.GPR_NAMES[rt], regs.GPR_NAMES[rs], imm))
 		}
 	case MachInstType_F:
-		if (machInst.IsCVT()) {
+		if machInst.IsCVT() {
 			buf.WriteString(fmt.Sprintf("$f%d, $f%d", fd, fs))
-		} else if (machInst.IsCompare()) {
+		} else if machInst.IsCompare() {
 			buf.WriteString(fmt.Sprintf("%d, $f%d, $f%d", fd>>2, fs, ft))
-		} else if (machInst.IsFpBranch()) {
+		} else if machInst.IsFpBranch() {
 			buf.WriteString(fmt.Sprintf("%d, %d", fd>>2, imm))
-		} else if (machInst.IsGprFpMove()) {
+		} else if machInst.IsGprFpMove() {
 			buf.WriteString(fmt.Sprintf("$%s, $f%d", regs.GPR_NAMES[rt], fs))
-		} else if (machInst.IsGprFcrMove()) {
+		} else if machInst.IsGprFcrMove() {
 			buf.WriteString(fmt.Sprintf("$%s, $%d", regs.GPR_NAMES[rt], fs))
 		} else {
 			buf.WriteString(fmt.Sprintf("$f%d, $f%d, $f%d", fd, fs, ft))
 		}
 	case MachInstType_R:
-		if (!machInst.IsSyscall()) {
-			if (machInst.IsShift()) {
+		if !machInst.IsSyscall() {
+			if machInst.IsShift() {
 				buf.WriteString(fmt.Sprintf("$%s, $%s, %d", regs.GPR_NAMES[rd], regs.GPR_NAMES[rt], shift))
-			} else if (machInst.IsROneOp()) {
+			} else if machInst.IsROneOp() {
 				buf.WriteString(fmt.Sprintf("$%s", regs.GPR_NAMES[rs]))
-			} else if (machInst.IsRTwoOp()) {
+			} else if machInst.IsRTwoOp() {
 				buf.WriteString(fmt.Sprintf("$%s, $%s", regs.GPR_NAMES[rs], regs.GPR_NAMES[rt]))
-			} else if (machInst.IsRMt()) {
+			} else if machInst.IsRMt() {
 				buf.WriteString(fmt.Sprintf("$%s", regs.GPR_NAMES[rs]))
-			} else if (machInst.IsRMf()) {
+			} else if machInst.IsRMf() {
 				buf.WriteString(fmt.Sprintf("$%s", regs.GPR_NAMES[rd]))
 			} else {
 				buf.WriteString(fmt.Sprintf("$%s, $%s, $%s", regs.GPR_NAMES[rd], regs.GPR_NAMES[rs], regs.GPR_NAMES[rt]))

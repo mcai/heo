@@ -27,7 +27,7 @@ func NewBranchTargetBufferEntry() *BranchTargetBufferEntry {
 type BranchTargetBuffer struct {
 	NumSets uint32
 	Assoc   uint32
-	Entries []([]*BranchTargetBufferEntry)
+	Entries [][]*BranchTargetBufferEntry
 }
 
 func NewBranchTargetBuffer(numSets uint32, assoc uint32) *BranchTargetBuffer {

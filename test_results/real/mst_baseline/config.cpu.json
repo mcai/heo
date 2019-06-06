@@ -1,0 +1,26 @@
+{
+  "OutputDirectory": "../test_results/real/mst_baseline",
+  "ContextMappings": [
+    {
+      "ThreadId": 0,
+      "Executable": "../benchmarks/Olden_Custom1/mst/baseline/mst.mips",
+      "Arguments": "100"
+    }
+  ],
+  "MaxFastForwardDynamicInsts": 10000,
+  "MaxMeasurementDynamicInsts": 100000000,
+  "NumCores": 2,
+  "NumThreadsPerCore": 2,
+  "PhysicalRegisterFileSize": 128,
+  "DecodeWidth": 4,
+  "IssueWidth": 4,
+  "CommitWidth": 4,
+  "DecodeBufferSize": 96,
+  "ReorderBufferSize": 96,
+  "LoadStoreQueueSize": 48,
+  "BranchPredictorType": "PERFECT",
+  "TwoBitBranchPredictorSize": 2048,
+  "BranchTargetBufferNumSets": 512,
+  "BranchTargetBufferAssoc": 4,
+  "ReturnAddressStackSize": 8
+}

@@ -1,10 +1,10 @@
 package regs
 
 import (
-	"encoding/binary"
-	"math"
 	"bytes"
+	"encoding/binary"
 	"fmt"
+	"math"
 )
 
 var GPR_NAMES = []string{

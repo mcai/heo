@@ -114,7 +114,7 @@ func (router *Router) stageSwitchTraversal() {
 	for _, outputPort := range router.OutputPorts {
 		for _, inputPort := range router.InputPorts {
 			if outputPort.Direction == inputPort.Direction {
-				continue;
+				continue
 			}
 
 			for _, inputVirtualChannel := range inputPort.VirtualChannels {
@@ -198,7 +198,7 @@ func (router *Router) stageRouteComputation() {
 
 func (router *Router) localPacketInjection() {
 	for {
-		var requestInserted = false;
+		var requestInserted = false
 		for ivc := 0; ivc < router.Node.Network.Config.NumVirtualChannels; ivc++ {
 			if router.InjectionBuffer.Count() == 0 {
 				return
@@ -217,7 +217,7 @@ func (router *Router) localPacketInjection() {
 				}
 
 				router.InjectionBuffer.Pop()
-				requestInserted = true;
+				requestInserted = true
 				break
 			}
 		}

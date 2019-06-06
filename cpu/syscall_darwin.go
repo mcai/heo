@@ -1,9 +1,9 @@
 package cpu
 
 import (
-	"syscall"
-	"github.com/mcai/heo/cpu/regs"
 	"github.com/mcai/heo/cpu/mem"
+	"github.com/mcai/heo/cpu/regs"
+	"syscall"
 )
 
 func (syscallEmulation *SyscallEmulation) fstat64_impl(context *Context) {

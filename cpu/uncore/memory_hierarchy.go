@@ -1,9 +1,9 @@
 package uncore
 
 import (
-	"github.com/mcai/heo/simutil"
 	"fmt"
 	"github.com/mcai/heo/noc"
+	"github.com/mcai/heo/simutil"
 	"math"
 	"reflect"
 )
@@ -61,7 +61,7 @@ type BaseMemoryHierarchy struct {
 	iTlbs []*TranslationLookasideBuffer
 	dTlbs []*TranslationLookasideBuffer
 
-	p2pReorderBuffers map[Controller](map[Controller]*P2PReorderBuffer)
+	p2pReorderBuffers map[Controller]map[Controller]*P2PReorderBuffer
 
 	network          *noc.Network
 	DevicesToNodeIds map[interface{}]uint32
@@ -107,7 +107,7 @@ func NewBaseMemoryHierarchy(driver UncoreDriver, config *UncoreConfig, nocConfig
 		}
 	}
 
-	memoryHierarchy.p2pReorderBuffers = make(map[Controller](map[Controller]*P2PReorderBuffer))
+	memoryHierarchy.p2pReorderBuffers = make(map[Controller]map[Controller]*P2PReorderBuffer)
 
 	var numNodes = uint32(0)
 

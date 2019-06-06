@@ -1,9 +1,9 @@
 package noc
 
 import (
-	"math"
-	"github.com/mcai/heo/simutil"
 	"fmt"
+	"github.com/mcai/heo/simutil"
+	"math"
 )
 
 type NetworkDriver interface {

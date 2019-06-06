@@ -5,15 +5,23 @@ import (
 )
 
 type BlockingEventDispatcher struct {
-	Listeners map[reflect.Type]([](func(event interface{})))
+	Listeners map[reflect.Type][]func(event interface{})
 }
 
 func NewBlockingEventDispatcher() *BlockingEventDispatcher {
 	var dispatcher = &BlockingEventDispatcher{
-		Listeners: make(map[reflect.Type]([](func(event interface{})))),
+		Listeners: make(map[reflect.Type][]func(event interface{})),
 	}
 
 	return dispatcher
+}
+
+func (dispatcher *BlockingEventDispatcher) AddListener(t reflect.Type, listener func(event interface{})) {
+	if _, ok := dispatcher.Listeners[t]; !ok {
+		dispatcher.Listeners[t] = make([]func(event interface{}), 0)
+	}
+
+	dispatcher.Listeners[t] = append(dispatcher.Listeners[t], listener)
 }
 
 func (dispatcher *BlockingEventDispatcher) Dispatch(event interface{}) {
@@ -24,12 +32,4 @@ func (dispatcher *BlockingEventDispatcher) Dispatch(event interface{}) {
 			listener(event)
 		}
 	}
-}
-
-func (dispatcher *BlockingEventDispatcher) AddListener(t reflect.Type, listener func(event interface{})) {
-	if _, ok := dispatcher.Listeners[t]; !ok {
-		dispatcher.Listeners[t] = make([](func(event interface{})), 0)
-	}
-
-	dispatcher.Listeners[t] = append(dispatcher.Listeners[t], listener)
 }

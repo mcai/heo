@@ -1,8 +1,8 @@
 package cpu
 
 import (
-	"github.com/mcai/heo/cpu/regs"
 	"github.com/mcai/heo/cpu/mem"
+	"github.com/mcai/heo/cpu/regs"
 )
 
 type Kernel struct {

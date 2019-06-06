@@ -2,8 +2,8 @@ package cpu
 
 import (
 	"fmt"
-	"github.com/mcai/heo/simutil"
 	"github.com/mcai/heo/noc"
+	"github.com/mcai/heo/simutil"
 )
 
 func (experiment *CPUExperiment) dumpStats(prefix string) {

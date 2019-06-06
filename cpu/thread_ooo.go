@@ -1,8 +1,8 @@
 package cpu
 
 import (
-	"github.com/mcai/heo/cpu/regs"
 	"fmt"
+	"github.com/mcai/heo/cpu/regs"
 )
 
 type OoOThread struct {

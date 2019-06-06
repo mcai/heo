@@ -1,9 +1,9 @@
 package simutil
 
 import (
-	"testing"
-	"reflect"
 	"fmt"
+	"reflect"
+	"testing"
 )
 
 type HelloEvent struct {

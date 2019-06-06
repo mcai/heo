@@ -1,8 +1,8 @@
 package simutil
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestCycleAccurateEventQueue(t *testing.T) {

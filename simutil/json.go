@@ -1,9 +1,9 @@
 package simutil
 
 import (
-	"os"
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"os"
 )
 
 func WriteJsonFile(obj interface{}, outputDirectory string, outputJsonFileName string) {

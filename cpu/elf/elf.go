@@ -1,11 +1,11 @@
 package elf
 
 import (
-	"io/ioutil"
-	"fmt"
-	"encoding/binary"
 	"bytes"
+	"encoding/binary"
+	"fmt"
 	"github.com/mcai/heo/cpu/mem"
+	"io/ioutil"
 )
 
 type ElfFile struct {

@@ -1,8 +1,8 @@
 package uncore
 
 import (
-	"github.com/mcai/heo/cpu/mem"
 	"fmt"
+	"github.com/mcai/heo/cpu/mem"
 )
 
 type EvictableCache struct {

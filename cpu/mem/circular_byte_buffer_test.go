@@ -1,8 +1,8 @@
 package mem
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestCircularByteBuffer(t *testing.T) {

@@ -1,10 +1,10 @@
 package cpu
 
 import (
-	"time"
-	"github.com/mcai/heo/simutil"
 	"github.com/mcai/heo/cpu/uncore"
 	"github.com/mcai/heo/noc"
+	"github.com/mcai/heo/simutil"
+	"time"
 )
 
 type CPUExperiment struct {

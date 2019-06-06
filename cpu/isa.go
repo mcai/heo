@@ -1,9 +1,9 @@
 package cpu
 
 import (
+	"github.com/mcai/heo/cpu/cpuutil"
 	"github.com/mcai/heo/cpu/regs"
 	"math"
-	"github.com/mcai/heo/cpu/cpuutil"
 )
 
 const (
@@ -1333,7 +1333,7 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var temp1 = int64(context.Regs().Sgpr(machInst.Rs()))
 			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
-			var temp3 = (int64(context.Regs().Hi<<32) | int64(context.Regs().Lo))
+			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
 			var temp = temp1*temp2 + temp3
 			context.Regs().Hi = uint32(cpuutil.Bits64(uint64(temp), 63, 32))
 			context.Regs().Lo = uint32(cpuutil.Bits64(uint64(temp), 31, 0))

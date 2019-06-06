@@ -24,7 +24,7 @@ func IsPrefetchThread(threadId int32) bool {
 type L2PrefetchRequestProfiler struct {
 	L2Controller *uncore.DirectoryController
 
-	L2PrefetchRequestStates map[int32](map[int32]*L2PrefetchRequestState)
+	L2PrefetchRequestStates map[int32]map[int32]*L2PrefetchRequestState
 
 	NumL2DemandHits   int32
 	NumL2DemandMisses int32
@@ -50,7 +50,7 @@ func NewL2PrefetchRequestProfiler(experiment *CPUExperiment) *L2PrefetchRequestP
 		L2Controller: experiment.MemoryHierarchy.L2Controller(),
 	}
 
-	l2PrefetchRequestProfiler.L2PrefetchRequestStates = make(map[int32](map[int32]*L2PrefetchRequestState))
+	l2PrefetchRequestProfiler.L2PrefetchRequestStates = make(map[int32]map[int32]*L2PrefetchRequestState)
 
 	for set := uint32(0); set < l2PrefetchRequestProfiler.L2Controller.Cache.NumSets(); set++ {
 		l2PrefetchRequestProfiler.L2PrefetchRequestStates[int32(set)] = make(map[int32]*L2PrefetchRequestState)

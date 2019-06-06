@@ -1,14 +1,14 @@
 package mem
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestSimpleMemory(t *testing.T) {
 	var data = make([]byte, 1024)
 
-	var memory *SimpleMemory = NewSimpleMemory(true, data)
+	var memory = NewSimpleMemory(true, data)
 
 	memory.WriteStringAt(12, "你好 world.")
 
