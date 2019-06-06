@@ -14,9 +14,11 @@ type DataSet [][]string
 
 func FromCSV(filename string) DataSet {
 	file, err := os.Open(filename)
+
 	if err != nil {
 		log.Fatal("Cannot open file: " + filename)
 	}
+
 	defer file.Close()
 
 	var lines [][]string

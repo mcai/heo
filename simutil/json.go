@@ -11,13 +11,13 @@ func WriteJsonFile(obj interface{}, outputDirectory string, outputJsonFileName s
 		panic(fmt.Sprintf("Cannot create output directory (%s)", err))
 	}
 
-	fp, err := os.Create(outputDirectory + "/" + outputJsonFileName)
+	file, err := os.Create(outputDirectory + "/" + outputJsonFileName)
 
 	if err != nil {
 		panic(fmt.Sprintf("Cannot create JSON file (%s)", err))
 	}
 
-	defer fp.Close()
+	defer file.Close()
 
 	j, err := json.MarshalIndent(obj, "", "  ")
 
@@ -25,21 +25,21 @@ func WriteJsonFile(obj interface{}, outputDirectory string, outputJsonFileName s
 		panic(fmt.Sprintf("Cannot encode object to JSON (%s)", err))
 	}
 
-	if _, err := fp.Write(j); err != nil {
+	if _, err := file.Write(j); err != nil {
 		panic(fmt.Sprintf("Cannot write JSON file (%s)", err))
 	}
 }
 
 func LoadJsonFile(outputDirectory string, outputJsonFileName string, data interface{}) {
-	var fp, err = os.Open(outputDirectory + "/" + outputJsonFileName)
+	var file, err = os.Open(outputDirectory + "/" + outputJsonFileName)
 
 	if err != nil {
 		panic(fmt.Sprintf("Cannot open JSON file (%s)", err))
 	}
 
-	defer fp.Close()
+	defer file.Close()
 
-	var jsonParser = json.NewDecoder(fp)
+	var jsonParser = json.NewDecoder(file)
 
 	if err := jsonParser.Decode(data); err != nil {
 		panic(fmt.Sprintf("Cannot decode object from JSON (%s)", err))

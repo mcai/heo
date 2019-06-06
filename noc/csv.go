@@ -156,15 +156,15 @@ func WriteCSVFile(outputDirectory string, outputCSVFileName string, experiments 
 		panic(fmt.Sprintf("Cannot create output directory (%s)", err))
 	}
 
-	fp, err := os.Create(outputDirectory + "/" + outputCSVFileName)
+	file, err := os.Create(outputDirectory + "/" + outputCSVFileName)
 
 	if err != nil {
 		panic(fmt.Sprintf("Cannot create CSV file (%s)", err))
 	}
 
-	defer fp.Close()
+	defer file.Close()
 
-	var w = csv.NewWriter(fp)
+	var w = csv.NewWriter(file)
 
 	var head []string
 

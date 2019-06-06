@@ -12,7 +12,9 @@ func (syscallEmulation *SyscallEmulation) fstat64_impl(context *Context) {
 
 	var fstat syscall.Stat_t
 
-	syscall.Fstat(int(fd), &fstat)
+	if err := syscall.Fstat(int(fd), &fstat); err != nil {
+		panic("Error")
+	}
 
 	context.Regs().Gpr[regs.REGISTER_V0] = 0
 

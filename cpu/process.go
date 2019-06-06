@@ -185,11 +185,15 @@ func (process *Process) TranslateFileDescriptor(fileDescriptor int32) int32 {
 
 func (process *Process) CloseProgram() {
 	if process.StdInFileDescriptor != 0 {
-		syscall.Close(int(process.StdInFileDescriptor))
+		if err := syscall.Close(int(process.StdInFileDescriptor)); err != nil {
+			panic("Error")
+		}
 	}
 
 	if process.StdOutFileDescriptor > 2 {
-		syscall.Close(int(process.StdOutFileDescriptor))
+		if err := syscall.Close(int(process.StdOutFileDescriptor)); err != nil {
+			panic("Error")
+		}
 	}
 }
 

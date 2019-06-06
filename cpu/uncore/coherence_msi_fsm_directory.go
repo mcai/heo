@@ -173,16 +173,16 @@ func (fsm *DirectoryControllerFiniteStateMachine) OnEventPutMAndData(producerFlo
 	}
 }
 
-func (directoryControllerFsm *DirectoryControllerFiniteStateMachine) OnEventData(producerFlow CacheCoherenceFlow, tag uint32, sender *CacheController) {
+func (fsm *DirectoryControllerFiniteStateMachine) OnEventData(producerFlow CacheCoherenceFlow, tag uint32, sender *CacheController) {
 	var event = NewDataEvent(
-		directoryControllerFsm.DirectoryController,
+		fsm.DirectoryController,
 		producerFlow,
 		producerFlow.Access(),
 		tag,
 		sender,
 	)
 
-	directoryControllerFsm.fireTransition(event)
+	fsm.fireTransition(event)
 }
 
 func (fsm *DirectoryControllerFiniteStateMachine) SendDataToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController, numInvAcks int32) {
