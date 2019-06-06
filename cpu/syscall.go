@@ -424,7 +424,7 @@ func (syscallEmulation *SyscallEmulation) getuid_impl(context *Context) {
 	syscallEmulation.Error = syscallEmulation.checkSyscallError(context)
 }
 
-func (SyscallEmulation *SyscallEmulation) kill_impl(context *Context) {
+func (syscallEmulation *SyscallEmulation) kill_impl(context *Context) {
 	var pid = int32(context.Regs().Gpr[regs.REGISTER_A0])
 	var sig = context.Regs().Gpr[regs.REGISTER_A1]
 	if pid < 0 {
@@ -457,9 +457,9 @@ func (syscallEmulation *SyscallEmulation) brk_impl(context *Context) {
 	context.Regs().Gpr[regs.REGISTER_V0] = 0
 }
 
-func (SyscallEmulation *SyscallEmulation) getgid_impl(context *Context) {
+func (syscallEmulation *SyscallEmulation) getgid_impl(context *Context) {
 	context.Regs().Gpr[regs.REGISTER_V0] = uint32(context.GroupId)
-	SyscallEmulation.Error = SyscallEmulation.checkSyscallError(context)
+	syscallEmulation.Error = syscallEmulation.checkSyscallError(context)
 }
 
 func (syscallEmulation *SyscallEmulation) geteuid_impl(context *Context) {
@@ -652,7 +652,7 @@ func (syscallEmulation *SyscallEmulation) nanosleep_impl(context *Context) {
 	context.Suspend()
 }
 
-func (sysallEmulation *SyscallEmulation) mremap_impl(context *Context) {
+func (syscallEmulation *SyscallEmulation) mremap_impl(context *Context) {
 	var oldAddr = context.Regs().Gpr[regs.REGISTER_A0]
 	var oldSize = context.Regs().Gpr[regs.REGISTER_A1]
 	var newSize = context.Regs().Gpr[regs.REGISTER_A2]
@@ -661,7 +661,7 @@ func (sysallEmulation *SyscallEmulation) mremap_impl(context *Context) {
 
 	context.Regs().Gpr[regs.REGISTER_V0] = start
 
-	sysallEmulation.Error = sysallEmulation.checkSyscallError(context)
+	syscallEmulation.Error = syscallEmulation.checkSyscallError(context)
 }
 
 func (syscallEmulation *SyscallEmulation) poll_impl(context *Context) {

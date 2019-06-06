@@ -1,6 +1,7 @@
 package native
 
 import (
+	"fmt"
 	"syscall"
 	"unsafe"
 )
@@ -42,8 +43,12 @@ func Open(path string, mode int32, perm uint32) int32 {
 }
 
 func Close(fd int32) int32 {
-	syscall.Close(int(fd))
+	if err := syscall.Close(int(fd)); err != nil {
+		panic(fmt.Sprintf("Cannot close fd (%s)", err))
+	}
+
 	panic("Unimplemented")
+
 	return 0 //TODO
 }
 
