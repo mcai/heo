@@ -44,15 +44,17 @@ func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L
 }
 
 func (l2CacheRequestTracer *L2CacheRequestTracer) handleL2Request(event *uncore.GeneralCacheControllerServiceNonblockingRequestEvent) {
-	var _type = "W"
+	if !event.HitInCache {
+		var _type = "W"
 
-	if event.Access.AccessType.IsRead() {
-		_type = "R"
-	}
+		if event.Access.AccessType.IsRead() {
+			_type = "R"
+		}
 
-	var line = []string{fmt.Sprintf("%d", event.Access.ThreadId), fmt.Sprintf("%x", event.Access.VirtualPc), _type, fmt.Sprintf("%x", event.Access.PhysicalTag)}
+		var line = []string{fmt.Sprintf("%d", event.Access.ThreadId), fmt.Sprintf("%x", event.Access.VirtualPc), _type, fmt.Sprintf("%x", event.Access.PhysicalTag)}
 
-	if err := l2CacheRequestTracer.writer.Write(line); err != nil {
-		panic("Cannot write file")
+		if err := l2CacheRequestTracer.writer.Write(line); err != nil {
+			panic("Cannot write file")
+		}
 	}
 }
