@@ -394,61 +394,65 @@ func (core *OoOCore) Commit() {
 }
 
 func (core *OoOCore) RemoveFromQueues(entryToRemove GeneralReorderBufferEntry) {
-	var waitingInstructionQueueToReserve []GeneralReorderBufferEntry
-	var readyInstructionQueueToReserve []GeneralReorderBufferEntry
-
-	var readyLoadQueueToReserve []GeneralReorderBufferEntry
-
-	var waitingStoreQueueToReserve []GeneralReorderBufferEntry
-	var readyStoreQueueToReserve []GeneralReorderBufferEntry
-
-	var oooEventQueueToReserve []GeneralReorderBufferEntry
-
-	for _, entry := range core.waitingInstructionQueue {
-		if entry != entryToRemove {
-			waitingInstructionQueueToReserve = append(waitingInstructionQueueToReserve, entry)
+	for i, entry := range core.waitingInstructionQueue {
+		if entry == entryToRemove {
+			core.waitingInstructionQueue = append(
+				core.waitingInstructionQueue[:i],
+				core.waitingInstructionQueue[i+1:]...
+			)
+			break
 		}
 	}
 
-	for _, entry := range core.readyInstructionQueue {
-		if entry != entryToRemove {
-			readyInstructionQueueToReserve = append(readyInstructionQueueToReserve, entry)
+	for i, entry := range core.readyInstructionQueue {
+		if entry == entryToRemove {
+			core.readyInstructionQueue = append(
+				core.readyInstructionQueue[:i],
+				core.readyInstructionQueue[i+1:]...
+			)
+			break
 		}
 	}
 
-	for _, entry := range core.readyLoadQueue {
-		if entry != entryToRemove {
-			readyLoadQueueToReserve = append(readyLoadQueueToReserve, entry)
+	for i, entry := range core.readyLoadQueue {
+		if entry == entryToRemove {
+			core.readyLoadQueue = append(
+				core.readyLoadQueue[:i],
+				core.readyLoadQueue[i+1:]...
+			)
+			break
 		}
 	}
 
-	for _, entry := range core.waitingStoreQueue {
-		if entry != entryToRemove {
-			waitingStoreQueueToReserve = append(waitingStoreQueueToReserve, entry)
+	for i, entry := range core.waitingStoreQueue {
+		if entry == entryToRemove {
+			core.waitingStoreQueue = append(
+				core.waitingStoreQueue[:i],
+				core.waitingStoreQueue[i+1:]...
+			)
+			break
 		}
 	}
 
-	for _, entry := range core.readyStoreQueue {
-		if entry != entryToRemove {
-			readyStoreQueueToReserve = append(readyStoreQueueToReserve, entry)
+	for i, entry := range core.readyStoreQueue {
+		if entry == entryToRemove {
+			core.readyStoreQueue = append(
+				core.readyStoreQueue[:i],
+				core.readyStoreQueue[i+1:]...
+			)
+			break
 		}
 	}
 
-	for _, entry := range core.oooEventQueue {
-		if entry != entryToRemove {
-			oooEventQueueToReserve = append(oooEventQueueToReserve, entry)
+	for i, entry := range core.oooEventQueue {
+		if entry == entryToRemove {
+			core.oooEventQueue = append(
+				core.oooEventQueue[:i],
+				core.oooEventQueue[i+1:]...
+			)
+			break
 		}
 	}
-
-	core.waitingInstructionQueue = waitingInstructionQueueToReserve
-	core.readyInstructionQueue = readyInstructionQueueToReserve
-
-	core.readyLoadQueue = readyLoadQueueToReserve
-
-	core.waitingStoreQueue = waitingStoreQueueToReserve
-	core.readyStoreQueue = readyStoreQueueToReserve
-
-	core.oooEventQueue = oooEventQueueToReserve
 
 	entryToRemove.SetSquashed(true)
 }
