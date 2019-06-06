@@ -16,7 +16,7 @@ type TraceFileLine struct {
 	Ea       int64
 }
 
-type TraceTrafficGenerator struct {
+type TraceFileBasedTrafficSource struct {
 	Network              *Network
 	PacketInjectionRate  float64
 	MaxPackets           int64
@@ -25,8 +25,8 @@ type TraceTrafficGenerator struct {
 	CurrentTraceFileLine int
 }
 
-func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, maxPackets int64, traceFileName string) *TraceTrafficGenerator {
-	var generator = &TraceTrafficGenerator{
+func NewTraceFileBasedTrafficSource(network *Network, packetInjectionRate float64, maxPackets int64, traceFileName string) *TraceFileBasedTrafficSource {
+	var source = &TraceFileBasedTrafficSource{
 		Network:             network,
 		PacketInjectionRate: packetInjectionRate,
 		MaxPackets:          maxPackets,
@@ -75,7 +75,7 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 			Ea:       ea,
 		}
 
-		generator.TraceFileLines = append(generator.TraceFileLines, traceFileLine)
+		source.TraceFileLines = append(source.TraceFileLines, traceFileLine)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -86,28 +86,28 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 		log.Fatal(err)
 	}
 
-	generator.CurrentTraceFileLine = 0
+	source.CurrentTraceFileLine = 0
 
-	return generator
+	return source
 }
 
-func (generator *TraceTrafficGenerator) AdvanceOneCycle() {
-	if !generator.Network.AcceptPacket || generator.MaxPackets != -1 && generator.Network.NumPacketsReceived > generator.MaxPackets {
+func (source *TraceFileBasedTrafficSource) AdvanceOneCycle() {
+	if !source.Network.AcceptPacket || source.MaxPackets != -1 && source.Network.NumPacketsReceived > source.MaxPackets {
 		return
 	}
 
-	if rand.Float64() <= generator.PacketInjectionRate {
-		if generator.CurrentTraceFileLine < len(generator.TraceFileLines) {
-			var traceFileLine = generator.TraceFileLines[generator.CurrentTraceFileLine]
-			generator.CurrentTraceFileLine += 1
+	if rand.Float64() <= source.PacketInjectionRate {
+		if source.CurrentTraceFileLine < len(source.TraceFileLines) {
+			var traceFileLine = source.TraceFileLines[source.CurrentTraceFileLine]
+			source.CurrentTraceFileLine += 1
 
 			var src = int(traceFileLine.ThreadId)
-			var dest = generator.Network.Config.NumNodes - 1
+			var dest = source.Network.Config.NumNodes - 1
 
-			var packet = NewDataPacket(generator.Network, src, dest, generator.Network.Config.DataPacketSize, true, func() {})
+			var packet = NewDataPacket(source.Network, src, dest, source.Network.Config.DataPacketSize, true, func() {})
 
-			generator.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
-				generator.Network.Receive(packet)
+			source.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
+				source.Network.Receive(packet)
 			}, 1)
 		}
 	}

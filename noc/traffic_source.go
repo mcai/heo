@@ -1,5 +1,5 @@
 package noc
 
-type TrafficGenerator interface {
+type TrafficSource interface {
 	AdvanceOneCycle()
 }

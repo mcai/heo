@@ -14,12 +14,12 @@ type Network struct {
 	Driver NetworkDriver
 	Config *NoCConfig
 
-	CurrentPacketId   int64
-	NumNodes          int
-	Nodes             []*Node
-	Width             int
-	AcceptPacket      bool
-	trafficGenerators []TrafficGenerator
+	CurrentPacketId int64
+	NumNodes        int
+	Nodes           []*Node
+	Width           int
+	AcceptPacket    bool
+	trafficSources  []TrafficSource
 
 	NumPacketsReceived    int64
 	NumPacketsTransmitted int64
@@ -65,15 +65,15 @@ func NewNetwork(driver NetworkDriver, config *NoCConfig) *Network {
 	case SelectionAco:
 		switch antPacketTraffic := config.AntPacketTraffic; antPacketTraffic {
 		case TrafficUniform:
-			network.AddTrafficGenerator(NewUniformTrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
+			network.AddTrafficSource(NewUniformTrafficSource(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))
 		case TrafficTranspose1:
-			network.AddTrafficGenerator(NewTranspose1TrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
+			network.AddTrafficSource(NewTranspose1TrafficSource(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))
 		case TrafficTranspose2:
-			network.AddTrafficGenerator(NewTranspose2TrafficGenerator(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
+			network.AddTrafficSource(NewTranspose2TrafficSource(network, config.AntPacketInjectionRate, int64(-1), func(src int, dest int) Packet {
 				return NewAntPacket(network, src, dest, config.AntPacketSize, func() {}, true)
 			}))
 		default:
@@ -98,15 +98,15 @@ func (network *Network) GetY(id int) int {
 	return (id - id%network.Width) / network.Width
 }
 
-func (network *Network) TrafficGenerators() []TrafficGenerator {
-	return network.trafficGenerators
+func (network *Network) TrafficSources() []TrafficSource {
+	return network.trafficSources
 }
 
-func (network *Network) AddTrafficGenerator(trafficGenerator TrafficGenerator) {
-	network.trafficGenerators = append(network.trafficGenerators, trafficGenerator)
+func (network *Network) AddTrafficSource(trafficSource TrafficSource) {
+	network.trafficSources = append(network.trafficSources, trafficSource)
 
 	network.Driver.CycleAccurateEventQueue().AddPerCycleEvent(func() {
-		trafficGenerator.AdvanceOneCycle()
+		trafficSource.AdvanceOneCycle()
 	})
 }
 

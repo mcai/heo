@@ -26,26 +26,26 @@ func NewNoCExperiment(config *NoCConfig) *NoCExperiment {
 
 	switch dataPacketTraffic := config.DataPacketTraffic; dataPacketTraffic {
 	case TrafficUniform:
-		experiment.Network.AddTrafficGenerator(
-			NewUniformTrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
+		experiment.Network.AddTrafficSource(
+			NewUniformTrafficSource(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
 	case TrafficTranspose1:
-		experiment.Network.AddTrafficGenerator(
-			NewTranspose1TrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
+		experiment.Network.AddTrafficSource(
+			NewTranspose1TrafficSource(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
 	case TrafficTranspose2:
-		experiment.Network.AddTrafficGenerator(
-			NewTranspose2TrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
+		experiment.Network.AddTrafficSource(
+			NewTranspose2TrafficSource(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, func(src int, dest int) Packet {
 				return NewDataPacket(experiment.Network, src, dest, config.DataPacketSize, true, func() {})
 			}),
 		)
 	case TrafficTrace:
-		experiment.Network.AddTrafficGenerator(
-			NewTraceTrafficGenerator(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, config.TraceFileName),
+		experiment.Network.AddTrafficSource(
+			NewTraceFileBasedTrafficSource(experiment.Network, config.DataPacketInjectionRate, config.MaxPackets, config.TraceFileName),
 		)
 	default:
 		panic(fmt.Sprintf("data packet traffic %s is not supported", dataPacketTraffic))
