@@ -1,7 +1,7 @@
 package noc
 
 type Packet interface {
-	Network() *Network
+	Network() Network
 	Id() int64
 	BeginCycle() int64
 	EndCycle() int64

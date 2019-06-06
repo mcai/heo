@@ -5,7 +5,7 @@ import (
 )
 
 type Node struct {
-	Network            *Network
+	Network            *BaseNetwork
 	Id                 int
 	X, Y               int
 	Neighbors          map[Direction]int
@@ -14,7 +14,7 @@ type Node struct {
 	SelectionAlgorithm SelectionAlgorithm
 }
 
-func NewNode(network *Network, id int) *Node {
+func NewNode(network *BaseNetwork, id int) *Node {
 	var node = &Node{
 		Network:   network,
 		Id:        id,
@@ -41,7 +41,7 @@ func NewNode(network *Network, id int) *Node {
 
 	node.Router = NewRouter(node)
 
-	switch routing := network.Config.Routing; routing {
+	switch routing := network.Config().Routing; routing {
 	case RoutingXY:
 		node.RoutingAlgorithm = NewXYRoutingAlgorithm(node)
 	case RoutingNegativeFirst:
@@ -56,7 +56,7 @@ func NewNode(network *Network, id int) *Node {
 		panic(fmt.Sprintf("Not supported: %s", routing))
 	}
 
-	switch selection := network.Config.Selection; selection {
+	switch selection := network.Config().Selection; selection {
 	case SelectionRandom:
 		node.SelectionAlgorithm = NewRandomSelectionAlgorithm(node)
 	case SelectionBufferLevel:

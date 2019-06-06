@@ -4,7 +4,7 @@ type Transpose2TrafficSource struct {
 	*BaseSyntheticTrafficSource
 }
 
-func NewTranspose2TrafficSource(network *Network, packetInjectionRate float64, maxPackets int64, newPacket func(src int, dest int) Packet) *Transpose2TrafficSource {
+func NewTranspose2TrafficSource(network *BaseNetwork, packetInjectionRate float64, maxPackets int64, newPacket func(src int, dest int) Packet) *Transpose2TrafficSource {
 	var source = &Transpose2TrafficSource{
 		BaseSyntheticTrafficSource: NewBaseSyntheticTrafficSource(network, packetInjectionRate, maxPackets, newPacket),
 	}

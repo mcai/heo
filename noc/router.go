@@ -67,9 +67,9 @@ func (router *Router) stageLinkTraversal() {
 						var ip = outputPort.Direction.GetReflexDirection()
 						var ivc = outputVirtualChannel.Num
 
-						router.Node.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
+						router.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
 							router.NextHopArrived(flit, nextHop, ip, ivc)
-						}, router.Node.Network.Config.LinkDelay)
+						}, router.Node.Network.Config().LinkDelay)
 					}
 
 					inputVirtualChannel.InputBuffer.Pop()
@@ -100,7 +100,7 @@ func (router *Router) NextHopArrived(flit *Flit, nextHop int, ip Direction, ivc 
 	if !inputBuffer.Full() {
 		router.Node.Network.Nodes[nextHop].Router.InsertFlit(flit, ip, ivc)
 	} else {
-		router.Node.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
+		router.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
 			router.NextHopArrived(flit, nextHop, ip, ivc)
 		}, 1)
 	}
@@ -199,14 +199,14 @@ func (router *Router) stageRouteComputation() {
 func (router *Router) localPacketInjection() {
 	for {
 		var requestInserted = false
-		for ivc := 0; ivc < router.Node.Network.Config.NumVirtualChannels; ivc++ {
+		for ivc := 0; ivc < router.Node.Network.Config().NumVirtualChannels; ivc++ {
 			if router.InjectionBuffer.Count() == 0 {
 				return
 			}
 
 			var packet = router.InjectionBuffer.Peek()
 
-			var numFlits = int(math.Ceil(float64(packet.Size()) / float64(router.Node.Network.Config.LinkWidth)))
+			var numFlits = int(math.Ceil(float64(packet.Size()) / float64(router.Node.Network.Config().LinkWidth)))
 
 			var inputBuffer = router.InputPorts[DIRECTION_LOCAL].VirtualChannels[ivc].InputBuffer
 

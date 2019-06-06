@@ -35,7 +35,7 @@ func NewCPUExperiment(config *CPUConfig) *CPUExperiment {
 	var experiment = &CPUExperiment{
 		CPUConfig:    config,
 		UncoreConfig: uncore.NewUncoreConfig(config.NumCores, config.NumThreadsPerCore),
-		NocConfig:    noc.NewNoCConfig(config.OutputDirectory, -1, -1, -1, false),
+		NocConfig:    noc.NewNoCConfig(config.OutputDirectory, -1, -1, config.NetworkType, -1, false),
 	}
 
 	experiment.ISA = NewISA()
@@ -92,7 +92,7 @@ func (experiment *CPUExperiment) Run() {
 func (experiment *CPUExperiment) dumpConfigs() {
 	experiment.CPUConfig.Dump(experiment.CPUConfig.OutputDirectory)
 	experiment.MemoryHierarchy.Config().Dump(experiment.CPUConfig.OutputDirectory)
-	experiment.MemoryHierarchy.Network().Config.Dump(experiment.CPUConfig.OutputDirectory)
+	experiment.MemoryHierarchy.Network().Config().Dump(experiment.CPUConfig.OutputDirectory)
 }
 
 func (experiment *CPUExperiment) canDoFastForwardOneCycle() bool {

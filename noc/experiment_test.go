@@ -8,7 +8,7 @@ func TestNoCExperiment(t *testing.T) {
 	var maxPackets = int64(-1)
 	var drainPackets = true
 
-	var config = NewNoCConfig("test_results/synthetic/aco", numNodes, maxCycles, maxPackets, drainPackets)
+	var config = NewNoCConfig("test_results/synthetic/aco", numNodes, maxCycles, NetworkType_FIXED_LATENCY, maxPackets, drainPackets)
 
 	config.Routing = RoutingOddEven
 	config.Selection = SelectionAco

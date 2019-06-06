@@ -13,7 +13,7 @@ func NewOutputPort(router *Router, direction Direction) *OutputPort {
 		Direction: direction,
 	}
 
-	for i := 0; i < router.Node.Network.Config.NumVirtualChannels; i++ {
+	for i := 0; i < router.Node.Network.Config().NumVirtualChannels; i++ {
 		var outputVirtualChannel = NewOutputVirtualChannel(outputPort, i)
 		outputPort.VirtualChannels = append(outputPort.VirtualChannels, outputVirtualChannel)
 	}

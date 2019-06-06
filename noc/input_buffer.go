@@ -12,7 +12,7 @@ func NewInputBuffer(inputVirtualChannel *InputVirtualChannel) *InputBuffer {
 	var inputBuffer = &InputBuffer{
 		InputVirtualChannel: inputVirtualChannel,
 		Flits:               list.New(),
-		Size:                inputVirtualChannel.InputPort.Router.Node.Network.Config.MaxInputBufferSize,
+		Size:                inputVirtualChannel.InputPort.Router.Node.Network.Config().MaxInputBufferSize,
 	}
 
 	return inputBuffer

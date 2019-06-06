@@ -6,7 +6,7 @@ type UniformTrafficSource struct {
 	*BaseSyntheticTrafficSource
 }
 
-func NewUniformTrafficSource(network *Network, packetInjectionRate float64, maxPackets int64, newPacket func(src int, dest int) Packet) *UniformTrafficSource {
+func NewUniformTrafficSource(network *BaseNetwork, packetInjectionRate float64, maxPackets int64, newPacket func(src int, dest int) Packet) *UniformTrafficSource {
 	var source = &UniformTrafficSource{
 		BaseSyntheticTrafficSource: NewBaseSyntheticTrafficSource(network, packetInjectionRate, maxPackets, newPacket),
 	}

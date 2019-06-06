@@ -20,8 +20,8 @@ func NewFlit(packet Packet, num int, head bool, tail bool) *Flit {
 		Head:               head,
 		Tail:               tail,
 		state:              FLIT_STATE_UNKNOWN,
-		prevStateTimestamp: packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle,
-		Timestamp:          packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle,
+		prevStateTimestamp: packet.Network().Driver().CycleAccurateEventQueue().CurrentCycle,
+		Timestamp:          packet.Network().Driver().CycleAccurateEventQueue().CurrentCycle,
 	}
 
 	packet.SetFlits(append(packet.Flits(), flit))
@@ -43,7 +43,7 @@ func (flit *Flit) SetNodeAndState(node *Node, state FlitState) {
 	}
 
 	if flit.state != FLIT_STATE_UNKNOWN {
-		flit.Packet.Network().LogFlitPerStateDelay(flit.state, int(flit.Packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle-flit.prevStateTimestamp))
+		flit.Packet.Network().(*BaseNetwork).LogFlitPerStateDelay(flit.state, int(flit.Packet.Network().Driver().CycleAccurateEventQueue().CurrentCycle-flit.prevStateTimestamp))
 
 		if flit.GetNumInflightFlits()[flit.state] == 0 {
 			panic("Impossible")
@@ -59,7 +59,7 @@ func (flit *Flit) SetNodeAndState(node *Node, state FlitState) {
 		flit.GetNumInflightFlits()[flit.state] = flit.GetNumInflightFlits()[flit.state] + 1
 	}
 
-	flit.prevStateTimestamp = flit.Packet.Network().Driver.CycleAccurateEventQueue().CurrentCycle
+	flit.prevStateTimestamp = flit.Packet.Network().Driver().CycleAccurateEventQueue().CurrentCycle
 }
 
 func (flit *Flit) GetNumInflightFlits() map[FlitState]int {

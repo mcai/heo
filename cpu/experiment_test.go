@@ -1,6 +1,7 @@
 package cpu
 
 import (
+	"github.com/mcai/heo/noc"
 	"testing"
 )
 
@@ -14,6 +15,10 @@ func TestMstBaseline(t *testing.T) {
 	config.NumThreadsPerCore = 2
 	config.MaxFastForwardDynamicInsts = int64(10000)
 	config.MaxMeasurementDynamicInsts = int64(100000000)
+	config.MaxMeasurementDynamicInsts = int64(100000000)
+
+	//config.NetworkType = noc.NetworkType_BASE;
+	config.NetworkType = noc.NetworkType_FIXED_LATENCY;
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()
@@ -29,6 +34,9 @@ func TestMstHelperThreaded(t *testing.T) {
 	config.NumThreadsPerCore = 2
 	config.MaxFastForwardDynamicInsts = int64(10000)
 	config.MaxMeasurementDynamicInsts = int64(100000000)
+
+	//config.NetworkType = noc.NetworkType_BASE;
+	config.NetworkType = noc.NetworkType_FIXED_LATENCY;
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()

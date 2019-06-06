@@ -17,55 +17,55 @@ func GetCSVFields() []CSVField {
 		{
 			Name: "Data_Packet_Traffic",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.DataPacketTraffic
+				return experiment.Network.Config().DataPacketTraffic
 			},
 		},
 		{
 			Name: "Data_Packet_Injection_Rate_(packets/cycle/node)",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.DataPacketInjectionRate
+				return experiment.Network.Config().DataPacketInjectionRate
 			},
 		},
 		{
 			Name: "Routing_Algorithm",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.Routing
+				return experiment.Network.Config().Routing
 			},
 		},
 		{
 			Name: "Selection_Policy",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.Selection
+				return experiment.Network.Config().Selection
 			},
 		},
 		{
 			Name: "Ant_Packet_Traffic",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.AntPacketTraffic
+				return experiment.Network.Config().AntPacketTraffic
 			},
 		},
 		{
 			Name: "Ant_Packet_Injection_Rate_(packets/cycle/node)",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.AntPacketInjectionRate
+				return experiment.Network.Config().AntPacketInjectionRate
 			},
 		},
 		{
 			Name: "Alpha",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return experiment.Network.Config.AcoSelectionAlpha
+				return experiment.Network.Config().AcoSelectionAlpha
 			},
 		},
 		{
 			Name: "Reinforcement_Factor",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return fmt.Sprintf("rf=%f", experiment.Network.Config.ReinforcementFactor)
+				return fmt.Sprintf("rf=%f", experiment.Network.Config().ReinforcementFactor)
 			},
 		},
 		{
 			Name: "NoC_Routing_Solution",
 			Callback: func(experiment *NoCExperiment) interface{} {
-				return fmt.Sprintf("%s+%s", experiment.Network.Config.Routing, experiment.Network.Config.Selection)
+				return fmt.Sprintf("%s+%s", experiment.Network.Config().Routing, experiment.Network.Config().Selection)
 			},
 		},
 		{

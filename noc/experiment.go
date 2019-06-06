@@ -9,7 +9,7 @@ import (
 type NoCExperiment struct {
 	cycleAccurateEventQueue *simutil.CycleAccurateEventQueue
 
-	Network *Network
+	Network *BaseNetwork
 
 	BeginTime, EndTime time.Time
 
@@ -22,7 +22,7 @@ func NewNoCExperiment(config *NoCConfig) *NoCExperiment {
 		cycleAccurateEventQueue: simutil.NewCycleAccurateEventQueue(),
 	}
 
-	experiment.Network = NewNetwork(experiment, config)
+	experiment.Network = NewBaseNetwork(experiment, config)
 
 	switch dataPacketTraffic := config.DataPacketTraffic; dataPacketTraffic {
 	case TrafficUniform:
@@ -61,11 +61,11 @@ func (experiment *NoCExperiment) CycleAccurateEventQueue() *simutil.CycleAccurat
 func (experiment *NoCExperiment) Run() {
 	experiment.BeginTime = time.Now()
 
-	for (experiment.Network.Config.MaxCycles == -1 || experiment.CycleAccurateEventQueue().CurrentCycle < experiment.Network.Config.MaxCycles) && (experiment.Network.Config.MaxPackets == -1 || experiment.Network.NumPacketsReceived < experiment.Network.Config.MaxPackets) {
+	for (experiment.Network.Config().MaxCycles == -1 || experiment.CycleAccurateEventQueue().CurrentCycle < experiment.Network.Config().MaxCycles) && (experiment.Network.Config().MaxPackets == -1 || experiment.Network.NumPacketsReceived < experiment.Network.Config().MaxPackets) {
 		experiment.CycleAccurateEventQueue().AdvanceOneCycle()
 	}
 
-	if experiment.Network.Config.DrainPackets {
+	if experiment.Network.Config().DrainPackets {
 		experiment.Network.AcceptPacket = false
 
 		for experiment.Network.NumPacketsReceived != experiment.Network.NumPacketsTransmitted {
@@ -75,7 +75,7 @@ func (experiment *NoCExperiment) Run() {
 
 	experiment.EndTime = time.Now()
 
-	experiment.Network.Config.Dump(experiment.Network.Config.OutputDirectory)
+	experiment.Network.Config().Dump(experiment.Network.Config().OutputDirectory)
 
 	experiment.DumpStats()
 }

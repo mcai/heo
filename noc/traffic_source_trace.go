@@ -17,7 +17,7 @@ type TraceFileLine struct {
 }
 
 type TraceFileBasedTrafficSource struct {
-	Network              *Network
+	Network              *BaseNetwork
 	PacketInjectionRate  float64
 	MaxPackets           int64
 	TraceFileName        string
@@ -25,7 +25,7 @@ type TraceFileBasedTrafficSource struct {
 	CurrentTraceFileLine int
 }
 
-func NewTraceFileBasedTrafficSource(network *Network, packetInjectionRate float64, maxPackets int64, traceFileName string) *TraceFileBasedTrafficSource {
+func NewTraceFileBasedTrafficSource(network *BaseNetwork, packetInjectionRate float64, maxPackets int64, traceFileName string) *TraceFileBasedTrafficSource {
 	var source = &TraceFileBasedTrafficSource{
 		Network:             network,
 		PacketInjectionRate: packetInjectionRate,
@@ -51,8 +51,8 @@ func NewTraceFileBasedTrafficSource(network *Network, packetInjectionRate float6
 		if err != nil {
 			log.Fatal(err)
 		}
-		if int(threadId) >= network.Config.NumNodes-2 {
-			log.Printf("threadId is out of range, corresponding line: %s, threadId: %d, numNodes: %d\n", line, threadId, network.Config.NumNodes)
+		if int(threadId) >= network.Config().NumNodes-2 {
+			log.Printf("threadId is out of range, corresponding line: %s, threadId: %d, numNodes: %d\n", line, threadId, network.Config().NumNodes)
 			continue
 		}
 
@@ -102,11 +102,11 @@ func (source *TraceFileBasedTrafficSource) AdvanceOneCycle() {
 			source.CurrentTraceFileLine += 1
 
 			var src = int(traceFileLine.ThreadId)
-			var dest = source.Network.Config.NumNodes - 1
+			var dest = source.Network.Config().NumNodes - 1
 
-			var packet = NewDataPacket(source.Network, src, dest, source.Network.Config.DataPacketSize, true, func() {})
+			var packet = NewDataPacket(source.Network, src, dest, source.Network.Config().DataPacketSize, true, func() {})
 
-			source.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
+			source.Network.driver.CycleAccurateEventQueue().Schedule(func() {
 				source.Network.Receive(packet)
 			}, 1)
 		}

@@ -5,7 +5,7 @@ type AntPacket struct {
 	Forward bool
 }
 
-func NewAntPacket(network *Network, src int, dest int, size int, onCompletedCallback func(), forward bool) *AntPacket {
+func NewAntPacket(network Network, src int, dest int, size int, onCompletedCallback func(), forward bool) *AntPacket {
 	var packet = &AntPacket{
 		DataPacket: NewDataPacket(network, src, dest, size, false, onCompletedCallback),
 		Forward:    forward,
@@ -24,7 +24,7 @@ func (packet *AntPacket) HandleDestArrived(inputVirtualChannel *InputVirtualChan
 		selectionAlgorithm.UpdatePheromoneTable(packet, inputVirtualChannel)
 	}
 
-	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.Driver.CycleAccurateEventQueue().CurrentCycle
+	packet.endCycle = inputVirtualChannel.InputPort.Router.Node.Network.driver.CycleAccurateEventQueue().CurrentCycle
 
 	inputVirtualChannel.InputPort.Router.Node.Network.LogPacketTransmitted(packet)
 

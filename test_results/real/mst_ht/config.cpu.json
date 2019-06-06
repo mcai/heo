@@ -22,5 +22,6 @@
   "TwoBitBranchPredictorSize": 2048,
   "BranchTargetBufferNumSets": 512,
   "BranchTargetBufferAssoc": 4,
-  "ReturnAddressStackSize": 8
+  "ReturnAddressStackSize": 8,
+  "NetworkType": "FIXED_LATENCY"
 }

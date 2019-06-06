@@ -12,7 +12,7 @@ func NewInjectionBuffer(router *Router) *InjectionBuffer {
 	var injectionBuffer = &InjectionBuffer{
 		Router:  router,
 		Packets: list.New(),
-		Size:    router.Node.Network.Config.MaxInjectionBufferSize,
+		Size:    router.Node.Network.Config().MaxInjectionBufferSize,
 	}
 
 	return injectionBuffer

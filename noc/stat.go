@@ -115,11 +115,11 @@ func (experiment *NoCExperiment) DumpStats() {
 		})
 	}
 
-	simutil.WriteJsonFile(experiment.Stats, experiment.Network.Config.OutputDirectory, simutil.STATS_JSON_FILE_NAME)
+	simutil.WriteJsonFile(experiment.Stats, experiment.Network.Config().OutputDirectory, simutil.STATS_JSON_FILE_NAME)
 }
 
 func (experiment *NoCExperiment) LoadStats() {
-	simutil.LoadJsonFile(experiment.Network.Config.OutputDirectory, simutil.STATS_JSON_FILE_NAME, &experiment.statMap)
+	simutil.LoadJsonFile(experiment.Network.Config().OutputDirectory, simutil.STATS_JSON_FILE_NAME, &experiment.statMap)
 }
 
 func (experiment *NoCExperiment) GetStatMap() map[string]interface{} {

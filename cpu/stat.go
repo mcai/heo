@@ -285,93 +285,97 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 		Value: experiment.MemoryHierarchy.MemoryController().NumWrites,
 	})
 
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.PacketsPerSecond",
-		Value: float64(experiment.MemoryHierarchy.Network().NumPacketsTransmitted) / experiment.EndTime.Sub(experiment.BeginTime).Seconds(),
-	})
+	if experiment.NocConfig.NetworkType == noc.NetworkType_BASE {
+		var baseNetwork = experiment.MemoryHierarchy.Network().(*noc.BaseNetwork)
 
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.NumPacketsReceived",
-		Value: experiment.MemoryHierarchy.Network().NumPacketsReceived,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.NumPacketsTransmitted",
-		Value: experiment.MemoryHierarchy.Network().NumPacketsTransmitted,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.Throughput",
-		Value: experiment.MemoryHierarchy.Network().Throughput(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.AveragePacketDelay",
-		Value: experiment.MemoryHierarchy.Network().AveragePacketDelay(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.AveragePacketHops",
-		Value: experiment.MemoryHierarchy.Network().AveragePacketHops(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.MaxPacketDelay",
-		Value: experiment.MemoryHierarchy.Network().MaxPacketDelay,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.MaxPacketHops",
-		Value: experiment.MemoryHierarchy.Network().MaxPacketHops,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.NumPayloadPacketsReceived",
-		Value: experiment.MemoryHierarchy.Network().NumPayloadPacketsReceived,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.NumPayloadPacketsTransmitted",
-		Value: experiment.MemoryHierarchy.Network().NumPayloadPacketsTransmitted,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.PayloadThroughput",
-		Value: experiment.MemoryHierarchy.Network().PayloadThroughput(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.AveragePayloadPacketDelay",
-		Value: experiment.MemoryHierarchy.Network().AveragePayloadPacketDelay(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.AveragePayloadPacketHops",
-		Value: experiment.MemoryHierarchy.Network().AveragePayloadPacketHops(),
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.MaxPayloadPacketDelay",
-		Value: experiment.MemoryHierarchy.Network().MaxPayloadPacketDelay,
-	})
-
-	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "noc.MaxPayloadPacketHops",
-		Value: experiment.MemoryHierarchy.Network().MaxPayloadPacketHops,
-	})
-
-	for _, state := range noc.VALID_FLIT_STATES {
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("noc.AverageFlitPerStateDelay[%s]", state),
-			Value: experiment.MemoryHierarchy.Network().AverageFlitPerStateDelay(state),
+			Key:   "noc.PacketsPerSecond",
+			Value: float64(baseNetwork.NumPacketsTransmitted) / experiment.EndTime.Sub(experiment.BeginTime).Seconds(),
 		})
-	}
 
-	for _, state := range noc.VALID_FLIT_STATES {
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("noc.MaxFlitPerStateDelay[%s]", state),
-			Value: experiment.MemoryHierarchy.Network().MaxFlitPerStateDelay[state],
+			Key:   "noc.NumPacketsReceived",
+			Value: baseNetwork.NumPacketsReceived,
 		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.NumPacketsTransmitted",
+			Value: baseNetwork.NumPacketsTransmitted,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.Throughput",
+			Value: baseNetwork.Throughput(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.AveragePacketDelay",
+			Value: baseNetwork.AveragePacketDelay(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.AveragePacketHops",
+			Value: baseNetwork.AveragePacketHops(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.MaxPacketDelay",
+			Value: baseNetwork.MaxPacketDelay,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.MaxPacketHops",
+			Value: baseNetwork.MaxPacketHops,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.NumPayloadPacketsReceived",
+			Value: baseNetwork.NumPayloadPacketsReceived,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.NumPayloadPacketsTransmitted",
+			Value: baseNetwork.NumPayloadPacketsTransmitted,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.PayloadThroughput",
+			Value: baseNetwork.PayloadThroughput(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.AveragePayloadPacketDelay",
+			Value: baseNetwork.AveragePayloadPacketDelay(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.AveragePayloadPacketHops",
+			Value: baseNetwork.AveragePayloadPacketHops(),
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.MaxPayloadPacketDelay",
+			Value: baseNetwork.MaxPayloadPacketDelay,
+		})
+
+		experiment.Stats = append(experiment.Stats, simutil.Stat{
+			Key:   "noc.MaxPayloadPacketHops",
+			Value: baseNetwork.MaxPayloadPacketHops,
+		})
+
+		for _, state := range noc.VALID_FLIT_STATES {
+			experiment.Stats = append(experiment.Stats, simutil.Stat{
+				Key:   fmt.Sprintf("noc.AverageFlitPerStateDelay[%s]", state),
+				Value: baseNetwork.AverageFlitPerStateDelay(state),
+			})
+		}
+
+		for _, state := range noc.VALID_FLIT_STATES {
+			experiment.Stats = append(experiment.Stats, simutil.Stat{
+				Key:   fmt.Sprintf("noc.MaxFlitPerStateDelay[%s]", state),
+				Value: baseNetwork.MaxFlitPerStateDelay[state],
+			})
+		}
 	}
 
 	experiment.Stats = append(experiment.Stats, simutil.Stat{

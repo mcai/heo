@@ -1,6 +1,9 @@
 package cpu
 
-import "github.com/mcai/heo/simutil"
+import (
+	"github.com/mcai/heo/noc"
+	"github.com/mcai/heo/simutil"
+)
 
 type CPUConfig struct {
 	OutputDirectory string
@@ -29,6 +32,8 @@ type CPUConfig struct {
 	BranchTargetBufferNumSets uint32
 	BranchTargetBufferAssoc   uint32
 	ReturnAddressStackSize    uint32
+
+	NetworkType noc.NetworkType
 }
 
 func NewCPUConfig(outputDirectory string) *CPUConfig {
@@ -57,6 +62,8 @@ func NewCPUConfig(outputDirectory string) *CPUConfig {
 		BranchTargetBufferNumSets: 512,
 		BranchTargetBufferAssoc:   4,
 		ReturnAddressStackSize:    8,
+
+		NetworkType:noc.NetworkType_BASE,
 	}
 
 	return config

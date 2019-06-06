@@ -57,6 +57,8 @@ type NoCConfig struct {
 
 	MaxCycles int64
 
+	NetworkType NetworkType
+
 	MaxPackets int64
 
 	DrainPackets bool
@@ -88,13 +90,15 @@ type NoCConfig struct {
 	TraceFileName string
 }
 
-func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, maxPackets int64, drainPackets bool) *NoCConfig {
+func NewNoCConfig(outputDirectory string, numNodes int, maxCycles int64, networkType NetworkType, maxPackets int64, drainPackets bool) *NoCConfig {
 	var nocConfig = &NoCConfig{
 		OutputDirectory: outputDirectory,
 
 		NumNodes: numNodes,
 
 		MaxCycles: maxCycles,
+
+		NetworkType: networkType,
 
 		MaxPackets: maxPackets,
 

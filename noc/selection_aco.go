@@ -26,11 +26,11 @@ func NewACOSelectionAlgorithm(node *Node) *ACOSelectionAlgorithm {
 }
 
 func (selectionAlgorithm *ACOSelectionAlgorithm) CreateAndSendBackwardAntPacket(packet *AntPacket) {
-	var newPacket = NewAntPacket(packet.Network(), packet.Dest(), packet.Src(), selectionAlgorithm.Node.Network.Config.AntPacketSize, func() {}, false)
+	var newPacket = NewAntPacket(packet.Network(), packet.Dest(), packet.Src(), selectionAlgorithm.Node.Network.Config().AntPacketSize, func() {}, false)
 
 	newPacket.memory = packet.memory
 
-	selectionAlgorithm.Node.Network.Driver.CycleAccurateEventQueue().Schedule(func() {
+	selectionAlgorithm.Node.Network.driver.CycleAccurateEventQueue().Schedule(func() {
 		selectionAlgorithm.Node.Network.Receive(newPacket)
 	}, 1)
 }
@@ -82,8 +82,8 @@ func (selectionAlgorithm *ACOSelectionAlgorithm) Select(packet Packet, ivc int, 
 		var pheromone = selectionAlgorithm.PheromoneTable.Pheromones[packet.Dest()][direction]
 		var freeSlots = neighborRouter.FreeSlots(direction.GetReflexDirection(), ivc)
 
-		var acoSelectionAlpha = selectionAlgorithm.Node.Network.Config.AcoSelectionAlpha
-		var maxInputBufferSize = selectionAlgorithm.Node.Network.Config.MaxInputBufferSize
+		var acoSelectionAlpha = selectionAlgorithm.Node.Network.Config().AcoSelectionAlpha
+		var maxInputBufferSize = selectionAlgorithm.Node.Network.Config().MaxInputBufferSize
 		var numNeighbors = len(selectionAlgorithm.Node.Neighbors)
 
 		var probability = (pheromone.Value + acoSelectionAlpha*(float64(freeSlots)/float64(maxInputBufferSize))) /

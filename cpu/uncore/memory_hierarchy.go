@@ -34,7 +34,7 @@ type MemoryHierarchy interface {
 	ITlbs() []*TranslationLookasideBuffer
 	DTlbs() []*TranslationLookasideBuffer
 
-	Network() *noc.Network
+	Network() noc.Network
 
 	Transfer(from MemoryDevice, to MemoryDevice, size uint32, onCompletedCallback func())
 	TransferMessage(from Controller, to Controller, size uint32, message CoherenceMessage)
@@ -63,7 +63,7 @@ type BaseMemoryHierarchy struct {
 
 	p2pReorderBuffers map[Controller]map[Controller]*P2PReorderBuffer
 
-	network          *noc.Network
+	network          noc.Network
 	DevicesToNodeIds map[interface{}]uint32
 }
 
@@ -138,7 +138,12 @@ func NewBaseMemoryHierarchy(driver UncoreDriver, config *UncoreConfig, nocConfig
 	nocConfig.NumNodes = int(numNodes)
 	nocConfig.MaxInputBufferSize = int(memoryHierarchy.l2Controller.Cache.LineSize() + 8)
 
-	memoryHierarchy.network = noc.NewNetwork(driver.(noc.NetworkDriver), nocConfig)
+	switch nocConfig.NetworkType {
+	case noc.NetworkType_BASE:
+		memoryHierarchy.network = noc.NewBaseNetwork(driver.(noc.NetworkDriver), nocConfig)
+	case noc.NetworkType_FIXED_LATENCY:
+		memoryHierarchy.network = noc.NewFixedLatencyNetwork(driver.(noc.NetworkDriver), nocConfig)
+	}
 
 	return memoryHierarchy
 }
@@ -199,7 +204,7 @@ func (memoryHierarchy *BaseMemoryHierarchy) DTlbs() []*TranslationLookasideBuffe
 	return memoryHierarchy.dTlbs
 }
 
-func (memoryHierarchy *BaseMemoryHierarchy) Network() *noc.Network {
+func (memoryHierarchy *BaseMemoryHierarchy) Network() noc.Network {
 	return memoryHierarchy.network
 }
 
