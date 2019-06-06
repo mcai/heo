@@ -6,7 +6,7 @@ This README briefly describes what Heo is and how to setup & run Heo.
 
 ## License Information
 
-Copyright (c) 2010-2017 by Min Cai (<min.cai.china@bjut.edu.cn>)
+Copyright (c) 2010-2019 by Min Cai (<min.cai.china@bjut.edu.cn>)
 
 This program is free software, licensed under the MIT license.
 
@@ -74,19 +74,17 @@ Heo is written in Go.
 
 ## System Requirements
 
-Heo has been tested on 64-bit MacOS Sierra (10.12.4) and **Ubuntu Linux 16.04** (with x86 machines).
+Heo has been developed and tested on 64-bit MacOS 10.15 Beta with go 1.12.5.
 
 For **developing and running Heo**, make sure that:
 
-1. You have Ubuntu Linux 16.04 or higher (or other mainstream Linux distributions);
+1. You have the latest versions of Linux distributions or Mac OS installed;
 
-2. To compile and run Go programs, the following software must be installed:
-	
-	- golang 1.8.1
+2. You have the latest versions of Golang compiler installed.
 
 ## Quick Start
 
-git clone https://github.com/mcai/heo
+`git clone https://github.com/mcai/heo`
 
 ## Customizing Heo for Your Needs
 
