@@ -82,7 +82,9 @@ func NewTraceTrafficGenerator(network *Network, packetInjectionRate float64, max
 		log.Fatal(err)
 	}
 
-	traceFile.Close()
+	if err := traceFile.Close(); err != nil {
+		log.Fatal(err)
+	}
 
 	generator.CurrentTraceFileLine = 0
 
