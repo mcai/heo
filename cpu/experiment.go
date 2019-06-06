@@ -33,6 +33,9 @@ type CPUExperiment struct {
 	L2CacheRequestTracer *L2CacheRequestTracer
 }
 
+type CPUExperimentStoppedEvent struct {
+}
+
 func NewCPUExperiment(config *CPUConfig) *CPUExperiment {
 	var experiment = &CPUExperiment{
 		CPUConfig:    config,
@@ -91,6 +94,8 @@ func (experiment *CPUExperiment) Run() {
 	experiment.doMeasurement()
 
 	experiment.EndTime = time.Now()
+
+	experiment.blockingEventDispatcher.Dispatch(&CPUExperimentStoppedEvent{})
 
 	experiment.dumpStats("measurement")
 }

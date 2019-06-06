@@ -1,13 +1,16 @@
 package cpu
 
 import (
+	"encoding/csv"
 	"fmt"
 	"github.com/mcai/heo/cpu/uncore"
+	"os"
 	"reflect"
 )
 
 type L2CacheRequestTracer struct {
 	TraceFileName string
+	writer        *csv.Writer
 }
 
 func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L2CacheRequestTracer  {
@@ -23,6 +26,20 @@ func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L
 		}
 	})
 
+	file, err := os.Create(traceFileName)
+
+	if err != nil {
+		panic("Cannot create file")
+	}
+
+	experiment.BlockingEventDispatcher().AddListener(reflect.TypeOf((*CPUExperimentStoppedEvent)(nil)), func(event interface{}) {
+		defer file.Close()
+
+		defer l2CacheRequestTracer.writer.Flush()
+	})
+
+	l2CacheRequestTracer.writer = csv.NewWriter(file)
+
 	return l2CacheRequestTracer
 }
 
@@ -33,5 +50,9 @@ func (l2CacheRequestTracer *L2CacheRequestTracer) handleL2Request(event *uncore.
 		_type = "R"
 	}
 
-	fmt.Printf("%d,%x,%s,%x\n", event.Access.ThreadId, event.Access.VirtualPc, _type, event.Access.PhysicalTag)
+	var line = []string{fmt.Sprintf("%d", event.Access.ThreadId), fmt.Sprintf("%x", event.Access.VirtualPc), _type, fmt.Sprintf("%x", event.Access.PhysicalTag)}
+
+	if err := l2CacheRequestTracer.writer.Write(line); err != nil {
+		panic("Cannot write file")
+	}
 }
