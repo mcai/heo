@@ -1,12 +1,11 @@
 package uncore
 
-type MemoryHierarchyAccessType uint32
+type MemoryHierarchyAccessType string
 
 const (
-	MemoryHierarchyAccessType_IFETCH  = MemoryHierarchyAccessType(0)
-	MemoryHierarchyAccessType_LOAD    = MemoryHierarchyAccessType(1)
-	MemoryHierarchyAccessType_STORE   = MemoryHierarchyAccessType(2)
-	MemoryHierarchyAccessType_UNKNOWN = MemoryHierarchyAccessType(3)
+	MemoryHierarchyAccessType_IFETCH  = MemoryHierarchyAccessType("IFETCH")
+	MemoryHierarchyAccessType_LOAD    = MemoryHierarchyAccessType("LOAD")
+	MemoryHierarchyAccessType_STORE   = MemoryHierarchyAccessType("STORE")
 )
 
 func (accessType MemoryHierarchyAccessType) IsRead() bool {

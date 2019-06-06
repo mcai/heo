@@ -17,6 +17,8 @@ func TestMstBaseline(t *testing.T) {
 	config.MaxMeasurementDynamicInsts = int64(100000000)
 	config.MaxMeasurementDynamicInsts = int64(100000000)
 
+	config.TraceL2Requests = true
+
 	//config.NetworkType = noc.NetworkType_BASE;
 	config.NetworkType = noc.NetworkType_FIXED_LATENCY;
 
@@ -34,6 +36,8 @@ func TestMstHelperThreaded(t *testing.T) {
 	config.NumThreadsPerCore = 2
 	config.MaxFastForwardDynamicInsts = int64(10000)
 	config.MaxMeasurementDynamicInsts = int64(100000000)
+
+	config.TraceL2Requests = true
 
 	//config.NetworkType = noc.NetworkType_BASE;
 	config.NetworkType = noc.NetworkType_FIXED_LATENCY;

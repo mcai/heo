@@ -23,5 +23,6 @@
   "BranchTargetBufferNumSets": 512,
   "BranchTargetBufferAssoc": 4,
   "ReturnAddressStackSize": 8,
+  "TraceL2Requests": true,
   "NetworkType": "FIXED_LATENCY"
 }

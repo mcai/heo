@@ -30,8 +30,10 @@ type CPUConfig struct {
 
 	TwoBitBranchPredictorSize uint32
 	BranchTargetBufferNumSets uint32
-	BranchTargetBufferAssoc   uint32
-	ReturnAddressStackSize    uint32
+	BranchTargetBufferAssoc uint32
+	ReturnAddressStackSize  uint32
+
+	TraceL2Requests bool
 
 	NetworkType noc.NetworkType
 }
@@ -62,6 +64,8 @@ func NewCPUConfig(outputDirectory string) *CPUConfig {
 		BranchTargetBufferNumSets: 512,
 		BranchTargetBufferAssoc:   4,
 		ReturnAddressStackSize:    8,
+
+		TraceL2Requests:false,
 
 		NetworkType:noc.NetworkType_BASE,
 	}

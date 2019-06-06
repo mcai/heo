@@ -29,6 +29,8 @@ type CPUExperiment struct {
 	statMap map[string]interface{}
 
 	L2PrefetchRequestProfiler *L2PrefetchRequestProfiler
+
+	L2CacheRequestTracer *L2CacheRequestTracer
 }
 
 func NewCPUExperiment(config *CPUConfig) *CPUExperiment {
@@ -55,6 +57,10 @@ func NewCPUExperiment(config *CPUConfig) *CPUExperiment {
 	experiment.Processor.UpdateContextToThreadAssignments()
 
 	experiment.L2PrefetchRequestProfiler = NewL2PrefetchRequestProfiler(experiment)
+
+	if config.TraceL2Requests {
+		experiment.L2CacheRequestTracer = NewL2CacheRequestTracer(experiment, config.OutputDirectory + "/l2_requests_trace.txt")
+	}
 
 	return experiment
 }
