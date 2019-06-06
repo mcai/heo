@@ -13,7 +13,11 @@ func TestCache(t *testing.T) {
 	var cache = NewCache(
 		geometry,
 		func(set uint32, way uint32) CacheLineStateProvider {
-			return NewBaseCacheLineStateProvider("init_state")
+			return NewBaseCacheLineStateProvider(
+				"init_state",
+				func(state interface{}) bool {
+					return state != "init_state"
+				})
 		},
 	)
 
