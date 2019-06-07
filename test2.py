@@ -54,12 +54,12 @@ train_Y = train[:, :, -1:]
 
 train_Y = to_categorical(train_Y.reshape(np.size(train_Y, 0), np.size(train_Y, 1)))
 
-num_outputs = np.size(train_Y, -1)
+num_classes = np.size(train_Y, -1)
 
 model = Sequential()
 model.add(LSTM(units=20, return_sequences=True, input_shape=(sequence_length, num_features)))
 model.add(LSTM(units=20))
-model.add(Dense(units=num_outputs, activation='softmax'))
+model.add(Dense(units=num_classes, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', top_10_accuracy])
 model.summary()
 
@@ -68,6 +68,8 @@ model.fit(train_X, train_Y, batch_size=1, epochs=3)
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
 
-test_Y = to_categorical(test_Y.reshape(np.size(test_Y, 0), np.size(test_Y, 1)))
+test_Y = to_categorical(test_Y.reshape(np.size(test_Y, 0), np.size(test_Y, 1)), num_classes=num_classes)
 
-model.evaluate(test_X, test_Y, verbose=1)
+result = model.evaluate(test_X, test_Y, verbose=1)
+
+print("loss: %s, acc: %s, top_10_accuracy: %s" %(result[0],result[1], result[2]))
