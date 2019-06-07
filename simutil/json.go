@@ -3,6 +3,7 @@ package simutil
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -17,7 +18,11 @@ func WriteJsonFile(obj interface{}, outputDirectory string, outputJsonFileName s
 		panic(fmt.Sprintf("Cannot create JSON file (%s)", err))
 	}
 
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatal("Cannot close file" )
+		}
+	}()
 
 	j, err := json.MarshalIndent(obj, "", "  ")
 
@@ -37,7 +42,11 @@ func LoadJsonFile(outputDirectory string, outputJsonFileName string, data interf
 		panic(fmt.Sprintf("Cannot open JSON file (%s)", err))
 	}
 
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatal("Cannot close file" )
+		}
+	}()
 
 	var jsonParser = json.NewDecoder(file)
 

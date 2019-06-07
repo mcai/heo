@@ -33,7 +33,11 @@ func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L
 	}
 
 	experiment.BlockingEventDispatcher().AddListener(reflect.TypeOf((*CPUExperimentStoppedEvent)(nil)), func(event interface{}) {
-		defer file.Close()
+		defer func() {
+			if err := file.Close(); err != nil {
+				panic("Cannot close file")
+			}
+		}()
 
 		defer l2CacheRequestTracer.writer.Flush()
 	})

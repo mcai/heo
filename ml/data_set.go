@@ -19,7 +19,11 @@ func FromCSV(filename string) DataSet {
 		log.Fatal("Cannot open file: " + filename)
 	}
 
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatal("Cannot close file" )
+		}
+	}()
 
 	var lines [][]string
 	var scanner = bufio.NewScanner(file)

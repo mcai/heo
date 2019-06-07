@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"github.com/mcai/heo/simutil"
+	"log"
 	"os"
 )
 
@@ -162,7 +163,11 @@ func WriteCSVFile(outputDirectory string, outputCSVFileName string, experiments 
 		panic(fmt.Sprintf("Cannot create CSV file (%s)", err))
 	}
 
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatal("Cannot close file" )
+		}
+	}()
 
 	var w = csv.NewWriter(file)
 
