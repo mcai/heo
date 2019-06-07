@@ -76,7 +76,7 @@ model.summary()
 
 # plot_model(model, to_file='model.png')
 
-history = model.fit(train_X, train_Y, batch_size=4, epochs=20, verbose=2, validation_split=0.25)
+history = model.fit(train_X, train_Y, batch_size=4, epochs=30, verbose=2, validation_split=0.25)
 
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
