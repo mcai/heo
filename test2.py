@@ -10,8 +10,8 @@ num_features = 2
 num_outputs = 1
 
 model = Sequential()
-model.add(LSTM(20, return_sequences=True, input_shape=(sequence_length, num_features)))
-model.add(LSTM(20))
+model.add(LSTM(units=20, return_sequences=True, input_shape=(sequence_length, num_features)))
+model.add(LSTM(units=20))
 model.add(Dense(num_outputs))
 model.compile(loss='mae', optimizer='adam', metrics=['acc'])
 model.summary()
@@ -28,12 +28,6 @@ df['id'] = df.index
 df = df[["thread_id", "pc", "data_address_delta"]]
 
 df = df[df['data_address_delta'].notnull()]
-
-# df = pd.concat([df,pd.get_dummies(df['pc'], prefix='pc')],axis=1)
-# df.drop(['pc'],axis=1, inplace=True)
-#
-# df = pd.concat([df,pd.get_dummies(df['data_address_delta'], prefix='data_address_delta')],axis=1)
-# df.drop(['data_address_delta'],axis=1, inplace=True)
 
 # TODO: embedding, concatenate, predict 10 classes
 
