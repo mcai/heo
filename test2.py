@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from keras.layers import LSTM, Dense
+from keras.layers import LSTM, Dense, Dropout
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
 from keras.utils import plot_model
@@ -62,8 +62,12 @@ train_Y = one_hot_encoder_address_delta.fit_transform(train_Y.reshape(train_Y.sh
 num_classes = np.size(train_Y, -1)
 
 model = Sequential()
-model.add(LSTM(units=25, return_sequences=True, input_shape=(sequence_length, num_features)))
-model.add(LSTM(units=25))
+model.add(LSTM(units=50, return_sequences=True, input_shape=(sequence_length, num_features)))
+model.add(Dropout(0.2))
+model.add(LSTM(units=50, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(units=50))
+model.add(Dropout(0.2))
 model.add(Dense(units=num_classes, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
     'accuracy', top_5_accuracy, top_10_accuracy
