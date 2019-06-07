@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from keras import metrics
 from keras.layers import LSTM, Dense
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
@@ -28,8 +27,6 @@ df = df[['thread_id', 'pc', 'data_address_delta']]
 
 df = df[df['data_address_delta'].notnull()]
 
-# TODO: embedding, concatenate, predict 10 classes
-
 # for i in range(1, sequence_length):
 #     df['data_address_delta_prev_' + str(i)] = df['data_address_delta'].shift(-i)
 #
@@ -39,7 +36,7 @@ df = df[df['data_address_delta'].notnull()]
 
 df = df.values
 
-df = df.reshape(np.size(df, 0), 1, np.size(df, 1))
+df = df.reshape(df.shape[0], 1, df.shape[1])
 
 encoder_pc = LabelEncoder()
 encoder_data_address_delta = LabelEncoder()
@@ -52,7 +49,7 @@ train, test = train_test_split(df, test_size=0.15)
 train_X = train[:, :, :-1]
 train_Y = train[:, :, -1:]
 
-train_Y = to_categorical(train_Y.reshape(np.size(train_Y, 0), np.size(train_Y, 1)))
+train_Y = to_categorical(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
 
 num_classes = np.size(train_Y, -1)
 
@@ -68,7 +65,7 @@ model.fit(train_X, train_Y, batch_size=1, epochs=3)
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
 
-test_Y = to_categorical(test_Y.reshape(np.size(test_Y, 0), np.size(test_Y, 1)), num_classes=num_classes)
+test_Y = to_categorical(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]), num_classes=num_classes)
 
 result = model.evaluate(test_X, test_Y, verbose=1)
 
