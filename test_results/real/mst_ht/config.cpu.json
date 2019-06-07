@@ -7,8 +7,8 @@
       "Arguments": "100"
     }
   ],
-  "MaxFastForwardDynamicInsts": 10000,
-  "MaxMeasurementDynamicInsts": 100000000,
+  "MaxFastForwardDynamicInsts": 0,
+  "MaxMeasurementDynamicInsts": -1,
   "NumCores": 2,
   "NumThreadsPerCore": 2,
   "PhysicalRegisterFileSize": 128,

@@ -7,8 +7,8 @@
       "Arguments": "100"
     }
   ],
-  "MaxFastForwardDynamicInsts": 10000,
-  "MaxMeasurementDynamicInsts": 100000000,
+  "MaxFastForwardDynamicInsts": 0,
+  "MaxMeasurementDynamicInsts": -1,
   "NumCores": 2,
   "NumThreadsPerCore": 2,
   "PhysicalRegisterFileSize": 128,
@@ -22,5 +22,7 @@
   "TwoBitBranchPredictorSize": 2048,
   "BranchTargetBufferNumSets": 512,
   "BranchTargetBufferAssoc": 4,
-  "ReturnAddressStackSize": 8
+  "ReturnAddressStackSize": 8,
+  "TraceL2Requests": true,
+  "NetworkType": "FIXED_LATENCY"
 }

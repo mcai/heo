@@ -2,6 +2,7 @@
   "OutputDirectory": "../test_results/real/mst_baseline",
   "NumNodes": 4,
   "MaxCycles": -1,
+  "NetworkType": "FIXED_LATENCY",
   "MaxPackets": -1,
   "DrainPackets": false,
   "Routing": "OddEven",
