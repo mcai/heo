@@ -68,13 +68,13 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
 ])
 model.summary()
 
-model.fit(train_X, train_Y, batch_size=1, epochs=5)
+model.fit(train_X, train_Y, batch_size=4, epochs=20, verbose=2)
 
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
 
 test_Y = one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
 
-result = model.evaluate(test_X, test_Y, verbose=1)
+result = model.evaluate(test_X, test_Y, verbose=2)
 
-print("loss: %s, acc: %s, top_5_accuracy: %s, top_10_accuracy: %s" %(result[0], result[1], result[2], result[3]))
+print('loss: {:0.4f}, acc: {:0.4f}, top_5_accuracy: {:0.4f}, top_10_accuracy: {:0.4f}'.format(result[0], result[1], result[2], result[3]))
