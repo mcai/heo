@@ -3,8 +3,10 @@ import pandas as pd
 from keras.layers import LSTM, Dense
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
+from keras.utils import plot_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+import matplotlib.pyplot as plt
 
 
 def top_5_accuracy(y_true, y_pred):
@@ -68,7 +70,41 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
 ])
 model.summary()
 
-model.fit(train_X, train_Y, batch_size=4, epochs=20, verbose=2)
+# plot_model(model, to_file='model.png')
+
+history = model.fit(train_X, train_Y, batch_size=4, epochs=20, verbose=2, validation_split=0.25)
+
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+
+plt.plot(history.history['top_5_accuracy'])
+plt.plot(history.history['val_top_5_accuracy'])
+plt.title('Model Top 5 Accuracy')
+plt.ylabel('Top 5 Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+
+plt.plot(history.history['top_10_accuracy'])
+plt.plot(history.history['val_top_10_accuracy'])
+plt.title('Model Top 10 Accuracy')
+plt.ylabel('Top 10 Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
 
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
