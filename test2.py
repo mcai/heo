@@ -3,9 +3,8 @@ import pandas as pd
 from keras.layers import LSTM, Dense
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
-from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 
 def top_10_accuracy(y_true, y_pred):
@@ -49,13 +48,15 @@ train, test = train_test_split(df, test_size=0.3)
 train_X = train[:, :, :-1]
 train_Y = train[:, :, -1:]
 
-train_Y = to_categorical(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
+one_hot_encoder_address_delta = OneHotEncoder(handle_unknown='ignore')
+
+train_Y = one_hot_encoder_address_delta.fit_transform(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
 
 num_classes = np.size(train_Y, -1)
 
 model = Sequential()
-model.add(LSTM(units=20, return_sequences=True, input_shape=(sequence_length, num_features)))
-model.add(LSTM(units=20))
+model.add(LSTM(units=25, return_sequences=True, input_shape=(sequence_length, num_features)))
+model.add(LSTM(units=25))
 model.add(Dense(units=num_classes, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', top_10_accuracy])
 model.summary()
@@ -65,7 +66,7 @@ model.fit(train_X, train_Y, batch_size=1, epochs=5)
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
 
-test_Y = to_categorical(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]), num_classes=num_classes)
+test_Y = one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
 
 result = model.evaluate(test_X, test_Y, verbose=1)
 
