@@ -116,10 +116,6 @@ func (profiler *L2PrefetchRequestProfiler) handleL2Request(event *uncore.General
 		victimLineState = profiler.L2PrefetchRequestStates[int32(event.Set)][victimWay]
 	}
 
-	if victimLineState == nil {
-		panic("Error")
-	}
-
 	var victimHit = victimLine != nil
 	var victimEvicterDemandHit = victimHit && IsDemandThread(victimLineState.ThreadId)
 	var victimEvicterPrefetchHit = victimHit && !victimLineState.Used && IsPrefetchThread(victimLineState.ThreadId)
