@@ -7,8 +7,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 
+def top_5_accuracy(y_true, y_pred):
+    return top_k_categorical_accuracy(y_true, y_pred, k=5)
+
+
 def top_10_accuracy(y_true, y_pred):
     return top_k_categorical_accuracy(y_true, y_pred, k=10)
+
 
 sequence_length = 1
 num_features = 2
@@ -58,7 +63,9 @@ model = Sequential()
 model.add(LSTM(units=25, return_sequences=True, input_shape=(sequence_length, num_features)))
 model.add(LSTM(units=25))
 model.add(Dense(units=num_classes, activation='softmax'))
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', top_10_accuracy])
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
+    'accuracy', top_5_accuracy, top_10_accuracy
+])
 model.summary()
 
 model.fit(train_X, train_Y, batch_size=1, epochs=5)
@@ -70,4 +77,4 @@ test_Y = one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0],
 
 result = model.evaluate(test_X, test_Y, verbose=1)
 
-print("loss: %s, acc: %s, top_10_accuracy: %s" %(result[0],result[1], result[2]))
+print("loss: %s, acc: %s, top_5_accuracy: %s, top_10_accuracy: %s" %(result[0], result[1], result[2], result[3]))
