@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from keras.layers import LSTM, Dense
 from keras.models import Sequential
@@ -5,10 +6,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 sequence_length = 1
+num_features = 1
 num_outputs = 1
 
 model = Sequential()
-model.add(LSTM(20, return_sequences=True, input_shape=(sequence_length, 1)))
+model.add(LSTM(20, return_sequences=True, input_shape=(sequence_length, num_features)))
 model.add(LSTM(20))
 model.add(Dense(num_outputs))
 model.compile(loss='mae', optimizer='adam', metrics=['acc'])
@@ -55,15 +57,15 @@ train_Y = train[:, -1:]
 encoder_X = LabelEncoder()
 encoder_Y = LabelEncoder()
 
-encoded_X = encoder_X.fit_transform(train_X).reshape(len(train_X), 1, 1)
-encoded_Y = encoder_Y.fit_transform(train_Y).reshape(len(train_Y), 1)
+encoded_X = encoder_X.fit_transform(train_X).reshape(np.size(train_X, 0), sequence_length, num_features)
+encoded_Y = encoder_Y.fit_transform(train_Y).reshape(np.size(train_Y, 0), sequence_length)
 
-model.fit(encoded_X, encoded_Y, batch_size=1, epochs=10)
+model.fit(encoded_X, encoded_Y, batch_size=1, epochs=3)
 
 test_X = test[:, :-1]
 test_Y = test[:, -1:]
 
-encoded_X = encoder_X.fit_transform(test_X).reshape(len(test_X), 1, 1)
-encoded_Y = encoder_Y.fit_transform(test_Y).reshape(len(test_Y), 1)
+encoded_X = encoder_X.fit_transform(test_X).reshape(np.size(test_X, 0), sequence_length, num_features)
+encoded_Y = encoder_Y.fit_transform(test_Y).reshape(np.size(test_Y, 0), sequence_length)
 
 model.evaluate(encoded_X, encoded_Y, verbose=0)
