@@ -21,7 +21,7 @@ func (fixedLatencyNetwork *FixedLatencyNetwork) CurrentPacketId() int64  {
 }
 
 func (fixedLatencyNetwork *FixedLatencyNetwork) SetCurrentPacketId(currentPacketId int64)  {
-	fixedLatencyNetwork.currentPacketId = currentPacketId;
+	fixedLatencyNetwork.currentPacketId = currentPacketId
 }
 
 func (fixedLatencyNetwork *FixedLatencyNetwork) Driver() NetworkDriver {

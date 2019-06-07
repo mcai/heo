@@ -90,7 +90,7 @@ func (baseNetwork *BaseNetwork) CurrentPacketId() int64  {
 }
 
 func (baseNetwork *BaseNetwork) SetCurrentPacketId(currentPacketId int64)  {
-	baseNetwork.currentPacketId = currentPacketId;
+	baseNetwork.currentPacketId = currentPacketId
 }
 
 func (baseNetwork *BaseNetwork) Driver() NetworkDriver {

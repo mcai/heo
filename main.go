@@ -46,6 +46,7 @@ func main() {
 		outputDirectory,
 		numNodes,
 		maxCycles,
+		noc.NetworkType_BASE,
 		-1,
 		false)
 

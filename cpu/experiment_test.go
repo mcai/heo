@@ -9,18 +9,17 @@ func TestMstBaseline(t *testing.T) {
 	var config = NewCPUConfig("../test_results/real/mst_baseline")
 
 	config.ContextMappings = append(config.ContextMappings,
-		NewContextMapping(0, "../benchmarks/Olden_Custom1/mst/baseline/mst.mips", "100"))
+		NewContextMapping(0, "../benchmarks/Olden_Custom1/mst/baseline/mst.mips", "1000"))
 
 	config.NumCores = 2
 	config.NumThreadsPerCore = 2
-	config.MaxFastForwardDynamicInsts = int64(10000)
-	config.MaxMeasurementDynamicInsts = int64(100000000)
-	config.MaxMeasurementDynamicInsts = int64(100000000)
+	config.MaxFastForwardDynamicInsts = int64(0)
+	config.MaxMeasurementDynamicInsts = int64(-1)
 
 	config.TraceL2Requests = true
 
 	//config.NetworkType = noc.NetworkType_BASE;
-	config.NetworkType = noc.NetworkType_FIXED_LATENCY;
+	config.NetworkType = noc.NetworkType_FIXED_LATENCY
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()
@@ -30,17 +29,17 @@ func TestMstHelperThreaded(t *testing.T) {
 	var config = NewCPUConfig("../test_results/real/mst_ht")
 
 	config.ContextMappings = append(config.ContextMappings,
-		NewContextMapping(0, "../benchmarks/Olden_Custom1/mst/ht/mst.mips", "100"))
+		NewContextMapping(0, "../benchmarks/Olden_Custom1/mst/ht/mst.mips", "1000"))
 
 	config.NumCores = 2
 	config.NumThreadsPerCore = 2
-	config.MaxFastForwardDynamicInsts = int64(10000)
-	config.MaxMeasurementDynamicInsts = int64(100000000)
+	config.MaxFastForwardDynamicInsts = int64(0)
+	config.MaxMeasurementDynamicInsts = int64(-1)
 
 	config.TraceL2Requests = true
 
 	//config.NetworkType = noc.NetworkType_BASE;
-	config.NetworkType = noc.NetworkType_FIXED_LATENCY;
+	config.NetworkType = noc.NetworkType_FIXED_LATENCY
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()
