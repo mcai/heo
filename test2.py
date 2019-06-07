@@ -12,8 +12,8 @@ num_outputs = 1
 model = Sequential()
 model.add(LSTM(units=20, return_sequences=True, input_shape=(sequence_length, num_features)))
 model.add(LSTM(units=20))
-model.add(Dense(num_outputs))
-model.compile(loss='mae', optimizer='adam', metrics=['acc'])
+model.add(Dense(units=num_outputs))
+model.compile(optimizer='adam', loss='mae', metrics=['accuracy'])
 model.summary()
 
 file_name = "test_results/real/mst_ht/l2_requests_trace.txt"
@@ -42,16 +42,13 @@ df = df.values
 
 df = df.reshape(np.size(df, 0), 1, np.size(df, 1))
 
-X = df[:, :-1]
-Y = df[:, -1:]
-
-train, test = train_test_split(df, test_size=0.15)
-
 encoder_pc = LabelEncoder()
 encoder_data_address_delta = LabelEncoder()
 
-train[:, :, 1] = encoder_pc.fit_transform(train[:, :, 1]).reshape(-1, 1)
-train[:, :, -1] = encoder_data_address_delta.fit_transform(train[:, :, -1]).reshape(-1, 1)
+df[:, :, 1] = encoder_pc.fit_transform(df[:, :, 1]).reshape(-1, 1)
+df[:, :, -1] = encoder_data_address_delta.fit_transform(df[:, :, -1]).reshape(-1, 1)
+
+train, test = train_test_split(df, test_size=0.15)
 
 train_X = train[:, :, :-1]
 train_Y = train[:, :, -1:]
@@ -59,9 +56,6 @@ train_Y = train[:, :, -1:]
 train_Y = train_Y.reshape(np.size(train_Y, 0), np.size(train_Y, 1))
 
 model.fit(train_X, train_Y, batch_size=1, epochs=3)
-
-test[:, :, 1] = encoder_pc.fit_transform(test[:, :, 1]).reshape(-1, 1)
-test[:, :, -1] = encoder_data_address_delta.fit_transform(test[:, :, -1]).reshape(-1, 1)
 
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
