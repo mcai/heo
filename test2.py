@@ -44,7 +44,7 @@ encoder_data_address_delta = LabelEncoder()
 df[:, :, 1] = encoder_pc.fit_transform(df[:, :, 1]).reshape(-1, 1)
 df[:, :, -1] = encoder_data_address_delta.fit_transform(df[:, :, -1]).reshape(-1, 1)
 
-train, test = train_test_split(df, test_size=0.15)
+train, test = train_test_split(df, test_size=0.3)
 
 train_X = train[:, :, :-1]
 train_Y = train[:, :, -1:]
@@ -60,7 +60,7 @@ model.add(Dense(units=num_classes, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', top_10_accuracy])
 model.summary()
 
-model.fit(train_X, train_Y, batch_size=1, epochs=3)
+model.fit(train_X, train_Y, batch_size=1, epochs=5)
 
 test_X = test[:, :, :-1]
 test_Y = test[:, :, -1:]
