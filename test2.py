@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 sequence_length = 1
-num_features = 1
+num_features = 2
 num_outputs = 1
 
 model = Sequential()
@@ -25,7 +25,7 @@ df['data_address'] = df['data_address'].apply(int, base=16).apply(lambda x: int(
 df['data_address_delta'] = df.groupby('pc', sort=False)['data_address'].diff()
 df['id'] = df.index
 
-df = df[["pc", "data_address_delta"]]
+df = df[["thread_id", "pc", "data_address_delta"]]
 
 df = df[df['data_address_delta'].notnull()]
 
@@ -46,26 +46,32 @@ df = df[df['data_address_delta'].notnull()]
 
 df = df.values
 
+df = df.reshape(np.size(df, 0), 1, np.size(df, 1))
+
 X = df[:, :-1]
 Y = df[:, -1:]
 
 train, test = train_test_split(df, test_size=0.15)
 
-train_X = train[:, :-1]
-train_Y = train[:, -1:]
+encoder_pc = LabelEncoder()
+encoder_data_address_delta = LabelEncoder()
 
-encoder_X = LabelEncoder()
-encoder_Y = LabelEncoder()
+train[:, :, 1] = encoder_pc.fit_transform(train[:, :, 1]).reshape(-1, 1)
+train[:, :, -1] = encoder_data_address_delta.fit_transform(train[:, :, -1]).reshape(-1, 1)
 
-encoded_X = encoder_X.fit_transform(train_X).reshape(np.size(train_X, 0), sequence_length, num_features)
-encoded_Y = encoder_Y.fit_transform(train_Y).reshape(np.size(train_Y, 0), sequence_length)
+train_X = train[:, :, :-1]
+train_Y = train[:, :, -1:]
 
-model.fit(encoded_X, encoded_Y, batch_size=1, epochs=3)
+train_Y = train_Y.reshape(np.size(train_Y, 0), np.size(train_Y, 1))
 
-test_X = test[:, :-1]
-test_Y = test[:, -1:]
+model.fit(train_X, train_Y, batch_size=1, epochs=3)
 
-encoded_X = encoder_X.fit_transform(test_X).reshape(np.size(test_X, 0), sequence_length, num_features)
-encoded_Y = encoder_Y.fit_transform(test_Y).reshape(np.size(test_Y, 0), sequence_length)
+test[:, :, 1] = encoder_pc.fit_transform(test[:, :, 1]).reshape(-1, 1)
+test[:, :, -1] = encoder_data_address_delta.fit_transform(test[:, :, -1]).reshape(-1, 1)
 
-model.evaluate(encoded_X, encoded_Y, verbose=0)
+test_X = test[:, :, :-1]
+test_Y = test[:, :, -1:]
+
+test_Y = test_Y.reshape(np.size(test_Y, 0), np.size(test_Y, 1))
+
+model.evaluate(test_X, test_Y, verbose=0)
