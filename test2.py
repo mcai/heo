@@ -129,8 +129,8 @@ class DeepNet:
 
         print('loss: {:0.4f}, acc: {:0.4f}, top_5_accuracy: {:0.4f}, top_10_accuracy: {:0.4f}'.format(result[0], result[1], result[2], result[3]))
 
-    def predict(self, top_k=10):
-        X = np.array([0, 524340 / 8])
+    def predict(self, thread_id, pc, top_k=10):
+        X = np.array([thread_id, pc / 8])
         X = X.reshape(1, 1, X.shape[0]) # num_samples=1, num_steps=1, num_features=2
 
         predicted_Y = self.model.predict(X, batch_size=1, verbose=2)
@@ -155,4 +155,4 @@ class DeepNet:
 
             predicted_Y = self.one_hot_encoder_address_delta.inverse_transform(predicted_Y)
 
-            return predicted_Y
+            return predicted_Y[0]
