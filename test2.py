@@ -3,7 +3,7 @@ import pandas as pd
 from keras.layers import LSTM, Dense, Dropout
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
-from keras.utils import plot_model
+# from keras.utils import plot_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 # import matplotlib.pyplot as plt
