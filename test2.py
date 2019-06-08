@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from keras.layers import LSTM, Dense, Dropout
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
@@ -10,8 +11,16 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 
 class DeepNet:
-    def __init__(self):
-        pass
+    model = None
+    batch_size = None
+    epochs = None
+    num_classes = None
+
+    one_hot_encoder_address_delta = None
+
+    def __init__(self, batch_size=4, epochs=30):
+        self.batch_size = batch_size
+        self.epochs = epochs
 
     def top_5_accuracy(self, y_true, y_pred):
         return top_k_categorical_accuracy(y_true, y_pred, k=5)
@@ -19,7 +28,7 @@ class DeepNet:
     def top_10_accuracy(self, y_true, y_pred):
         return top_k_categorical_accuracy(y_true, y_pred, k=10)
 
-    def run(self, file_name):
+    def fit(self, file_name):
         sequence_length = 1
         num_features = 2
 
@@ -56,28 +65,28 @@ class DeepNet:
         train_X = train[:, :, :-1]
         train_Y = train[:, :, -1:]
 
-        one_hot_encoder_address_delta = OneHotEncoder(handle_unknown='ignore')
+        self.one_hot_encoder_address_delta = OneHotEncoder(handle_unknown='ignore')
 
-        train_Y = one_hot_encoder_address_delta.fit_transform(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
+        train_Y = self.one_hot_encoder_address_delta.fit_transform(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
 
-        num_classes = np.size(train_Y, -1)
+        self.num_classes = np.size(train_Y, -1)
 
-        model = Sequential()
-        model.add(LSTM(units=50, return_sequences=True, input_shape=(sequence_length, num_features)))
-        model.add(Dropout(0.2))
-        model.add(LSTM(units=50, return_sequences=True))
-        model.add(Dropout(0.2))
-        model.add(LSTM(units=50))
-        model.add(Dropout(0.2))
-        model.add(Dense(units=num_classes, activation='softmax'))
-        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
+        self.model = Sequential()
+        self.model.add(LSTM(units=50, return_sequences=True, input_shape=(sequence_length, num_features)))
+        self.model.add(Dropout(0.2))
+        self.model.add(LSTM(units=50, return_sequences=True))
+        self.model.add(Dropout(0.2))
+        self.model.add(LSTM(units=50))
+        self.model.add(Dropout(0.2))
+        self.model.add(Dense(units=self.num_classes, activation='softmax'))
+        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
             'accuracy', self.top_5_accuracy, self.top_10_accuracy
         ])
-        model.summary()
+        self.model.summary()
 
         # plot_model(model, to_file='model.png')
 
-        history = model.fit(train_X, train_Y, batch_size=4, epochs=30, verbose=2, validation_split=0.25)
+        history = self.model.fit(train_X, train_Y, batch_size=self.batch_size, epochs=self.epochs, verbose=2, validation_split=0.25)
 
         # plt.plot(history.history['acc'])
         # plt.plot(history.history['val_acc'])
@@ -114,8 +123,36 @@ class DeepNet:
         test_X = test[:, :, :-1]
         test_Y = test[:, :, -1:]
 
-        test_Y = one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
+        test_Y = self.one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
 
-        result = model.evaluate(test_X, test_Y, verbose=2)
+        result = self.model.evaluate(test_X, test_Y, verbose=2)
 
         print('loss: {:0.4f}, acc: {:0.4f}, top_5_accuracy: {:0.4f}, top_10_accuracy: {:0.4f}'.format(result[0], result[1], result[2], result[3]))
+
+    def predict(self, top_k=10):
+        X = np.array([0, 524340 / 8])
+        X = X.reshape(1, 1, X.shape[0]) # num_samples=1, num_steps=1, num_features=2
+
+        predicted_Y = self.model.predict(X, batch_size=1, verbose=2)
+
+        sess = tf.Session()
+
+        with sess.as_default():
+            scores, indices = tf.math.top_k(
+                tf.convert_to_tensor(predicted_Y, dtype=np.float32),
+                k=top_k,
+                sorted=True,
+            )
+
+            scores = scores.eval()
+            indices = indices.eval()
+
+            print(scores.shape)
+            print(scores)
+
+            print(indices.shape)
+            print(indices)
+
+            predicted_Y = self.one_hot_encoder_address_delta.inverse_transform(predicted_Y)
+
+            return predicted_Y
