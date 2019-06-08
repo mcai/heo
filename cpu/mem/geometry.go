@@ -19,7 +19,7 @@ func NewGeometry(size uint32, assoc uint32, lineSize uint32) *Geometry {
 		LineSize:       lineSize,
 		LineSizeInLog2: uint32(math.Log2(float64(lineSize))),
 		NumSets:        size / assoc / lineSize,
-		NumSetsInLog2:  uint32(math.Log2(float64(size / uint32(assoc) / lineSize))),
+		NumSetsInLog2:  uint32(math.Log2(float64(size / assoc / lineSize))),
 		NumLines:       size / lineSize,
 	}
 
