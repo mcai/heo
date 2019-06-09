@@ -5,6 +5,7 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
 # from keras.utils import plot_model
+from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 # import matplotlib.pyplot as plt
@@ -18,7 +19,7 @@ class DeepNet:
 
     one_hot_encoder_address_delta = None
 
-    def __init__(self, batch_size=4, epochs=30):
+    def __init__(self, batch_size=4, epochs=1):
         self.batch_size = batch_size
         self.epochs = epochs
 
@@ -158,18 +159,23 @@ class DeepNet:
             scores = scores.eval()
             indices = indices.eval()
 
-            print("scores.shape")
-            print(scores.shape)
-            print(scores)
+            xxx = to_categorical(indices, num_classes=self.num_classes)
 
-            print("indices.shape")
-            print(indices.shape)
-            print(indices)
+            predictions = []
 
-            restored_predicted_Y = self.one_hot_encoder_address_delta.inverse_transform(predicted_Y)
+            for i in range(np.size(xxx, 1)):
+                xx = xxx[:, i, :]
+                inversed_xx = self.one_hot_encoder_address_delta.inverse_transform(xx)
+                print("inversed_xx:")
+                print(inversed_xx)
+                predictions.append(inversed_xx[0, 0])
 
-            print("restored_predicted_Y.shape")
-            print(restored_predicted_Y.shape)
-            print(restored_predicted_Y)
+            return predictions
 
-            return restored_predicted_Y[0]
+if __name__ == "__main__":
+    traceFileName = "/Users/itecgo/go/src/github.com/mcai/heo/test_results/real/mst_ht/l2_requests_trace.txt"
+
+    deep_net = DeepNet(epochs=1)
+    deep_net.fit(traceFileName)
+
+    deep_net.predict(0, 0x414a7c)

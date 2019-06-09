@@ -4,7 +4,7 @@
     {
       "ThreadId": 0,
       "Executable": "../benchmarks/Olden_Custom1/mst/ht/mst.mips",
-      "Arguments": "100"
+      "Arguments": "200"
     }
   ],
   "MaxFastForwardDynamicInsts": 0,
