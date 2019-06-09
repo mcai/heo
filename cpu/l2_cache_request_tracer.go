@@ -48,8 +48,7 @@ func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L
 }
 
 func (l2CacheRequestTracer *L2CacheRequestTracer) handleL2Request(event *uncore.GeneralCacheControllerServiceNonblockingRequestEvent) {
-	//if event.Access.AccessType.IsLoadOrStore()
-	{
+	if event.Access.AccessType.IsLoadOrStore() && !event.HitInCache {
 		var _type string
 
 		if event.Access.AccessType.IsRead() {

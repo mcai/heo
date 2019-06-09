@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from keras import optimizers
 from keras.layers import LSTM, Dense, Dropout
 from keras.metrics import top_k_categorical_accuracy
 from keras.models import Sequential
@@ -16,10 +17,11 @@ class DeepNet:
     batch_size = None
     epochs = None
     num_classes = None
+    encoder_pc = None
 
-    one_hot_encoder_address_delta = None
+    one_hot_encoder_data_address_delta = None
 
-    def __init__(self, batch_size=4, epochs=1):
+    def __init__(self, batch_size=1, epochs=1):
         self.batch_size = batch_size
         self.epochs = epochs
 
@@ -38,7 +40,9 @@ class DeepNet:
         df['pc'] = df['pc'].apply(int, base=16)
         df['data_address'] = df['data_address'].apply(int, base=16)
         df['data_address_delta'] = df.groupby('pc', sort=False)['data_address'].diff()
-        df['id'] = df.index
+        # df['id'] = df.index
+
+        df.to_csv(file_name + "_transformed2.txt")
 
         df = df[['thread_id', 'pc', 'data_address_delta']]
 
@@ -51,36 +55,37 @@ class DeepNet:
         # for i in range(1, sequence_length):
         #     df = df[df['data_address_delta_prev_' + str(i)].notnull()]
 
+        df.to_csv(file_name + "_transformed.txt")
+
         df = df.values
 
         df = df.reshape(df.shape[0], 1, df.shape[1])
 
-        encoder_pc = LabelEncoder()
-        encoder_data_address_delta = LabelEncoder()
+        self.encoder_pc = LabelEncoder() # TODO: should be used in predict too
 
-        df[:, :, 1] = encoder_pc.fit_transform(df[:, :, 1]).reshape(-1, 1)
-        df[:, :, -1] = encoder_data_address_delta.fit_transform(df[:, :, -1]).reshape(-1, 1)
+        df[:, :, 1] = self.encoder_pc.fit_transform(df[:, :, 1]).reshape(-1, 1)
 
         train, test = train_test_split(df, test_size=0.3)
 
         train_X = train[:, :, :-1]
         train_Y = train[:, :, -1:]
 
-        self.one_hot_encoder_address_delta = OneHotEncoder(handle_unknown='ignore')
+        self.one_hot_encoder_data_address_delta = OneHotEncoder(handle_unknown='ignore')
 
-        train_Y = self.one_hot_encoder_address_delta.fit_transform(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
+        train_Y = self.one_hot_encoder_data_address_delta.fit_transform(train_Y.reshape(train_Y.shape[0], train_Y.shape[1]))
 
         self.num_classes = np.size(train_Y, -1)
 
+        learning_rate = 0.001
+        decay_rate = learning_rate / self.epochs
+
         self.model = Sequential()
-        self.model.add(LSTM(units=50, return_sequences=True, input_shape=(sequence_length, num_features)))
-        self.model.add(Dropout(0.2))
-        self.model.add(LSTM(units=50, return_sequences=True))
-        self.model.add(Dropout(0.2))
-        self.model.add(LSTM(units=50))
-        self.model.add(Dropout(0.2))
+        self.model.add(LSTM(units=128, return_sequences=True, input_shape=(sequence_length, num_features)))
+        # self.model.add(Dropout(0.2))
+        self.model.add(LSTM(units=128))
+        # self.model.add(Dropout(0.2))
         self.model.add(Dense(units=self.num_classes, activation='softmax'))
-        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=[
+        self.model.compile(optimizer=optimizers.Adam(lr=learning_rate, decay=decay_rate), loss='categorical_crossentropy', metrics=[
             'accuracy', self.top_5_accuracy, self.top_10_accuracy
         ])
         self.model.summary()
@@ -124,7 +129,7 @@ class DeepNet:
         test_X = test[:, :, :-1]
         test_Y = test[:, :, -1:]
 
-        test_Y = self.one_hot_encoder_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
+        test_Y = self.one_hot_encoder_data_address_delta.transform(test_Y.reshape(test_Y.shape[0], test_Y.shape[1]))
 
         result = self.model.evaluate(test_X, test_Y, verbose=2)
 
@@ -134,22 +139,11 @@ class DeepNet:
         X = np.array([thread_id, pc])
         X = X.reshape(1, 1, X.shape[0]) # num_samples=1, num_steps=1, num_features=2
 
-        # predictions = self.model.predict_classes(X, batch_size=1, verbose=2)
-        # prediction_ = np.argmax(to_categorical(predictions), axis = 1)
-        # prediction_ = encoder.inverse_transform(prediction_)
-        #
-        # for i, j in zip(prediction_ , predict_species):
-        #     print( " the nn predict {}, and the species to find is {}".format(i,j))
+        X[:, :, 1] = self.encoder_pc.transform(X[:, :, 1]).reshape(-1, 1)
 
         predicted_Y = self.model.predict(X, batch_size=1, verbose=2)
 
-        print("predicted_Y: ")
-        print(predicted_Y.shape)
-        print(predicted_Y)
-
-        sess = tf.Session()
-
-        with sess.as_default():
+        with tf.Session().as_default():
             scores, indices = tf.math.top_k(
                 tf.convert_to_tensor(predicted_Y, dtype=np.float32),
                 k=top_k,
@@ -165,17 +159,30 @@ class DeepNet:
 
             for i in range(np.size(xxx, 1)):
                 xx = xxx[:, i, :]
-                inversed_xx = self.one_hot_encoder_address_delta.inverse_transform(xx)
-                print("inversed_xx:")
-                print(inversed_xx)
+                inversed_xx = self.one_hot_encoder_data_address_delta.inverse_transform(xx)
                 predictions.append(int(inversed_xx[0, 0]))
 
             return predictions
 
+
 if __name__ == "__main__":
-    traceFileName = "/Users/itecgo/go/src/github.com/mcai/heo/test_results/real/mst_ht/l2_requests_trace.txt"
+    deep_net = DeepNet(epochs=20)
+    deep_net.fit("/Users/itecgo/go/src/github.com/mcai/heo/test_results/real/mst_ht/l2_requests_trace.txt")
 
-    deep_net = DeepNet(epochs=1)
-    deep_net.fit(traceFileName)
+    def predict(pc):
+        predictions = deep_net.predict(0, pc)
 
-    deep_net.predict(0, 0x414a7c)
+        print("pc: ")
+        print(pc)
+
+        for prediction in predictions:
+            print(prediction)
+
+    predict(4196900)
+
+    print()
+    print()
+
+    predict(4196916)
+
+# TODO: @tragu in my case: reduced the number of output classes, increased the number of samples of each class and fixed inconsistencies using a pre-trained model
