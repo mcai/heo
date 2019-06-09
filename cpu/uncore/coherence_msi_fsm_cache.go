@@ -629,7 +629,7 @@ func NewCacheControllerFiniteStateMachineFactory() *CacheControllerFiniteStateMa
 			cacheControllerFsm.SendPutSToDir(event, uint32(cacheControllerFsm.Line().Tag))
 			cacheControllerFsm.OnCompletedCallback = event.OnCompletedCallback
 			cacheControllerFsm.FireReplacementEvent(event.Access(), event.Tag())
-			cacheControllerFsm.CacheController.NumEvictions++
+			cacheControllerFsm.CacheController.NumReplacements++
 		},
 		CacheControllerState_SI_A,
 	).OnCondition(
@@ -854,7 +854,7 @@ func NewCacheControllerFiniteStateMachineFactory() *CacheControllerFiniteStateMa
 			cacheControllerFsm.SendPutMAndDataToDir(event, uint32(cacheControllerFsm.Line().Tag))
 			cacheControllerFsm.OnCompletedCallback = event.OnCompletedCallback
 			cacheControllerFsm.FireReplacementEvent(event.Access(), event.Tag())
-			cacheControllerFsm.CacheController.NumEvictions++
+			cacheControllerFsm.CacheController.NumReplacements++
 		},
 		CacheControllerState_MI_A,
 	).OnCondition(

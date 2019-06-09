@@ -17,6 +17,10 @@ func (accessType MemoryHierarchyAccessType) IsWrite() bool {
 	return accessType == MemoryHierarchyAccessType_STORE
 }
 
+func (accessType MemoryHierarchyAccessType) IsLoadOrStore() bool {
+	return accessType == MemoryHierarchyAccessType_LOAD || accessType == MemoryHierarchyAccessType_STORE
+}
+
 type MemoryHierarchyAccess struct {
 	MemoryHierarchy MemoryHierarchy
 	Id              int32

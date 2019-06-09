@@ -49,7 +49,7 @@ type BaseCacheController struct {
 	NumDownwardReadMisses  int64
 	NumDownwardWriteHits   int64
 	NumDownwardWriteMisses int64
-	NumEvictions           int64
+	NumReplacements        int64
 }
 
 func NewBaseCacheController(memoryHierarchy MemoryHierarchy, name string, deviceType MemoryDeviceType) *BaseCacheController {

@@ -744,7 +744,7 @@ func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFinit
 			directoryControllerFsm.FireReplacementEvent(event.Access(), event.Tag())
 			directoryControllerFsm.EvicterTag = int32(event.Tag())
 			directoryControllerFsm.VictimTag = directoryControllerFsm.Line().Tag
-			directoryControllerFsm.DirectoryController.NumEvictions++
+			directoryControllerFsm.DirectoryController.NumReplacements++
 		},
 		DirectoryControllerState_SI_A,
 	).OnCondition(
@@ -818,7 +818,7 @@ func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFinit
 			directoryControllerFsm.FireReplacementEvent(event.Access(), event.Tag())
 			directoryControllerFsm.EvicterTag = int32(event.Tag())
 			directoryControllerFsm.VictimTag = directoryControllerFsm.Line().Tag
-			directoryControllerFsm.DirectoryController.NumEvictions++
+			directoryControllerFsm.DirectoryController.NumReplacements++
 		},
 		DirectoryControllerState_MI_A,
 	).OnCondition(

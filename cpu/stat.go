@@ -103,8 +103,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 			Value: itlb.NumMisses,
 		})
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("itlb_%d.NumEvictions", i),
-			Value: itlb.NumEvictions,
+			Key:   fmt.Sprintf("itlb_%d.NumReplacements", i),
+			Value: itlb.NumReplacements,
 		})
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
 			Key:   fmt.Sprintf("itlb_%d.OccupancyRatio", i),
@@ -130,8 +130,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 			Value: dtlb.NumMisses,
 		})
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("dtlb_%d.NumEvictions", i),
-			Value: dtlb.NumEvictions,
+			Key:   fmt.Sprintf("dtlb_%d.NumReplacements", i),
+			Value: dtlb.NumReplacements,
 		})
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
 			Key:   fmt.Sprintf("dtlb_%d.OccupancyRatio", i),
@@ -175,8 +175,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 		})
 
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("icache_%d.NumEvictions", i),
-			Value: cacheController.NumEvictions,
+			Key:   fmt.Sprintf("icache_%d.NumReplacements", i),
+			Value: cacheController.NumReplacements,
 		})
 
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
@@ -221,8 +221,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 		})
 
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
-			Key:   fmt.Sprintf("dcache_%d.NumEvictions", i),
-			Value: cacheController.NumEvictions,
+			Key:   fmt.Sprintf("dcache_%d.NumReplacements", i),
+			Value: cacheController.NumReplacements,
 		})
 
 		experiment.Stats = append(experiment.Stats, simutil.Stat{
@@ -266,8 +266,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 	})
 
 	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "l2cache.NumEvictions",
-		Value: experiment.MemoryHierarchy.L2Controller().NumEvictions,
+		Key:   "l2cache.NumReplacements",
+		Value: experiment.MemoryHierarchy.L2Controller().NumReplacements,
 	})
 
 	experiment.Stats = append(experiment.Stats, simutil.Stat{

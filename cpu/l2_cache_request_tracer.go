@@ -48,11 +48,14 @@ func NewL2CacheRequestTracer(experiment *CPUExperiment, traceFileName string) *L
 }
 
 func (l2CacheRequestTracer *L2CacheRequestTracer) handleL2Request(event *uncore.GeneralCacheControllerServiceNonblockingRequestEvent) {
-	if !event.HitInCache {
-		var _type = "W"
+	//if event.Access.AccessType.IsLoadOrStore()
+	{
+		var _type string
 
 		if event.Access.AccessType.IsRead() {
 			_type = "R"
+		} else {
+			_type = "W"
 		}
 
 		var line = []string{fmt.Sprintf("%d", event.Access.ThreadId), fmt.Sprintf("%x", event.Access.VirtualPc), _type, fmt.Sprintf("%x", event.Access.PhysicalTag)}

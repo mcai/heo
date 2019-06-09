@@ -104,6 +104,6 @@ func NewLastLevelCacheControllerLineInsertEvent(cacheController MemoryDevice, ac
 	return event
 }
 
-func (event *LastLevelCacheControllerLineInsertEvent) Eviction() bool {
+func (event *LastLevelCacheControllerLineInsertEvent) HasReplacement() bool {
 	return event.VictimTag != INVALID_TAG
 }

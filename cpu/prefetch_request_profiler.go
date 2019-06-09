@@ -248,7 +248,7 @@ func (profiler *L2PrefetchRequestProfiler) handleL2LineInsert(event *uncore.Last
 		panic("Impossible")
 	}
 
-	if !event.Eviction() {
+	if !event.HasReplacement() {
 		l2LineState.VictimThreadId = -1
 		l2LineState.VictimPc = -1
 		l2LineState.VictimTag = uncore.INVALID_TAG

@@ -8,7 +8,7 @@ type TranslationLookasideBuffer struct {
 	Cache           *EvictableCache
 	NumHits         int64
 	NumMisses       int64
-	NumEvictions    int64
+	NumReplacements int64
 }
 
 func NewTranslationLookasideBuffer(memoryHierarchy MemoryHierarchy, name string) *TranslationLookasideBuffer {
@@ -70,7 +70,7 @@ func (tlb *TranslationLookasideBuffer) Access(access *MemoryHierarchyAccess, onC
 		tlb.NumHits++
 	} else {
 		if cacheAccess.Replacement {
-			tlb.NumEvictions++
+			tlb.NumReplacements++
 		}
 
 		var line = tlb.Cache.Sets[set].Lines[cacheAccess.Way]

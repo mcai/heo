@@ -34,8 +34,8 @@ class DeepNet:
 
         df = pd.read_csv(file_name, names=['thread_id', 'pc', 'type', 'data_address'])
 
-        df['pc'] = df['pc'].apply(int, base=16).apply(lambda x: int(x / 8))
-        df['data_address'] = df['data_address'].apply(int, base=16).apply(lambda x: int(x / 8))
+        df['pc'] = df['pc'].apply(int, base=16)
+        df['data_address'] = df['data_address'].apply(int, base=16)
         df['data_address_delta'] = df.groupby('pc', sort=False)['data_address'].diff()
         df['id'] = df.index
 
@@ -130,10 +130,21 @@ class DeepNet:
         print('loss: {:0.4f}, acc: {:0.4f}, top_5_accuracy: {:0.4f}, top_10_accuracy: {:0.4f}'.format(result[0], result[1], result[2], result[3]))
 
     def predict(self, thread_id, pc, top_k=10):
-        X = np.array([thread_id, pc / 8])
+        X = np.array([thread_id, pc])
         X = X.reshape(1, 1, X.shape[0]) # num_samples=1, num_steps=1, num_features=2
 
+        # predictions = self.model.predict_classes(X, batch_size=1, verbose=2)
+        # prediction_ = np.argmax(to_categorical(predictions), axis = 1)
+        # prediction_ = encoder.inverse_transform(prediction_)
+        #
+        # for i, j in zip(prediction_ , predict_species):
+        #     print( " the nn predict {}, and the species to find is {}".format(i,j))
+
         predicted_Y = self.model.predict(X, batch_size=1, verbose=2)
+
+        print("predicted_Y: ")
+        print(predicted_Y.shape)
+        print(predicted_Y)
 
         sess = tf.Session()
 
@@ -147,12 +158,18 @@ class DeepNet:
             scores = scores.eval()
             indices = indices.eval()
 
+            print("scores.shape")
             print(scores.shape)
             print(scores)
 
+            print("indices.shape")
             print(indices.shape)
             print(indices)
 
-            predicted_Y = self.one_hot_encoder_address_delta.inverse_transform(predicted_Y)
+            restored_predicted_Y = self.one_hot_encoder_address_delta.inverse_transform(predicted_Y)
 
-            return predicted_Y[0]
+            print("restored_predicted_Y.shape")
+            print(restored_predicted_Y.shape)
+            print(restored_predicted_Y)
+
+            return restored_predicted_Y[0]
