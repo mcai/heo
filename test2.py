@@ -168,7 +168,7 @@ class DeepNet:
                 inversed_xx = self.one_hot_encoder_address_delta.inverse_transform(xx)
                 print("inversed_xx:")
                 print(inversed_xx)
-                predictions.append(inversed_xx[0, 0])
+                predictions.append(int(inversed_xx[0, 0]))
 
             return predictions
 
