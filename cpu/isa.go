@@ -719,7 +719,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float64frombits(uint64(context.Regs().Fpr.Uint32(machInst.Fs())))
+			var temp = float64(uint64(context.Regs().Fpr.Uint32(machInst.Fs())))
 			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
 		},
 	)
@@ -740,7 +740,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float64frombits(context.Regs().Fpr.Uint64(machInst.Fs()))
+			var temp = float64(context.Regs().Fpr.Uint64(machInst.Fs()))
 			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
 		},
 	)
@@ -782,7 +782,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float32frombits(context.Regs().Fpr.Uint32(machInst.Fs()))
+			var temp = float32(context.Regs().Fpr.Uint32(machInst.Fs()))
 			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
 		},
 	)
@@ -803,7 +803,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float32frombits(uint32(context.Regs().Fpr.Uint64(machInst.Fs())))
+			var temp = float32(context.Regs().Fpr.Uint64(machInst.Fs()))
 			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
 		},
 	)
@@ -824,7 +824,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float32bits(context.Regs().Fpr.Float32(machInst.Fs()))
+			var temp = uint32(context.Regs().Fpr.Float32(machInst.Fs()))
 			context.Regs().Fpr.SetUint32(machInst.Fd(), temp)
 		},
 	)
@@ -845,7 +845,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Float32bits(float32(context.Regs().Fpr.Float64(machInst.Fs())))
+			var temp = uint32(float32(context.Regs().Fpr.Float64(machInst.Fs())))
 			context.Regs().Fpr.SetUint32(machInst.Fd(), temp)
 		},
 	)
