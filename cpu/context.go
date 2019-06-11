@@ -158,7 +158,7 @@ func (context *Context) Finish() {
 
 func (context *Context) GetParentProcessId() int32 {
 	if context.Parent == nil {
-		return 1
+		return -1
 	} else {
 		return context.Parent.ProcessId
 	}
