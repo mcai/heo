@@ -845,7 +845,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = uint32(float32(context.Regs().Fpr.Float64(machInst.Fs())))
+			var temp = uint32(context.Regs().Fpr.Float64(machInst.Fs()))
 			context.Regs().Fpr.SetUint32(machInst.Fd(), temp)
 		},
 	)
