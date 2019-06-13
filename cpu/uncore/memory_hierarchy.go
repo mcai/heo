@@ -64,14 +64,14 @@ type BaseMemoryHierarchy struct {
 	p2pReorderBuffers map[Controller]map[Controller]*P2PReorderBuffer
 
 	network          noc.Network
-	DevicesToNodeIds map[interface{}]uint32
+	DevicesToNodeIds map[MemoryDevice]uint32
 }
 
 func NewBaseMemoryHierarchy(driver UncoreDriver, config *UncoreConfig, nocConfig *noc.NoCConfig) *BaseMemoryHierarchy {
 	var memoryHierarchy = &BaseMemoryHierarchy{
 		driver:           driver,
 		config:           config,
-		DevicesToNodeIds: make(map[interface{}]uint32),
+		DevicesToNodeIds: make(map[MemoryDevice]uint32),
 	}
 
 	memoryHierarchy.memoryController = NewMemoryController(memoryHierarchy)
