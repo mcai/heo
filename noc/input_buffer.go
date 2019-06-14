@@ -3,14 +3,12 @@ package noc
 import "container/list"
 
 type InputBuffer struct {
-	InputVirtualChannel *InputVirtualChannel
 	Flits               *list.List
 	Size                int
 }
 
 func NewInputBuffer(inputVirtualChannel *InputVirtualChannel) *InputBuffer {
 	var inputBuffer = &InputBuffer{
-		InputVirtualChannel: inputVirtualChannel,
 		Flits:               list.New(),
 		Size:                inputVirtualChannel.InputPort.Router.Node.Network.Config().MaxInputBufferSize,
 	}
