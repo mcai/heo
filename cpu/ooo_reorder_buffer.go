@@ -224,7 +224,7 @@ type ReorderBufferEntry struct {
 	*BaseReorderBufferEntry
 
 	EffectiveAddressComputation             bool
-	LoadStoreBufferEntry                    *LoadStoreQueueEntry
+	LoadStoreBufferEntry                    *LoadStoreBufferEntry
 	EffectiveAddressComputationOperandReady bool
 }
 
@@ -252,22 +252,22 @@ func (reorderBufferEntry *ReorderBufferEntry) Writeback() {
 }
 
 func (reorderBufferEntry *ReorderBufferEntry) AllOperandReady() bool {
-	if reorderBufferEntry.EffectiveAddressComputation {
-		return reorderBufferEntry.EffectiveAddressComputationOperandReady
+	if !reorderBufferEntry.EffectiveAddressComputation {
+		return len(reorderBufferEntry.notReadyOperands) == 0
 	}
 
-	return len(reorderBufferEntry.notReadyOperands) == 0
+	return reorderBufferEntry.EffectiveAddressComputationOperandReady
 }
 
-type LoadStoreQueueEntry struct {
+type LoadStoreBufferEntry struct {
 	*BaseReorderBufferEntry
 
 	EffectiveAddress  int32
 	StoreAddressReady bool
 }
 
-func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *LoadStoreQueueEntry {
-	var loadStoreQueueEntry = &LoadStoreQueueEntry{
+func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *LoadStoreBufferEntry {
+	var loadStoreBufferEntry = &LoadStoreBufferEntry{
 		BaseReorderBufferEntry: NewBaseReorderBufferEntry(
 			thread,
 			dynamicInst,
@@ -282,13 +282,13 @@ func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32,
 		EffectiveAddress: -1,
 	}
 
-	return loadStoreQueueEntry
+	return loadStoreBufferEntry
 }
 
-func (loadStoreQueueEntry *LoadStoreQueueEntry) Writeback() {
-	loadStoreQueueEntry.doWriteback()
+func (loadStoreBufferEntry *LoadStoreBufferEntry) Writeback() {
+	loadStoreBufferEntry.doWriteback()
 }
 
-func (loadStoreQueueEntry *LoadStoreQueueEntry) AllOperandReady() bool {
-	return len(loadStoreQueueEntry.notReadyOperands) == 0
+func (loadStoreBufferEntry *LoadStoreBufferEntry) AllOperandReady() bool {
+	return len(loadStoreBufferEntry.notReadyOperands) == 0
 }

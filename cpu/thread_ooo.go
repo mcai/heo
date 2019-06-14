@@ -365,7 +365,7 @@ func (thread *OoOThread) RefreshLoadStoreQueue() {
 	var stdUnknowns []int32
 
 	for _, entry := range thread.LoadStoreQueue.Entries {
-		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
 
 		if loadStoreQueueEntry.DynamicInst().StaticInst.Mnemonic.StaticInstType == StaticInstType_ST {
 			if loadStoreQueueEntry.StoreAddressReady {
@@ -447,7 +447,7 @@ func (thread *OoOThread) DumpQueues() {
 	}
 
 	for i, entry := range thread.LoadStoreQueue.Entries {
-		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
 
 		fmt.Printf(
 			"thread.loadStoreQueue[%d]={id=%d, dispatched=%t, issued=%t, completed=%t, squashed=%t, notReadyOperands=%+v, allOperandReady=%t}\n",
@@ -655,7 +655,7 @@ func (thread *OoOThread) Commit() {
 	}
 }
 
-func (thread *OoOThread) removeFromLoadStoreQueue(entryToRemove *LoadStoreQueueEntry) {
+func (thread *OoOThread) removeFromLoadStoreQueue(entryToRemove *LoadStoreBufferEntry) {
 	var loadStoreQueueEntriesToReserve []interface{}
 
 	for _, entry := range thread.LoadStoreQueue.Entries {
