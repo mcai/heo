@@ -189,7 +189,7 @@ func (baseNetwork *BaseNetwork) LogFlitPerStateDelay(state FlitState, delay int)
 
 func (baseNetwork *BaseNetwork) Throughput() float64 {
 	if baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle == 0 {
-		return float64(0)
+		return 0.0
 	}
 
 	return float64(baseNetwork.NumPacketsTransmitted) / float64(baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
@@ -213,7 +213,7 @@ func (baseNetwork *BaseNetwork) AveragePacketHops() float64 {
 
 func (baseNetwork *BaseNetwork) PayloadThroughput() float64 {
 	if baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle == 0 {
-		return float64(0)
+		return 0.0
 	}
 
 	return float64(baseNetwork.NumPayloadPacketsTransmitted) / float64(baseNetwork.Driver().CycleAccurateEventQueue().CurrentCycle) / float64(baseNetwork.NumNodes)
