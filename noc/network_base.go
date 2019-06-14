@@ -196,19 +196,19 @@ func (baseNetwork *BaseNetwork) Throughput() float64 {
 }
 
 func (baseNetwork *BaseNetwork) AveragePacketDelay() float64 {
-	if baseNetwork.NumPacketsTransmitted > 0 {
-		return float64(baseNetwork.totalPacketDelays) / float64(baseNetwork.NumPacketsTransmitted)
-	} else {
+	if baseNetwork.NumPacketsTransmitted == 0 {
 		return 0.0
 	}
+
+	return float64(baseNetwork.totalPacketDelays) / float64(baseNetwork.NumPacketsTransmitted)
 }
 
 func (baseNetwork *BaseNetwork) AveragePacketHops() float64 {
-	if baseNetwork.NumPacketsTransmitted > 0 {
-		return float64(baseNetwork.totalPacketHops) / float64(baseNetwork.NumPacketsTransmitted)
-	} else {
+	if baseNetwork.NumPacketsTransmitted == 0 {
 		return 0.0
 	}
+
+	return float64(baseNetwork.totalPacketHops) / float64(baseNetwork.NumPacketsTransmitted)
 }
 
 func (baseNetwork *BaseNetwork) PayloadThroughput() float64 {
@@ -220,19 +220,19 @@ func (baseNetwork *BaseNetwork) PayloadThroughput() float64 {
 }
 
 func (baseNetwork *BaseNetwork) AveragePayloadPacketDelay() float64 {
-	if baseNetwork.NumPayloadPacketsTransmitted > 0 {
-		return float64(baseNetwork.totalPayloadPacketDelays) / float64(baseNetwork.NumPayloadPacketsTransmitted)
-	} else {
+	if baseNetwork.NumPayloadPacketsTransmitted == 0 {
 		return 0.0
 	}
+
+	return float64(baseNetwork.totalPayloadPacketDelays) / float64(baseNetwork.NumPayloadPacketsTransmitted)
 }
 
 func (baseNetwork *BaseNetwork) AveragePayloadPacketHops() float64 {
-	if baseNetwork.NumPayloadPacketsTransmitted > 0 {
-		return float64(baseNetwork.totalPayloadPacketHops) / float64(baseNetwork.NumPayloadPacketsTransmitted)
-	} else {
+	if baseNetwork.NumPayloadPacketsTransmitted == 0 {
 		return 0.0
 	}
+
+	return float64(baseNetwork.totalPayloadPacketHops) / float64(baseNetwork.NumPayloadPacketsTransmitted)
 }
 
 func (baseNetwork *BaseNetwork) AverageFlitPerStateDelay(state FlitState) float64 {
