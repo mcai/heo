@@ -32,9 +32,9 @@ func (selectionAlgorithm *BufferLevelSelectionAlgorithm) Select(packet Packet, i
 		}
 	}
 
-	if len(bestDirections) > 0 {
-		return bestDirections[rand.Intn(len(bestDirections))]
+	if len(bestDirections) == 0 {
+		return directions[0]
 	}
 
-	return directions[0]
+	return bestDirections[rand.Intn(len(bestDirections))]
 }
