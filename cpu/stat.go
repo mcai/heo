@@ -43,7 +43,7 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 	})
 
 	experiment.Stats = append(experiment.Stats, simutil.Stat{
-		Key:   "CyclesPerInstructions",
+		Key:   "CyclesPerInstruction",
 		Value: experiment.Processor.CyclesPerInstructions(),
 	})
 
@@ -60,8 +60,8 @@ func (experiment *CPUExperiment) dumpStats(prefix string) {
 			})
 
 			experiment.Stats = append(experiment.Stats, simutil.Stat{
-				Key:   fmt.Sprintf("thread_%d.CyclesPerInstructions", thread.Id()),
-				Value: thread.CyclesPerInstructions(),
+				Key:   fmt.Sprintf("thread_%d.CyclesPerInstruction", thread.Id()),
+				Value: thread.CyclesPerInstruction(),
 			})
 
 			if oooThread := thread.(*OoOThread); oooThread != nil {

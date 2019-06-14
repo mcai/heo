@@ -18,7 +18,7 @@ type Thread interface {
 	NumDynamicInsts() int64
 
 	InstructionsPerCycle() float64
-	CyclesPerInstructions() float64
+	CyclesPerInstruction() float64
 
 	ResetStats()
 }
@@ -97,7 +97,7 @@ func (thread *BaseThread) InstructionsPerCycle() float64 {
 	return float64(thread.numDynamicInsts) / float64(thread.Core().Processor().Experiment.CycleAccurateEventQueue().CurrentCycle)
 }
 
-func (thread *BaseThread) CyclesPerInstructions() float64 {
+func (thread *BaseThread) CyclesPerInstruction() float64 {
 	if thread.numDynamicInsts == 0 {
 		return float64(0)
 	}
