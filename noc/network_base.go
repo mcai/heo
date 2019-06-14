@@ -56,6 +56,7 @@ func NewBaseNetwork(driver NetworkDriver, config *NoCConfig) *BaseNetwork {
 		var node = NewNode(baseNetwork, i)
 		baseNetwork.Nodes = append(baseNetwork.Nodes, node)
 	}
+
 	switch selection := config.Selection; selection {
 	case SelectionAco:
 		switch antPacketTraffic := config.AntPacketTraffic; antPacketTraffic {
