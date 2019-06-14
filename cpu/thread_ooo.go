@@ -469,7 +469,7 @@ func (thread *OoOThread) DumpQueues() {
 			dependency, physicalReg.PhysicalRegisterFile.RegisterDependencyType, physicalReg.Num, physicalReg.Dependency, physicalReg.State)
 	}
 
-	for fuType, fuDescriptor := range thread.Core().FUPool().Descriptors {
+	for fuType, fuDescriptor := range thread.Core().FUPool().FUDescriptors {
 		fmt.Printf("thread.core.fuPool.descriptors[%s]={numFree=%d, quantity=%d}\n", fuType, fuDescriptor.NumFree, fuDescriptor.Quantity)
 	}
 

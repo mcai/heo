@@ -110,14 +110,14 @@ func (fuDescriptor *FUDescriptor) Full() bool {
 
 type FUPool struct {
 	Core                 Core
-	Descriptors          map[FUType]*FUDescriptor
+	FUDescriptors        map[FUType]*FUDescriptor
 	FUOperationToFUTypes map[FUOperationType]FUType
 }
 
 func NewFUPool(core Core) *FUPool {
 	var fuPool = &FUPool{
 		Core:                 core,
-		Descriptors:          make(map[FUType]*FUDescriptor),
+		FUDescriptors:        make(map[FUType]*FUDescriptor),
 		FUOperationToFUTypes: make(map[FUOperationType]FUType),
 	}
 
@@ -167,17 +167,17 @@ func NewFUPool(core Core) *FUPool {
 }
 
 func (fuPool *FUPool) AddFUDescriptor(fuType FUType, quantity uint32) *FUDescriptor {
-	var descriptor = NewFUDescriptor(fuPool, fuType, quantity)
-	fuPool.Descriptors[fuType] = descriptor
-	return descriptor
+	var fuDescriptor = NewFUDescriptor(fuPool, fuType, quantity)
+	fuPool.FUDescriptors[fuType] = fuDescriptor
+	return fuDescriptor
 }
 
 func (fuPool *FUPool) Acquire(reorderBufferEntry *ReorderBufferEntry, onCompletedCallback func()) bool {
 	var fuOperationType = reorderBufferEntry.DynamicInst().StaticInst.Mnemonic.FUOperationType
 	var fuType = fuPool.FUOperationToFUTypes[fuOperationType]
-	var fuOperation = fuPool.Descriptors[fuType].Operations[fuOperationType]
+	var fuOperation = fuPool.FUDescriptors[fuType].Operations[fuOperationType]
 
-	var fuDescriptor = fuPool.Descriptors[fuType]
+	var fuDescriptor = fuPool.FUDescriptors[fuType]
 
 	if fuDescriptor.Full() {
 		return false
@@ -205,7 +205,7 @@ func (fuPool *FUPool) Acquire(reorderBufferEntry *ReorderBufferEntry, onComplete
 }
 
 func (fuPool *FUPool) ReleaseAll() {
-	for _, descriptor := range fuPool.Descriptors {
-		descriptor.ReleaseAll()
+	for _, fuDescriptor := range fuPool.FUDescriptors {
+		fuDescriptor.ReleaseAll()
 	}
 }
