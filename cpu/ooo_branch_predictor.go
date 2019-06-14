@@ -202,11 +202,11 @@ func (branchPredictor *BaseBranchPredictor) NumAccesses() int64 {
 }
 
 func (branchPredictor *BaseBranchPredictor) HitRatio() float64 {
-	if branchPredictor.NumAccesses() > 0 {
-		return float64(branchPredictor.numHits) / float64(branchPredictor.NumAccesses())
-	} else {
+	if branchPredictor.NumAccesses() == 0 {
 		return float64(0)
 	}
+
+	return float64(branchPredictor.numHits) / float64(branchPredictor.NumAccesses())
 }
 
 func (branchPredictor *BaseBranchPredictor) Update(branchAddress uint32, branchTarget uint32, taken bool, correct bool, mnemonic *Mnemonic, branchPredictorUpdate interface{}) {
