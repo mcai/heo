@@ -3,16 +3,14 @@ package noc
 import "container/list"
 
 type InjectionBuffer struct {
-	Router  *Router
 	Packets *list.List
 	Size    int
 }
 
-func NewInjectionBuffer(router *Router) *InjectionBuffer {
+func NewInjectionBuffer(size int) *InjectionBuffer {
 	var injectionBuffer = &InjectionBuffer{
-		Router:  router,
 		Packets: list.New(),
-		Size:    router.Node.Network.Config().MaxInjectionBufferSize,
+		Size:    size,
 	}
 
 	return injectionBuffer

@@ -22,7 +22,7 @@ func NewRouter(node *Node) *Router {
 		NumInflightNonHeadFlits: make(map[FlitState]int),
 	}
 
-	router.InjectionBuffer = NewInjectionBuffer(router)
+	router.InjectionBuffer = NewInjectionBuffer(node.Network.Config().MaxInjectionBufferSize)
 
 	router.InputPorts[DIRECTION_LOCAL] = NewInputPort(router, DIRECTION_LOCAL)
 	router.OutputPorts[DIRECTION_LOCAL] = NewOutputPort(router, DIRECTION_LOCAL)
