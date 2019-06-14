@@ -15,7 +15,7 @@ func NewInputVirtualChannel(inputPort *InputPort, num int) *InputVirtualChannel 
 		Route:     DIRECTION_UNKNOWN,
 	}
 
-	inputVirtualChannel.InputBuffer = NewInputBuffer(inputVirtualChannel)
+	inputVirtualChannel.InputBuffer = NewInputBuffer(inputPort.Router.Node.Network.Config().MaxInputBufferSize)
 
 	return inputVirtualChannel
 }

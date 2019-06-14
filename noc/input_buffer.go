@@ -7,10 +7,10 @@ type InputBuffer struct {
 	Size                int
 }
 
-func NewInputBuffer(inputVirtualChannel *InputVirtualChannel) *InputBuffer {
+func NewInputBuffer(size int) *InputBuffer {
 	var inputBuffer = &InputBuffer{
 		Flits:               list.New(),
-		Size:                inputVirtualChannel.InputPort.Router.Node.Network.Config().MaxInputBufferSize,
+		Size:                size,
 	}
 
 	return inputBuffer
