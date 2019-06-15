@@ -426,6 +426,7 @@ func (syscallEmulation *SyscallEmulation) getuid_impl(context *Context) {
 func (syscallEmulation *SyscallEmulation) kill_impl(context *Context) {
 	var pid = int32(context.Regs().Gpr[regs.REGISTER_A0])
 	var sig = context.Regs().Gpr[regs.REGISTER_A1]
+
 	if pid < 0 {
 		panic("Impossible")
 	}
@@ -479,6 +480,7 @@ func (syscallEmulation *SyscallEmulation) ioctl_impl(context *Context) {
 	}
 
 	var fd = context.Process.TranslateFileDescriptor(int32(context.Regs().Gpr[regs.REGISTER_A0]))
+
 	if fd < 3 {
 		context.Regs().Gpr[regs.REGISTER_V0] = uint32(native.Ioctl(fd, int32(context.Regs().Gpr[regs.REGISTER_A1]), buf))
 
