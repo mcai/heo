@@ -44,8 +44,8 @@ func (saturatingCounter *SaturatingCounter) Reset() {
 	saturatingCounter.value = saturatingCounter.initialValue
 }
 
-func (saturatingCounter *SaturatingCounter) Update(direction bool) {
-	if direction {
+func (saturatingCounter *SaturatingCounter) Update(increment bool) {
+	if increment {
 		saturatingCounter.increment()
 	} else {
 		saturatingCounter.decrement()

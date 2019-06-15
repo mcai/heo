@@ -77,12 +77,10 @@ func (branchPredictor *TwoBitBranchPredictor) Predict(branchAddress uint32, mnem
 
 		if branchTargetBufferEntry != nil {
 			return branchTargetBufferEntry.Target, returnAddressStackRecoverTop, branchPredictorUpdate
-		} else {
-			return 0, returnAddressStackRecoverTop, branchPredictorUpdate
 		}
-	} else {
-		return 0, returnAddressStackRecoverTop, branchPredictorUpdate
 	}
+
+	return 0, returnAddressStackRecoverTop, branchPredictorUpdate
 }
 
 func (branchPredictor *TwoBitBranchPredictor) Update(branchAddress uint32, branchTarget uint32, taken bool, correct bool, mnemonic *Mnemonic, branchPredictorUpdate interface{}) {
