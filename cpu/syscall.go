@@ -336,9 +336,8 @@ func (syscallEmulation *SyscallEmulation) write_impl(context *Context) {
 	var bufAddr = context.Regs().Gpr[regs.REGISTER_A1]
 	var size = context.Regs().Gpr[regs.REGISTER_A2]
 
-	var buf = context.Process.Memory().ReadBlockAt(bufAddr, size)
-
 	var ret uint32
+	var buf = context.Process.Memory().ReadBlockAt(bufAddr, size)
 
 	var buffer = context.Kernel.GetWriteBuffer(fd)
 	if buffer != nil {
