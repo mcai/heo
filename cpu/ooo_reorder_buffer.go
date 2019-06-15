@@ -224,7 +224,7 @@ type ReorderBufferEntry struct {
 	*BaseReorderBufferEntry
 
 	EffectiveAddressComputation             bool
-	LoadStoreBufferEntry                    *LoadStoreBufferEntry
+	LoadStoreQueueEntry                     *LoadStoreQueueEntry
 	EffectiveAddressComputationOperandReady bool
 }
 
@@ -259,15 +259,15 @@ func (reorderBufferEntry *ReorderBufferEntry) AllOperandReady() bool {
 	return reorderBufferEntry.EffectiveAddressComputationOperandReady
 }
 
-type LoadStoreBufferEntry struct {
+type LoadStoreQueueEntry struct {
 	*BaseReorderBufferEntry
 
 	EffectiveAddress  int32
 	StoreAddressReady bool
 }
 
-func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *LoadStoreBufferEntry {
-	var loadStoreBufferEntry = &LoadStoreBufferEntry{
+func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32, nnpc uint32, predictedNnpc uint32, returnAddressStackRecoverIndex uint32, branchPredictorUpdate interface{}, speculative bool) *LoadStoreQueueEntry {
+	var loadStoreQueueEntry = &LoadStoreQueueEntry{
 		BaseReorderBufferEntry: NewBaseReorderBufferEntry(
 			thread,
 			dynamicInst,
@@ -282,13 +282,13 @@ func NewLoadStoreQueueEntry(thread Thread, dynamicInst *DynamicInst, npc uint32,
 		EffectiveAddress: -1,
 	}
 
-	return loadStoreBufferEntry
+	return loadStoreQueueEntry
 }
 
-func (loadStoreBufferEntry *LoadStoreBufferEntry) Writeback() {
-	loadStoreBufferEntry.doWriteback()
+func (loadStoreQueueEntry *LoadStoreQueueEntry) Writeback() {
+	loadStoreQueueEntry.doWriteback()
 }
 
-func (loadStoreBufferEntry *LoadStoreBufferEntry) AllOperandReady() bool {
-	return len(loadStoreBufferEntry.notReadyOperands) == 0
+func (loadStoreQueueEntry *LoadStoreQueueEntry) AllOperandReady() bool {
+	return len(loadStoreQueueEntry.notReadyOperands) == 0
 }

@@ -18,7 +18,7 @@ type PhysicalRegister struct {
 	Allocator                                    *ReorderBufferEntry
 	Dependency                                   int32
 	EffectiveAddressComputationOperandDependents []*ReorderBufferEntry
-	StoreAddressDependents                       []*LoadStoreBufferEntry
+	StoreAddressDependents                       []*LoadStoreQueueEntry
 	Dependents                                   []GeneralReorderBufferEntry
 }
 
@@ -79,7 +79,7 @@ func (physicalReg *PhysicalRegister) Writeback() {
 	}
 
 	physicalReg.EffectiveAddressComputationOperandDependents = []*ReorderBufferEntry{}
-	physicalReg.StoreAddressDependents = []*LoadStoreBufferEntry{}
+	physicalReg.StoreAddressDependents = []*LoadStoreQueueEntry{}
 	physicalReg.Dependents = []GeneralReorderBufferEntry{}
 }
 
@@ -174,8 +174,8 @@ func (physicalRegs *PhysicalRegisterFile) Dump() {
 
 			var loadStoreQueueEntryId = int32(-1)
 
-			if reorderBufferEntry.LoadStoreBufferEntry != nil {
-				loadStoreQueueEntryId = reorderBufferEntry.LoadStoreBufferEntry.Id()
+			if reorderBufferEntry.LoadStoreQueueEntry != nil {
+				loadStoreQueueEntryId = reorderBufferEntry.LoadStoreQueueEntry.Id()
 			}
 
 			fmt.Printf(

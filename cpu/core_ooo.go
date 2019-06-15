@@ -241,12 +241,12 @@ func (core *OoOCore) IssueLoadQueue(quant uint32) uint32 {
 			break
 		}
 
-		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
 
 		var hitInLoadStoreQueue = false
 
 		for _, entryFound := range loadStoreQueueEntry.Thread().(*OoOThread).LoadStoreQueue.Entries {
-			var loadStoreQueueEntryFound = entryFound.(*LoadStoreBufferEntry)
+			var loadStoreQueueEntryFound = entryFound.(*LoadStoreQueueEntry)
 
 			if loadStoreQueueEntryFound.DynamicInst().StaticInst.Mnemonic.StaticInstType == StaticInstType_ST &&
 				loadStoreQueueEntryFound.EffectiveAddress == loadStoreQueueEntry.EffectiveAddress {
@@ -295,7 +295,7 @@ func (core *OoOCore) IssueStoreQueue(quant uint32) uint32 {
 			break
 		}
 
-		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
 
 		if !core.CanStore(loadStoreQueueEntry.Thread(), uint32(loadStoreQueueEntry.EffectiveAddress)) {
 			break

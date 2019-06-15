@@ -297,7 +297,7 @@ func (thread *OoOThread) RegisterRenameOne() bool {
 
 		thread.LoadStoreQueue.Entries = append(thread.LoadStoreQueue.Entries, loadStoreQueueEntry)
 
-		reorderBufferEntry.LoadStoreBufferEntry = loadStoreQueueEntry
+		reorderBufferEntry.LoadStoreQueueEntry = loadStoreQueueEntry
 	}
 
 	thread.ReorderBuffer.Entries = append(thread.ReorderBuffer.Entries, reorderBufferEntry)
@@ -330,8 +330,8 @@ func (thread *OoOThread) DispatchOne() bool {
 
 			reorderBufferEntry.SetDispatched(true)
 
-			if reorderBufferEntry.LoadStoreBufferEntry != nil {
-				var loadStoreQueueEntry = reorderBufferEntry.LoadStoreBufferEntry
+			if reorderBufferEntry.LoadStoreQueueEntry != nil {
+				var loadStoreQueueEntry = reorderBufferEntry.LoadStoreQueueEntry
 
 				if loadStoreQueueEntry.DynamicInst().StaticInst.Mnemonic.StaticInstType == StaticInstType_ST {
 					if loadStoreQueueEntry.AllOperandReady() {
@@ -365,7 +365,7 @@ func (thread *OoOThread) RefreshLoadStoreQueue() {
 	var stdUnknowns []int32
 
 	for _, entry := range thread.LoadStoreQueue.Entries {
-		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
 
 		if loadStoreQueueEntry.DynamicInst().StaticInst.Mnemonic.StaticInstType == StaticInstType_ST {
 			if loadStoreQueueEntry.StoreAddressReady {
@@ -428,8 +428,8 @@ func (thread *OoOThread) DumpQueues() {
 
 		var loadStoreQueueEntryId = int32(-1)
 
-		if reorderBufferEntry.LoadStoreBufferEntry != nil {
-			loadStoreQueueEntryId = reorderBufferEntry.LoadStoreBufferEntry.Id()
+		if reorderBufferEntry.LoadStoreQueueEntry != nil {
+			loadStoreQueueEntryId = reorderBufferEntry.LoadStoreQueueEntry.Id()
 		}
 
 		fmt.Printf(
@@ -447,7 +447,7 @@ func (thread *OoOThread) DumpQueues() {
 	}
 
 	for i, entry := range thread.LoadStoreQueue.Entries {
-		var loadStoreQueueEntry = entry.(*LoadStoreBufferEntry)
+		var loadStoreQueueEntry = entry.(*LoadStoreQueueEntry)
 
 		fmt.Printf(
 			"thread.loadStoreQueue[%d]={id=%d, dispatched=%t, issued=%t, completed=%t, squashed=%t, notReadyOperands=%+v, allOperandReady=%t}\n",
@@ -610,7 +610,7 @@ func (thread *OoOThread) Commit() {
 		}
 
 		if reorderBufferEntry.EffectiveAddressComputation {
-			var loadStoreQueueEntry = reorderBufferEntry.LoadStoreBufferEntry
+			var loadStoreQueueEntry = reorderBufferEntry.LoadStoreQueueEntry
 
 			if !loadStoreQueueEntry.Completed() {
 				break
@@ -655,7 +655,7 @@ func (thread *OoOThread) Commit() {
 	}
 }
 
-func (thread *OoOThread) removeFromLoadStoreQueue(entryToRemove *LoadStoreBufferEntry) {
+func (thread *OoOThread) removeFromLoadStoreQueue(entryToRemove *LoadStoreQueueEntry) {
 	var loadStoreQueueEntriesToReserve []interface{}
 
 	for _, entry := range thread.LoadStoreQueue.Entries {
@@ -672,7 +672,7 @@ func (thread *OoOThread) Squash() {
 		var reorderBufferEntry = thread.ReorderBuffer.Entries[len(thread.ReorderBuffer.Entries)-1].(*ReorderBufferEntry)
 
 		if reorderBufferEntry.EffectiveAddressComputation {
-			var loadStoreQueueEntry = reorderBufferEntry.LoadStoreBufferEntry
+			var loadStoreQueueEntry = reorderBufferEntry.LoadStoreQueueEntry
 
 			thread.Core().RemoveFromQueues(loadStoreQueueEntry)
 
