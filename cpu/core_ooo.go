@@ -148,7 +148,7 @@ func (core *OoOCore) Dispatch() {
 	core.DispatchScheduler.ConsumeNext()
 }
 
-func (core *OoOCore) WakeupInstructionQueue() {
+func (core *OoOCore) wakeupInstructionQueue() {
 	var waitingInstructionQueueToReserve []GeneralReorderBufferEntry
 
 	for _, entry := range core.WaitingInstructionQueue() {
@@ -170,7 +170,7 @@ func (core *OoOCore) WakeupInstructionQueue() {
 	core.SetWaitingInstructionQueue(waitingInstructionQueueToReserve)
 }
 
-func (core *OoOCore) WakeupStoreQueue() {
+func (core *OoOCore) wakeupStoreQueue() {
 	var waitingStoreQueueToReserve []GeneralReorderBufferEntry
 
 	for _, entry := range core.WaitingStoreQueue() {
@@ -193,8 +193,8 @@ func (core *OoOCore) WakeupStoreQueue() {
 }
 
 func (core *OoOCore) Wakeup() {
-	core.WakeupInstructionQueue()
-	core.WakeupStoreQueue()
+	core.wakeupInstructionQueue()
+	core.wakeupStoreQueue()
 }
 
 func (core *OoOCore) IssueInstructionQueue(quant uint32) uint32 {
