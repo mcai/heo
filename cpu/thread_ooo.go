@@ -91,7 +91,7 @@ func (thread *OoOThread) UpdateFetchNpcAndNnpcFromRegs() {
 	thread.LastCommitCycle = thread.Core().Processor().Experiment.CycleAccurateEventQueue().CurrentCycle
 }
 
-func (thread *OoOThread) CanFetch() bool {
+func (thread *OoOThread) TryFetch() bool {
 	if thread.FetchStalled {
 		return false
 	}
@@ -116,7 +116,7 @@ func (thread *OoOThread) CanFetch() bool {
 }
 
 func (thread *OoOThread) Fetch() {
-	if !thread.CanFetch() {
+	if !thread.TryFetch() {
 		return
 	}
 
