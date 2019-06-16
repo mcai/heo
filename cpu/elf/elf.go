@@ -36,7 +36,7 @@ func NewElfFile(fileName string) *ElfFile {
 	elfFile.Identification = NewElfIdentification(elfFile)
 
 	if elfFile.Identification.Clz != ElfClass32 {
-		panic("ElfClass32 is not supported")
+		panic("Only ElfClass32 is supported")
 	}
 
 	if elfFile.Identification.Data == ElfData2Lsb {
