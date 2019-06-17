@@ -963,7 +963,7 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.Bits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
+			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
 			branch(context, dest)
 		},
 	)
@@ -984,7 +984,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_RA,
 		},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.Bits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
+			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
 			branch(context, dest)
 		},
@@ -1052,7 +1052,7 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadByteAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = cpuutil.Sext32(uint32(temp), 8)
+			context.Regs().Gpr[machInst.Rt()] = cpuutil.SignExtend32(uint32(temp), 8)
 		},
 	)
 
@@ -1121,7 +1121,7 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadHalfWordAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = cpuutil.Sext32(uint32(temp), 16)
+			context.Regs().Gpr[machInst.Rt()] = cpuutil.SignExtend32(uint32(temp), 16)
 		},
 	)
 
@@ -1335,8 +1335,8 @@ func (isa *ISA) addMnemonics() {
 			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
 			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
 			var temp = temp1*temp2 + temp3
-			context.Regs().Hi = uint32(cpuutil.Bits64(uint64(temp), 63, 32))
-			context.Regs().Lo = uint32(cpuutil.Bits64(uint64(temp), 31, 0))
+			context.Regs().Hi = uint32(cpuutil.GetBits64(uint64(temp), 63, 32))
+			context.Regs().Lo = uint32(cpuutil.GetBits64(uint64(temp), 31, 0))
 		},
 	)
 
@@ -1446,8 +1446,8 @@ func (isa *ISA) addMnemonics() {
 			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
 			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
 			var temp = temp3 - temp1*temp2 + temp3
-			context.Regs().Hi = uint32(cpuutil.Bits64(uint64(temp), 63, 32))
-			context.Regs().Lo = uint32(cpuutil.Bits64(uint64(temp), 31, 0))
+			context.Regs().Hi = uint32(cpuutil.GetBits64(uint64(temp), 63, 32))
+			context.Regs().Lo = uint32(cpuutil.GetBits64(uint64(temp), 31, 0))
 		},
 	)
 
@@ -1537,8 +1537,8 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var temp = uint64(int64(context.Regs().Sgpr(machInst.Rs())) *
 				int64(context.Regs().Sgpr(machInst.Rt())))
-			context.Regs().Lo = uint32(cpuutil.Bits64(temp, 31, 0))
-			context.Regs().Hi = uint32(cpuutil.Bits64(temp, 63, 32))
+			context.Regs().Lo = uint32(cpuutil.GetBits64(temp, 31, 0))
+			context.Regs().Hi = uint32(cpuutil.GetBits64(temp, 63, 32))
 		},
 	)
 
@@ -1562,8 +1562,8 @@ func (isa *ISA) addMnemonics() {
 		func(context *Context, machInst MachInst) {
 			var temp = uint64(context.Regs().Gpr[machInst.Rs()]) *
 				uint64(context.Regs().Gpr[machInst.Rt()])
-			context.Regs().Lo = uint32(cpuutil.Bits64(temp, 31, 0))
-			context.Regs().Hi = uint32(cpuutil.Bits64(temp, 63, 32))
+			context.Regs().Lo = uint32(cpuutil.GetBits64(temp, 31, 0))
+			context.Regs().Hi = uint32(cpuutil.GetBits64(temp, 63, 32))
 		},
 	)
 
@@ -1805,7 +1805,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = cpuutil.Bits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
+			var s = cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
 			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rt()] << s
 		},
 	)
@@ -1989,7 +1989,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = int32(cpuutil.Bits32(context.Regs().Gpr[machInst.Rs()], 4, 0))
+			var s = int32(cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0))
 			context.Regs().Gpr[machInst.Rd()] = uint32(context.Regs().Sgpr(machInst.Rt()) >> uint32(s))
 		},
 	)
@@ -2031,7 +2031,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = cpuutil.Bits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
+			var s = cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
 			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rt()] >> s
 		},
 	)

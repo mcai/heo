@@ -20,7 +20,7 @@ type MachInstType string
 type MachInst uint32
 
 func (machInst MachInst) ValueOf(field *BitField) uint32 {
-	return cpuutil.Bits32(uint32(machInst), field.Hi, field.Lo)
+	return cpuutil.GetBits32(uint32(machInst), field.Hi, field.Lo)
 }
 
 func (machInst MachInst) GetType() MachInstType {
@@ -159,7 +159,7 @@ func (machInst MachInst) Uimm() uint32 {
 }
 
 func (machInst MachInst) Imm() int32 {
-	return int32(cpuutil.Sext32(machInst.Uimm(), 16))
+	return int32(cpuutil.SignExtend32(machInst.Uimm(), 16))
 }
 
 func (machInst MachInst) Target() uint32 {
