@@ -13,8 +13,8 @@ func TestMstBaseline(t *testing.T) {
 
 	config.NumCores = 2
 	config.NumThreadsPerCore = 2
-	config.MaxFastForwardDynamicInsts = int64(0)
-	config.MaxMeasurementDynamicInsts = int64(-1)
+	config.MaxFastForwardDynamicInsts = int64(-1)
+	config.MaxMeasurementDynamicInsts = int64(0)
 
 	config.TraceL2Requests = true
 
@@ -33,8 +33,8 @@ func TestMstHelperThreaded(t *testing.T) {
 
 	config.NumCores = 2
 	config.NumThreadsPerCore = 2
-	config.MaxFastForwardDynamicInsts = int64(0)
-	config.MaxMeasurementDynamicInsts = int64(-1)
+	config.MaxFastForwardDynamicInsts = int64(-1)
+	config.MaxMeasurementDynamicInsts = int64(0)
 
 	config.TraceL2Requests = true
 

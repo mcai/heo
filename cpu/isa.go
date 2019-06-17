@@ -65,8 +65,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if fPCC(context, machInst.BranchCc()) == 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var branchCc = machInst.BranchCc()
+			var imm = machInst.Imm()
+
+			if fPCC(context, branchCc) == 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -85,8 +88,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if fPCC(context, machInst.BranchCc()) != 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var branchCc = machInst.BranchCc()
+			var imm = machInst.Imm()
+
+			if fPCC(context, branchCc) != 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -107,8 +113,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Uint32(machInst.Fs())
-			context.Regs().Gpr[machInst.Rt()] = temp
+			var fs = machInst.Fs()
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Fpr.Uint32(fs)
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -128,8 +137,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FS,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rt()]
-			context.Regs().Fpr.SetUint32(machInst.Fs(), temp)
+			var rt = machInst.Rt()
+			var fs = machInst.Fs()
+
+			var temp = context.Regs().Gpr[rt]
+			context.Regs().Fpr.SetUint32(fs, temp)
 		},
 	)
 
@@ -149,9 +161,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			if machInst.Fs() == 31 {
+			var fs = machInst.Fs()
+			var rt = machInst.Rt()
+
+			if fs == 31 {
 				var temp = context.Regs().Fcsr
-				context.Regs().Gpr[machInst.Rt()] = temp
+				context.Regs().Gpr[rt] = temp
 			}
 		},
 	)
@@ -172,8 +187,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_FCSR,
 		},
 		func(context *Context, machInst MachInst) {
-			if machInst.Fs() != 0 {
-				var temp = context.Regs().Gpr[machInst.Rt()]
+			var fs = machInst.Fs()
+			var rt = machInst.Rt()
+
+			if fs != 0 {
+				var temp = context.Regs().Gpr[rt]
 				context.Regs().Fcsr = temp
 			}
 		},
@@ -195,17 +213,20 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp float32
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
 
-			var fs = context.Regs().Fpr.Float32(machInst.Fs())
+			var temp1 = context.Regs().Fpr.Float32(fs)
 
-			if fs < 0.0 {
-				temp = -fs
+			var temp2 float32
+
+			if temp1 < 0.0 {
+				temp2 = -temp1
 			} else {
-				temp = fs
+				temp2 = temp1
 			}
 
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			context.Regs().Fpr.SetFloat32(fd, temp2)
 		},
 	)
 
@@ -225,17 +246,20 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp float64
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
 
-			var fs = context.Regs().Fpr.Float64(machInst.Fs())
+			var temp1 = context.Regs().Fpr.Float64(fs)
 
-			if fs < 0.0 {
-				temp = -fs
+			var temp2 float64
+
+			if temp1 < 0.0 {
+				temp2 = -temp1
 			} else {
-				temp = fs
+				temp2 = temp1
 			}
 
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			context.Regs().Fpr.SetFloat64(fd, temp2)
 		},
 	)
 
@@ -256,7 +280,10 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Sgpr(machInst.Rs()) + context.Regs().Sgpr(machInst.Rt())
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Sgpr(rs) + context.Regs().Sgpr(rt)
 			context.Regs().Gpr[machInst.Rd()] = uint32(temp)
 		},
 	)
@@ -278,8 +305,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float32(machInst.Fs()) + context.Regs().Fpr.Float32(machInst.Ft())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float32(fs) + context.Regs().Fpr.Float32(ft)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -300,8 +331,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float64(machInst.Fs()) + context.Regs().Fpr.Float64(machInst.Ft())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float64(fs) + context.Regs().Fpr.Float64(ft)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -322,8 +357,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Sgpr(machInst.Rs()) + machInst.Imm()
-			context.Regs().Gpr[machInst.Rt()] = uint32(temp)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Sgpr(rs) + imm
+			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
 
@@ -344,8 +383,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Sgpr(machInst.Rs()) + machInst.Imm()
-			context.Regs().Gpr[machInst.Rt()] = uint32(temp)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Sgpr(rs) + imm
+			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
 
@@ -366,8 +409,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rs()] + context.Regs().Gpr[machInst.Rt()]
-			context.Regs().Gpr[machInst.Rd()] = temp
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var temp = context.Regs().Gpr[rs] + context.Regs().Gpr[rt]
+			context.Regs().Gpr[rd] = temp
 		},
 	)
 
@@ -388,8 +435,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rs()] & context.Regs().Gpr[machInst.Rt()]
-			context.Regs().Gpr[machInst.Rd()] = temp
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var temp = context.Regs().Gpr[rs] & context.Regs().Gpr[rt]
+			context.Regs().Gpr[rd] = temp
 		},
 	)
 
@@ -410,7 +461,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rt()] = context.Regs().Gpr[machInst.Rs()] & machInst.Uimm()
+			var rs = machInst.Rs()
+			var uimm = machInst.Uimm()
+			var rt = machInst.Rt()
+
+			context.Regs().Gpr[rt] = context.Regs().Gpr[rs] & uimm
 		},
 	)
 
@@ -427,7 +482,9 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			relBranch(context, machInst.Imm()<<2)
+			var imm = machInst.Imm()
+
+			relBranch(context, imm<<2)
 		},
 	)
 
@@ -446,8 +503,10 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_RA,
 		},
 		func(context *Context, machInst MachInst) {
+			var imm = machInst.Imm()
+
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
-			relBranch(context, machInst.Imm()<<2)
+			relBranch(context, imm<<2)
 		},
 	)
 
@@ -467,8 +526,12 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rs()] == context.Regs().Gpr[machInst.Rt()] {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var imm = machInst.Imm()
+
+			if context.Regs().Gpr[rs] == context.Regs().Gpr[rt] {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -488,8 +551,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) >= 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+
+			if context.Regs().Sgpr(rs) >= 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -512,9 +578,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_RA,
 		},
 		func(context *Context, machInst MachInst) {
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
-			if context.Regs().Sgpr(machInst.Rs()) >= 0 {
-				relBranch(context, machInst.Imm()<<2)
+			if context.Regs().Sgpr(rs) >= 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -534,8 +603,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) > 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+
+			if context.Regs().Sgpr(rs) > 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -555,8 +627,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) <= 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+
+			if context.Regs().Sgpr(rs) <= 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -576,8 +651,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) < 0 {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+
+			if context.Regs().Sgpr(rs) < 0 {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -598,8 +676,12 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rs()] != context.Regs().Gpr[machInst.Rt()] {
-				relBranch(context, machInst.Imm()<<2)
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var imm = machInst.Imm()
+
+			if context.Regs().Gpr[rs] != context.Regs().Gpr[rt] {
+				relBranch(context, imm<<2)
 			}
 		},
 	)
@@ -640,8 +722,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_FCSR,
 		},
 		func(context *Context, machInst MachInst) {
-			var op1 = context.Regs().Fpr.Float64(machInst.Fs())
-			var op2 = context.Regs().Fpr.Float64(machInst.Ft())
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+
+			var op1 = context.Regs().Fpr.Float64(fs)
+			var op2 = context.Regs().Fpr.Float64(ft)
 
 			var less = op1 < op2
 			var equal = op1 == op2
@@ -670,8 +755,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_FCSR,
 		},
 		func(context *Context, machInst MachInst) {
-			var op1 = context.Regs().Fpr.Float32(machInst.Fs())
-			var op2 = context.Regs().Fpr.Float32(machInst.Ft())
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+
+			var op1 = context.Regs().Fpr.Float32(fs)
+			var op2 = context.Regs().Fpr.Float32(ft)
 
 			var less = op1 < op2
 			var equal = op1 == op2
@@ -698,8 +786,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float64(context.Regs().Fpr.Float32(machInst.Fs()))
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float64(context.Regs().Fpr.Float32(fs))
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -719,8 +810,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float64(uint64(context.Regs().Fpr.Uint32(machInst.Fs())))
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float64(uint64(context.Regs().Fpr.Uint32(fs)))
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -740,8 +834,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float64(context.Regs().Fpr.Uint64(machInst.Fs()))
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float64(context.Regs().Fpr.Uint64(fs))
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -761,8 +858,10 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float32(context.Regs().Fpr.Float64(machInst.Fs()))
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+			var temp = float32(context.Regs().Fpr.Float64(fs))
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -782,8 +881,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float32(context.Regs().Fpr.Uint32(machInst.Fs()))
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float32(context.Regs().Fpr.Uint32(fs))
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -803,8 +905,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float32(context.Regs().Fpr.Uint64(machInst.Fs()))
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float32(context.Regs().Fpr.Uint64(fs))
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -824,8 +929,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = uint32(context.Regs().Fpr.Float32(machInst.Fs()))
-			context.Regs().Fpr.SetUint32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = uint32(context.Regs().Fpr.Float32(fs))
+			context.Regs().Fpr.SetUint32(fd, temp)
 		},
 	)
 
@@ -845,8 +953,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = uint32(context.Regs().Fpr.Float64(machInst.Fs()))
-			context.Regs().Fpr.SetUint32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = uint32(context.Regs().Fpr.Float64(fs))
+			context.Regs().Fpr.SetUint32(fd, temp)
 		},
 	)
 
@@ -868,11 +979,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rt()] != 0 {
-				context.Regs().Lo = uint32(context.Regs().Sgpr(machInst.Rs()) /
-					context.Regs().Sgpr(machInst.Rt()))
-				context.Regs().Hi = uint32(context.Regs().Sgpr(machInst.Rs()) %
-					context.Regs().Sgpr(machInst.Rt()))
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			if context.Regs().Gpr[rt] != 0 {
+				context.Regs().Lo = uint32(context.Regs().Sgpr(rs) /
+					context.Regs().Sgpr(rt))
+				context.Regs().Hi = uint32(context.Regs().Sgpr(rs) %
+					context.Regs().Sgpr(rt))
 			}
 		},
 	)
@@ -894,9 +1008,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float32(machInst.Fs()) /
-				context.Regs().Fpr.Float32(machInst.Ft())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float32(fs) /
+				context.Regs().Fpr.Float32(ft)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -917,9 +1035,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float64(machInst.Fs()) /
-				context.Regs().Fpr.Float64(machInst.Ft())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float64(fs) /
+				context.Regs().Fpr.Float64(ft)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -941,11 +1063,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rt()] != 0 {
-				context.Regs().Lo = context.Regs().Gpr[machInst.Rs()] /
-					context.Regs().Gpr[machInst.Rt()]
-				context.Regs().Hi = context.Regs().Gpr[machInst.Rs()] %
-					context.Regs().Gpr[machInst.Rt()]
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			if context.Regs().Gpr[rt] != 0 {
+				context.Regs().Lo = context.Regs().Gpr[rs] /
+					context.Regs().Gpr[rt]
+				context.Regs().Hi = context.Regs().Gpr[rs] %
+					context.Regs().Gpr[rt]
 			}
 		},
 	)
@@ -963,7 +1088,9 @@ func (isa *ISA) addMnemonics() {
 		[]StaticInstDependency{},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
+			var target = machInst.Target()
+
+			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (target << 2)
 			branch(context, dest)
 		},
 	)
@@ -984,7 +1111,9 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_RA,
 		},
 		func(context *Context, machInst MachInst) {
-			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (machInst.Target() << 2)
+			var target = machInst.Target()
+
+			var dest = (cpuutil.GetBits32(context.Regs().Pc+4, 32, 28) << 28) | (target << 2)
 			context.Regs().Gpr[regs.REGISTER_RA] = context.Regs().Pc + 8
 			branch(context, dest)
 		},
@@ -1008,8 +1137,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			branch(context, context.Regs().Gpr[machInst.Rs()])
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Pc + 8
+			var rs = machInst.Rs()
+			var rd = machInst.Rd()
+
+			branch(context, context.Regs().Gpr[rs])
+			context.Regs().Gpr[rd] = context.Regs().Pc + 8
 		},
 	)
 
@@ -1029,7 +1161,9 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			branch(context, context.Regs().Gpr[machInst.Rs()])
+			var rs = machInst.Rs()
+
+			branch(context, context.Regs().Gpr[rs])
 		},
 	)
 
@@ -1050,9 +1184,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadByteAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = cpuutil.SignExtend32(uint32(temp), 8)
+			context.Regs().Gpr[rt] = cpuutil.SignExtend32(uint32(temp), 8)
 		},
 	)
 
@@ -1073,9 +1209,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadByteAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = uint32(temp)
+			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
 
@@ -1096,9 +1234,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FT,
 		},
 		func(context *Context, machInst MachInst) {
+			var ft = machInst.Ft()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadDoubleWordAt(addr)
-			context.Regs().Fpr.SetFloat64(machInst.Ft(), math.Float64frombits(temp))
+			context.Regs().Fpr.SetFloat64(ft, math.Float64frombits(temp))
 		},
 	)
 
@@ -1119,9 +1259,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadHalfWordAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = cpuutil.SignExtend32(uint32(temp), 16)
+			context.Regs().Gpr[rt] = cpuutil.SignExtend32(uint32(temp), 16)
 		},
 	)
 
@@ -1142,9 +1284,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadHalfWordAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = uint32(temp)
+			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
 
@@ -1165,9 +1309,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadWordAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = temp
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -1185,7 +1331,10 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rt()] = machInst.Uimm() << 16
+			var rt = machInst.Rt()
+			var uimm = machInst.Uimm()
+
+			context.Regs().Gpr[rt] = uimm << 16
 		},
 	)
 
@@ -1206,9 +1355,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadWordAt(addr)
-			context.Regs().Gpr[machInst.Rt()] = temp
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -1229,9 +1380,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FT,
 		},
 		func(context *Context, machInst MachInst) {
+			var ft = machInst.Ft()
+
 			var addr = GetEffectiveAddress(context, machInst)
 			var temp = context.Process.Memory().ReadWordAt(addr)
-			context.Regs().Fpr.SetFloat32(machInst.Ft(), math.Float32frombits(temp))
+			context.Regs().Fpr.SetFloat32(ft, math.Float32frombits(temp))
 		},
 	)
 
@@ -1253,6 +1406,7 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
 			var addr = GetEffectiveAddress(context, machInst)
 
 			var size = 4 - (addr & 3)
@@ -1261,15 +1415,15 @@ func (isa *ISA) addMnemonics() {
 
 			var dst = make([]byte, 4)
 
-			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[machInst.Rt()])
+			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[rt])
 
 			for i := uint32(0); i < size; i++ {
 				dst[3-i] = src[i]
 			}
 
-			var rt = context.Process.Memory().ByteOrder.Uint32(dst)
+			var temp = context.Process.Memory().ByteOrder.Uint32(dst)
 
-			context.Regs().Gpr[machInst.Rt()] = rt
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -1291,6 +1445,8 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 
 			var size = 1 + (addr & 3)
@@ -1299,15 +1455,15 @@ func (isa *ISA) addMnemonics() {
 
 			var dst = make([]byte, 4)
 
-			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[machInst.Rt()])
+			context.Process.Memory().ByteOrder.PutUint32(dst, context.Regs().Gpr[rt])
 
 			for i := uint32(0); i < size; i++ {
 				dst[size-i-1] = src[i]
 			}
 
-			var rt = context.Process.Memory().ByteOrder.Uint32(dst)
+			var temp = context.Process.Memory().ByteOrder.Uint32(dst)
 
-			context.Regs().Gpr[machInst.Rt()] = rt
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -1331,8 +1487,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp1 = int64(context.Regs().Sgpr(machInst.Rs()))
-			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			var temp1 = int64(context.Regs().Sgpr(rs))
+			var temp2 = int64(context.Regs().Sgpr(rt))
 			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
 			var temp = temp1*temp2 + temp3
 			context.Regs().Hi = uint32(cpuutil.GetBits64(uint64(temp), 63, 32))
@@ -1356,7 +1515,9 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Hi
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = context.Regs().Hi
 		},
 	)
 
@@ -1376,7 +1537,9 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Lo
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = context.Regs().Lo
 		},
 	)
 
@@ -1396,8 +1559,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float32(machInst.Fs())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float32(fs)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -1417,8 +1583,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float64(machInst.Fs())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float64(fs)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -1442,8 +1611,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp1 = int64(context.Regs().Sgpr(machInst.Rs()))
-			var temp2 = int64(context.Regs().Sgpr(machInst.Rt()))
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			var temp1 = int64(context.Regs().Sgpr(rs))
+			var temp2 = int64(context.Regs().Sgpr(rt))
 			var temp3 = int64(context.Regs().Hi<<32) | int64(context.Regs().Lo)
 			var temp = temp3 - temp1*temp2 + temp3
 			context.Regs().Hi = uint32(cpuutil.GetBits64(uint64(temp), 63, 32))
@@ -1467,7 +1639,9 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Lo = context.Regs().Gpr[machInst.Rd()]
+			var rd = machInst.Rd()
+
+			context.Regs().Lo = context.Regs().Gpr[rd]
 		},
 	)
 
@@ -1488,9 +1662,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float32(machInst.Fs()) *
-				context.Regs().Fpr.Float32(machInst.Ft())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float32(fs) *
+				context.Regs().Fpr.Float32(ft)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -1511,9 +1689,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float64(machInst.Fs()) *
-				context.Regs().Fpr.Float64(machInst.Ft())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float64(fs) *
+				context.Regs().Fpr.Float64(ft)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -1535,8 +1717,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = uint64(int64(context.Regs().Sgpr(machInst.Rs())) *
-				int64(context.Regs().Sgpr(machInst.Rt())))
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			var temp = uint64(int64(context.Regs().Sgpr(rs)) *
+				int64(context.Regs().Sgpr(rt)))
 			context.Regs().Lo = uint32(cpuutil.GetBits64(temp, 31, 0))
 			context.Regs().Hi = uint32(cpuutil.GetBits64(temp, 63, 32))
 		},
@@ -1560,8 +1745,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_REGISTER_LO,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = uint64(context.Regs().Gpr[machInst.Rs()]) *
-				uint64(context.Regs().Gpr[machInst.Rt()])
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+
+			var temp = uint64(context.Regs().Gpr[rs]) *
+				uint64(context.Regs().Gpr[rt])
 			context.Regs().Lo = uint32(cpuutil.GetBits64(temp, 31, 0))
 			context.Regs().Hi = uint32(cpuutil.GetBits64(temp, 63, 32))
 		},
@@ -1583,8 +1771,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = -context.Regs().Fpr.Float32(machInst.Fs())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = -context.Regs().Fpr.Float32(fs)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -1604,8 +1795,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = -context.Regs().Fpr.Float64(machInst.Fs())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = -context.Regs().Fpr.Float64(fs)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -1626,8 +1820,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rs()] | context.Regs().Gpr[machInst.Rt()]
-			context.Regs().Gpr[machInst.Rd()] = ^temp
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var temp = context.Regs().Gpr[rs] | context.Regs().Gpr[rt]
+			context.Regs().Gpr[rd] = ^temp
 		},
 	)
 
@@ -1648,8 +1846,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rs()] | context.Regs().Gpr[machInst.Rt()]
-			context.Regs().Gpr[machInst.Rd()] = temp
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var temp = context.Regs().Gpr[rs] | context.Regs().Gpr[rt]
+			context.Regs().Gpr[rd] = temp
 		},
 	)
 
@@ -1670,8 +1872,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rs()] | machInst.Uimm()
-			context.Regs().Gpr[machInst.Rt()] = temp
+			var rs = machInst.Rs()
+			var uimm = machInst.Uimm()
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Gpr[rs] | uimm
+			context.Regs().Gpr[rt] = temp
 		},
 	)
 
@@ -1691,7 +1897,9 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var temp = byte(context.Regs().Gpr[machInst.Rt()])
+			var rt = machInst.Rt()
+
+			var temp = byte(context.Regs().Gpr[rt])
 			var addr = GetEffectiveAddress(context, machInst)
 			context.Process.Memory().WriteByteAt(addr, temp)
 		},
@@ -1715,10 +1923,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rt()]
+			var rt = machInst.Rt()
+
+			var temp = context.Regs().Gpr[rt]
 			var addr = GetEffectiveAddress(context, machInst)
 			context.Process.Memory().WriteWordAt(addr, temp)
-			context.Regs().Gpr[machInst.Rt()] = 1
+			context.Regs().Gpr[rt] = 1
 		},
 	)
 
@@ -1738,7 +1948,9 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var dbl = context.Regs().Fpr.Float64(machInst.Ft())
+			var ft = machInst.Ft()
+
+			var dbl = context.Regs().Fpr.Float64(ft)
 			var temp = math.Float64bits(dbl)
 			var addr = GetEffectiveAddress(context, machInst)
 			context.Process.Memory().WriteDoubleWordAt(addr, temp)
@@ -1761,7 +1973,9 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var temp = uint16(context.Regs().Gpr[machInst.Rt()])
+			var rt = machInst.Rt()
+
+			var temp = uint16(context.Regs().Gpr[rt])
 			var addr = GetEffectiveAddress(context, machInst)
 			context.Process.Memory().WriteHalfWordAt(addr, temp)
 		},
@@ -1783,8 +1997,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rt()] << machInst.Shift()
-			context.Regs().Gpr[machInst.Rd()] = temp
+			var rt = machInst.Rt()
+			var shift = machInst.Shift()
+			var rd = machInst.Rd()
+
+			var temp = context.Regs().Gpr[rt] << shift
+			context.Regs().Gpr[rd] = temp
 		},
 	)
 
@@ -1805,8 +2023,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rt()] << s
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var s = cpuutil.GetBits32(context.Regs().Gpr[rs], 4, 0)
+			context.Regs().Gpr[rd] = context.Regs().Gpr[rt] << s
 		},
 	)
 
@@ -1827,10 +2049,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) < context.Regs().Sgpr(machInst.Rt()) {
-				context.Regs().Gpr[machInst.Rd()] = 1
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			if context.Regs().Sgpr(rs) < context.Regs().Sgpr(rt) {
+				context.Regs().Gpr[rd] = 1
 			} else {
-				context.Regs().Gpr[machInst.Rd()] = 0
+				context.Regs().Gpr[rd] = 0
 			}
 		},
 	)
@@ -1852,10 +2078,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Sgpr(machInst.Rs()) < machInst.Imm() {
-				context.Regs().Gpr[machInst.Rt()] = 1
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+			var rt = machInst.Rt()
+
+			if context.Regs().Sgpr(rs) < imm {
+				context.Regs().Gpr[rt] = 1
 			} else {
-				context.Regs().Gpr[machInst.Rt()] = 0
+				context.Regs().Gpr[rt] = 0
 			}
 		},
 	)
@@ -1877,10 +2107,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rs()] < uint32(machInst.Imm()) {
-				context.Regs().Gpr[machInst.Rt()] = 1
+			var rs = machInst.Rs()
+			var imm = machInst.Imm()
+			var rt = machInst.Rt()
+
+			if context.Regs().Gpr[rs] < uint32(imm) {
+				context.Regs().Gpr[rt] = 1
 			} else {
-				context.Regs().Gpr[machInst.Rt()] = 0
+				context.Regs().Gpr[rt] = 0
 			}
 		},
 	)
@@ -1902,10 +2136,14 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			if context.Regs().Gpr[machInst.Rs()] < context.Regs().Gpr[machInst.Rt()] {
-				context.Regs().Gpr[machInst.Rd()] = 1
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			if context.Regs().Gpr[rs] < context.Regs().Gpr[rt] {
+				context.Regs().Gpr[rd] = 1
 			} else {
-				context.Regs().Gpr[machInst.Rd()] = 0
+				context.Regs().Gpr[rd] = 0
 			}
 		},
 	)
@@ -1926,8 +2164,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = float32(math.Sqrt(float64(context.Regs().Fpr.Float32(machInst.Fs()))))
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = float32(math.Sqrt(float64(context.Regs().Fpr.Float32(fs))))
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -1947,8 +2188,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = math.Sqrt(context.Regs().Fpr.Float64(machInst.Fs()))
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var fd = machInst.Fd()
+
+			var temp = math.Sqrt(context.Regs().Fpr.Float64(fs))
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -1968,7 +2212,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = uint32(context.Regs().Sgpr(machInst.Rt()) >> machInst.Shift())
+			var rt = machInst.Rt()
+			var shift = machInst.Shift()
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = uint32(context.Regs().Sgpr(rt) >> shift)
 		},
 	)
 
@@ -1989,8 +2237,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = int32(cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0))
-			context.Regs().Gpr[machInst.Rd()] = uint32(context.Regs().Sgpr(machInst.Rt()) >> uint32(s))
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var s = int32(cpuutil.GetBits32(context.Regs().Gpr[rs], 4, 0))
+			context.Regs().Gpr[rd] = uint32(context.Regs().Sgpr(rt) >> uint32(s))
 		},
 	)
 
@@ -2010,7 +2262,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rt()] >> machInst.Shift()
+			var rt = machInst.Rt()
+			var shift = machInst.Shift()
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = context.Regs().Gpr[rt] >> shift
 		},
 	)
 
@@ -2031,8 +2287,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			var s = cpuutil.GetBits32(context.Regs().Gpr[machInst.Rs()], 4, 0)
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rt()] >> s
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			var s = cpuutil.GetBits32(context.Regs().Gpr[rs], 4, 0)
+			context.Regs().Gpr[rd] = context.Regs().Gpr[rt] >> s
 		},
 	)
 
@@ -2053,9 +2313,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float32(machInst.Fs()) -
-				context.Regs().Fpr.Float32(machInst.Ft())
-			context.Regs().Fpr.SetFloat32(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float32(fs) -
+				context.Regs().Fpr.Float32(ft)
+			context.Regs().Fpr.SetFloat32(fd, temp)
 		},
 	)
 
@@ -2076,9 +2340,13 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_FD,
 		},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Fpr.Float64(machInst.Fs()) -
-				context.Regs().Fpr.Float64(machInst.Ft())
-			context.Regs().Fpr.SetFloat64(machInst.Fd(), temp)
+			var fs = machInst.Fs()
+			var ft = machInst.Ft()
+			var fd = machInst.Fd()
+
+			var temp = context.Regs().Fpr.Float64(fs) -
+				context.Regs().Fpr.Float64(ft)
+			context.Regs().Fpr.SetFloat64(fd, temp)
 		},
 	)
 
@@ -2099,8 +2367,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rs()] -
-				context.Regs().Gpr[machInst.Rt()]
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = context.Regs().Gpr[rs] -
+				context.Regs().Gpr[rt]
 		},
 	)
 
@@ -2120,9 +2392,11 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var temp = context.Regs().Gpr[machInst.Rt()]
+			var rt = machInst.Rt()
+
+			var data = context.Regs().Gpr[rt]
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteWordAt(addr, temp)
+			context.Process.Memory().WriteWordAt(addr, data)
 		},
 	)
 
@@ -2142,10 +2416,12 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
-			var f = context.Regs().Fpr.Float32(machInst.Ft())
-			var temp = math.Float32bits(f)
+			var ft = machInst.Ft()
+
+			var f = context.Regs().Fpr.Float32(ft)
+			var data = math.Float32bits(f)
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteWordAt(addr, temp)
+			context.Process.Memory().WriteWordAt(addr, data)
 		},
 	)
 
@@ -2165,13 +2441,15 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 
 			var size = 4 - (addr & 3)
 
 			var src = make([]byte, 4)
 
-			context.Process.Memory().ByteOrder.PutUint32(src, context.Regs().Gpr[machInst.Rt()])
+			context.Process.Memory().ByteOrder.PutUint32(src, context.Regs().Gpr[rt])
 
 			var dst = make([]byte, 4)
 
@@ -2199,13 +2477,15 @@ func (isa *ISA) addMnemonics() {
 		},
 		[]StaticInstDependency{},
 		func(context *Context, machInst MachInst) {
+			var rt = machInst.Rt()
+
 			var addr = GetEffectiveAddress(context, machInst)
 
 			var size = 1 + (addr & 3)
 
 			var src = make([]byte, 4)
 
-			context.Process.Memory().ByteOrder.PutUint32(src, context.Regs().Gpr[machInst.Rt()])
+			context.Process.Memory().ByteOrder.PutUint32(src, context.Regs().Gpr[rt])
 
 			var dst = make([]byte, 4)
 
@@ -2254,8 +2534,12 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RD,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rd()] = context.Regs().Gpr[machInst.Rs()] ^
-				context.Regs().Gpr[machInst.Rt()]
+			var rs = machInst.Rs()
+			var rt = machInst.Rt()
+			var rd = machInst.Rd()
+
+			context.Regs().Gpr[rd] = context.Regs().Gpr[rs] ^
+				context.Regs().Gpr[rt]
 		},
 	)
 
@@ -2276,7 +2560,11 @@ func (isa *ISA) addMnemonics() {
 			StaticInstDependency_RT,
 		},
 		func(context *Context, machInst MachInst) {
-			context.Regs().Gpr[machInst.Rt()] = context.Regs().Gpr[machInst.Rs()] ^ machInst.Uimm()
+			var rs = machInst.Rs()
+			var uimm = machInst.Uimm()
+			var rt = machInst.Rt()
+
+			context.Regs().Gpr[rt] = context.Regs().Gpr[rs] ^ uimm
 		},
 	)
 }

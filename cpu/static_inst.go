@@ -38,6 +38,19 @@ func NewStaticInst(mnemonic *Mnemonic, machInst MachInst) *StaticInst {
 
 func (staticInst *StaticInst) Execute(context *Context) {
 	staticInst.Mnemonic.Execute(context, staticInst.MachInst)
+
+	//fmt.Printf("[%d] %s(machInst=%d)", context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle, staticInst.Mnemonic.Name, staticInst.MachInst)
+	//
+	//for i := 0; i < regs.NUM_INT_REGISTERS; i++ {
+	//	if i % 4 == 0 {
+	//		fmt.Println()
+	//	}
+	//
+	//	fmt.Printf("GPR[%d] = %d\t\t", i, context.regs.Gpr[i])
+	//}
+	//
+	//fmt.Println()
+	//fmt.Println()
 }
 
 func (staticInst *StaticInst) Disassemble(pc uint32) string {
