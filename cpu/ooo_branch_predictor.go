@@ -50,7 +50,7 @@ func NewBranchTargetBuffer(numSets uint32, assoc uint32) *BranchTargetBuffer {
 }
 
 func (branchTargetBuffer *BranchTargetBuffer) GetSet(branchAddress uint32) uint32 {
-	return branchAddress >> BRANCH_SHIFT & (branchTargetBuffer.NumSets - 1)
+	return (branchAddress >> BRANCH_SHIFT) & (branchTargetBuffer.NumSets - 1)
 }
 
 func (branchTargetBuffer *BranchTargetBuffer) Lookup(branchAddress uint32) *BranchTargetBufferEntry {
