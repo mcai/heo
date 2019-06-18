@@ -150,9 +150,7 @@ func (thread *OoOThread) Fetch() {
 
 			if dynamicInst.StaticInst.Mnemonic.StaticInstType == StaticInstType_NOP {
 				thread.UpdateFetchNpcAndNnpcFromRegs()
-			}
-
-			if dynamicInst.StaticInst.Mnemonic.StaticInstType != StaticInstType_NOP {
+			} else {
 				break
 			}
 		}
@@ -286,6 +284,7 @@ func (thread *OoOThread) RegisterRenameOne() bool {
 		loadStoreQueueEntry.SetNotReadyOperands(reorderBufferEntry.NotReadyOperands())
 
 		var storeAddressPhysicalReg = loadStoreQueueEntry.SourcePhysicalRegisters()[dynamicInst.StaticInst.InputDependencies[0]]
+
 		if !storeAddressPhysicalReg.Ready() {
 			storeAddressPhysicalReg.StoreAddressDependents = append(
 				storeAddressPhysicalReg.StoreAddressDependents,
