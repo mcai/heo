@@ -56,13 +56,13 @@ func (signalMask *SignalMask) Contains(signal uint32) bool {
 }
 
 func (signalMask *SignalMask) LoadFrom(memory *mem.PagedMemory, virtualAddress uint32) {
-	for i := uint32(0); i < MAX_SIGNAL/32; i++ {
+	for i := uint32(0); i < MAX_SIGNAL/2; i++ {
 		signalMask.signals[i] = memory.ReadUInt32At(virtualAddress + i*4)
 	}
 }
 
 func (signalMask *SignalMask) SaveTo(memory *mem.PagedMemory, virtualAddress uint32) {
-	for i := uint32(0); i < MAX_SIGNAL/32; i++ {
+	for i := uint32(0); i < MAX_SIGNAL/2; i++ {
 		memory.WriteUInt32At(virtualAddress+i*4, signalMask.signals[i])
 	}
 }
