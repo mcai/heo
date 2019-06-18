@@ -54,26 +54,6 @@ func (kernel *Kernel) LoadContexts() {
 	}
 }
 
-func (kernel *Kernel) GetProcessFromId(processId int32) *Process {
-	for _, process := range kernel.Processes {
-		if process.Id == processId {
-			return process
-		}
-	}
-
-	return nil
-}
-
-func (kernel *Kernel) GetContextFromId(contextId int32) *Context {
-	for _, context := range kernel.Contexts {
-		if context.Id == contextId {
-			return context
-		}
-	}
-
-	return nil
-}
-
 func (kernel *Kernel) GetContextFromProcessId(processId int32) *Context {
 	for _, context := range kernel.Contexts {
 		if context.ProcessId == processId {
