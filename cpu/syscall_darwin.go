@@ -27,21 +27,21 @@ func (syscallEmulation *SyscallEmulation) fstat64_impl(context *Context) {
 		var memory = mem.NewSimpleMemory(context.Process.LittleEndian, dataToWrite)
 
 		//TODO: correct?
-		memory.WriteWordAt(0, uint32(fstat.Dev))
-		memory.WriteWordAt(16, uint32(fstat.Ino))
-		memory.WriteWordAt(24, uint32(fstat.Mode))
-		memory.WriteWordAt(28, uint32(fstat.Nlink))
-		memory.WriteWordAt(32, uint32(fstat.Uid))
-		memory.WriteWordAt(36, uint32(fstat.Gid))
-		memory.WriteWordAt(40, uint32(fstat.Rdev))
-		memory.WriteWordAt(56, uint32(fstat.Size))
+		memory.WriteUInt32At(0, uint32(fstat.Dev))
+		memory.WriteUInt32At(16, uint32(fstat.Ino))
+		memory.WriteUInt32At(24, uint32(fstat.Mode))
+		memory.WriteUInt32At(28, uint32(fstat.Nlink))
+		memory.WriteUInt32At(32, uint32(fstat.Uid))
+		memory.WriteUInt32At(36, uint32(fstat.Gid))
+		memory.WriteUInt32At(40, uint32(fstat.Rdev))
+		memory.WriteUInt32At(56, uint32(fstat.Size))
 
-		memory.WriteWordAt(64, uint32(fstat.Atimespec.Nano()))
-		memory.WriteWordAt(72, uint32(fstat.Mtimespec.Nano()))
-		memory.WriteWordAt(80, uint32(fstat.Ctimespec.Nano()))
+		memory.WriteUInt32At(64, uint32(fstat.Atimespec.Nano()))
+		memory.WriteUInt32At(72, uint32(fstat.Mtimespec.Nano()))
+		memory.WriteUInt32At(80, uint32(fstat.Ctimespec.Nano()))
 
-		memory.WriteWordAt(88, uint32(fstat.Blksize))
-		memory.WriteWordAt(96, uint32(fstat.Blocks))
+		memory.WriteUInt32At(88, uint32(fstat.Blksize))
+		memory.WriteUInt32At(96, uint32(fstat.Blocks))
 
 		context.Process.Memory().WriteBlockAt(bufAddr, sizeOfDataToWrite, dataToWrite)
 	}

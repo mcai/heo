@@ -253,21 +253,21 @@ func NewElfHeader(elfFile *ElfFile) *ElfHeader {
 	var header = &ElfHeader{
 	}
 
-	header.HeaderType = elfFile.Data.ReadHalfWord()
+	header.HeaderType = elfFile.Data.ReadUInt16()
 
-	header.Machine = elfFile.Data.ReadHalfWord()
-	header.Version = elfFile.Data.ReadWord()
-	header.Entry = elfFile.Data.ReadWord()
-	header.ProgramHeaderTableOffset = elfFile.Data.ReadWord()
-	header.SectionHeaderTableOffset = elfFile.Data.ReadWord()
-	header.Flags = elfFile.Data.ReadWord()
+	header.Machine = elfFile.Data.ReadUInt16()
+	header.Version = elfFile.Data.ReadUInt32()
+	header.Entry = elfFile.Data.ReadUInt32()
+	header.ProgramHeaderTableOffset = elfFile.Data.ReadUInt32()
+	header.SectionHeaderTableOffset = elfFile.Data.ReadUInt32()
+	header.Flags = elfFile.Data.ReadUInt32()
 
-	header.ElfHeaderSize = elfFile.Data.ReadHalfWord()
-	header.ProgramHeaderTableEntrySize = elfFile.Data.ReadHalfWord()
-	header.ProgramHeaderTableEntryCount = elfFile.Data.ReadHalfWord()
-	header.SectionHeaderTableEntrySize = elfFile.Data.ReadHalfWord()
-	header.SectionHeaderTableEntryCount = elfFile.Data.ReadHalfWord()
-	header.SectionHeaderStringTableIndex = elfFile.Data.ReadHalfWord()
+	header.ElfHeaderSize = elfFile.Data.ReadUInt16()
+	header.ProgramHeaderTableEntrySize = elfFile.Data.ReadUInt16()
+	header.ProgramHeaderTableEntryCount = elfFile.Data.ReadUInt16()
+	header.SectionHeaderTableEntrySize = elfFile.Data.ReadUInt16()
+	header.SectionHeaderTableEntryCount = elfFile.Data.ReadUInt16()
+	header.SectionHeaderStringTableIndex = elfFile.Data.ReadUInt16()
 
 	return header
 }
@@ -315,16 +315,16 @@ func NewElfSectionHeader(elfFile *ElfFile) *ElfSectionHeader {
 	var elfSectionHeader = &ElfSectionHeader{
 	}
 
-	elfSectionHeader.NameIndex = elfFile.Data.ReadWord()
-	elfSectionHeader.HeaderType = ElfSectionHeaderType(elfFile.Data.ReadWord())
-	elfSectionHeader.Flags = elfFile.Data.ReadWord()
-	elfSectionHeader.Address = elfFile.Data.ReadWord()
-	elfSectionHeader.Offset = elfFile.Data.ReadWord()
-	elfSectionHeader.Size = elfFile.Data.ReadWord()
-	elfSectionHeader.Link = elfFile.Data.ReadWord()
-	elfSectionHeader.Info = elfFile.Data.ReadWord()
-	elfSectionHeader.AddressAlignment = elfFile.Data.ReadWord()
-	elfSectionHeader.EntrySize = elfFile.Data.ReadWord()
+	elfSectionHeader.NameIndex = elfFile.Data.ReadUInt32()
+	elfSectionHeader.HeaderType = ElfSectionHeaderType(elfFile.Data.ReadUInt32())
+	elfSectionHeader.Flags = elfFile.Data.ReadUInt32()
+	elfSectionHeader.Address = elfFile.Data.ReadUInt32()
+	elfSectionHeader.Offset = elfFile.Data.ReadUInt32()
+	elfSectionHeader.Size = elfFile.Data.ReadUInt32()
+	elfSectionHeader.Link = elfFile.Data.ReadUInt32()
+	elfSectionHeader.Info = elfFile.Data.ReadUInt32()
+	elfSectionHeader.AddressAlignment = elfFile.Data.ReadUInt32()
+	elfSectionHeader.EntrySize = elfFile.Data.ReadUInt32()
 
 	return elfSectionHeader
 }
@@ -356,14 +356,14 @@ func NewElfProgramHeader(elfFile *ElfFile) *ElfProgramHeader {
 	var elfProgramHeader = &ElfProgramHeader{
 	}
 
-	elfProgramHeader.HeaderType = elfFile.Data.ReadWord()
-	elfProgramHeader.Offset = elfFile.Data.ReadWord()
-	elfProgramHeader.VirtualAddress = elfFile.Data.ReadWord()
-	elfProgramHeader.PhysicalAddress = elfFile.Data.ReadWord()
-	elfProgramHeader.SizeInFile = elfFile.Data.ReadWord()
-	elfProgramHeader.SizeInMemory = elfFile.Data.ReadWord()
-	elfProgramHeader.Flags = elfFile.Data.ReadWord()
-	elfProgramHeader.Alignment = elfFile.Data.ReadWord()
+	elfProgramHeader.HeaderType = elfFile.Data.ReadUInt32()
+	elfProgramHeader.Offset = elfFile.Data.ReadUInt32()
+	elfProgramHeader.VirtualAddress = elfFile.Data.ReadUInt32()
+	elfProgramHeader.PhysicalAddress = elfFile.Data.ReadUInt32()
+	elfProgramHeader.SizeInFile = elfFile.Data.ReadUInt32()
+	elfProgramHeader.SizeInMemory = elfFile.Data.ReadUInt32()
+	elfProgramHeader.Flags = elfFile.Data.ReadUInt32()
+	elfProgramHeader.Alignment = elfFile.Data.ReadUInt32()
 
 	return elfProgramHeader
 }
@@ -455,12 +455,12 @@ func NewSymbol(elfFile *ElfFile, symbolSectionHeader *ElfSectionHeader) *Symbol 
 		SymbolSectionHeader: symbolSectionHeader,
 	}
 
-	symbol.NameIndex = elfFile.Data.ReadWord()
-	symbol.Value = elfFile.Data.ReadWord()
-	symbol.Size = elfFile.Data.ReadWord()
-	symbol.Info = elfFile.Data.ReadByte()
-	symbol.Other = elfFile.Data.ReadByte()
-	symbol.SectionHeaderTableIndex = elfFile.Data.ReadHalfWord()
+	symbol.NameIndex = elfFile.Data.ReadUInt32()
+	symbol.Value = elfFile.Data.ReadUInt32()
+	symbol.Size = elfFile.Data.ReadUInt32()
+	symbol.Info = elfFile.Data.ReadUInt8()
+	symbol.Other = elfFile.Data.ReadUInt8()
+	symbol.SectionHeaderTableIndex = elfFile.Data.ReadUInt16()
 
 	return symbol
 }

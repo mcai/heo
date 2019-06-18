@@ -518,8 +518,8 @@ func (syscallEmulation *SyscallEmulation) getrlimit_impl(context *Context) {
 		panic("Impossible")
 	}
 
-	context.Process.Memory().WriteWordAt(prlimit, syscallEmulation.StackLimit)
-	context.Process.Memory().WriteWordAt(prlimit+4, 0xffffffff)
+	context.Process.Memory().WriteUInt32At(prlimit, syscallEmulation.StackLimit)
+	context.Process.Memory().WriteUInt32At(prlimit+4, 0xffffffff)
 
 	context.Regs().Gpr[regs.REGISTER_A3] = 0
 	context.Regs().Gpr[regs.REGISTER_V0] = 0
@@ -529,7 +529,7 @@ func (syscallEmulation *SyscallEmulation) mmap_impl(context *Context) {
 	var start = context.Regs().Gpr[regs.REGISTER_A0]
 	var length = context.Regs().Gpr[regs.REGISTER_A1]
 
-	var fd = int32(context.Process.Memory().ReadWordAt(context.Regs().Gpr[regs.REGISTER_SP] + 16))
+	var fd = int32(context.Process.Memory().ReadUInt32At(context.Regs().Gpr[regs.REGISTER_SP] + 16))
 
 	if fd != -1 {
 		panic(fmt.Sprintf("syscall mmap: syscall is only supported with fd = -1 (%d)", fd))
@@ -615,12 +615,12 @@ func (syscallEmulation *SyscallEmulation) _sysctl_impl(context *Context) {
 	var memory = mem.NewSimpleMemory(context.Process.LittleEndian, buf)
 
 	var args = NewSysctlArgs()
-	args.Name = memory.ReadWord()
-	args.Nlen = memory.ReadWord()
-	args.Oldval = memory.ReadWord()
-	args.Oldlenp = memory.ReadWord()
-	args.Newval = memory.ReadWord()
-	args.Newlen = memory.ReadWord()
+	args.Name = memory.ReadUInt32()
+	args.Nlen = memory.ReadUInt32()
+	args.Oldval = memory.ReadUInt32()
+	args.Oldlenp = memory.ReadUInt32()
+	args.Newval = memory.ReadUInt32()
+	args.Newlen = memory.ReadUInt32()
 
 	var buf2 = context.Process.Memory().ReadBlockAt(args.Name, 4*10)
 	var memory2 = mem.NewSimpleMemory(context.Process.LittleEndian, buf2)
@@ -628,7 +628,7 @@ func (syscallEmulation *SyscallEmulation) _sysctl_impl(context *Context) {
 	var name = make([]uint32, 10)
 
 	for i := 0; i < len(name); i++ {
-		name[i] = memory2.ReadWord()
+		name[i] = memory2.ReadUInt32()
 	}
 
 	context.Regs().Gpr[regs.REGISTER_A3] = 0
@@ -642,8 +642,8 @@ func (syscallEmulation *SyscallEmulation) _sysctl_impl(context *Context) {
 
 func (syscallEmulation *SyscallEmulation) nanosleep_impl(context *Context) {
 	var preq = context.Regs().Gpr[regs.REGISTER_A0]
-	var sec = context.Process.Memory().ReadWordAt(preq)
-	var nsec = context.Process.Memory().ReadWordAt(preq + 4)
+	var sec = context.Process.Memory().ReadUInt32At(preq)
+	var nsec = context.Process.Memory().ReadUInt32At(preq + 4)
 
 	var total = int64(sec*native.CLOCKS_PER_SEC + nsec/1e9*native.CLOCKS_PER_SEC)
 
@@ -675,8 +675,8 @@ func (syscallEmulation *SyscallEmulation) poll_impl(context *Context) {
 	}
 
 	for i := int32(0); i < nfds; i++ {
-		var fd = int32(context.Process.Memory().ReadWordAt(pufds))
-		var events = int16(context.Process.Memory().ReadHalfWordAt(pufds + 4))
+		var fd = int32(context.Process.Memory().ReadUInt32At(pufds))
+		var events = int16(context.Process.Memory().ReadUInt16At(pufds + 4))
 
 		if events != 1 {
 			panic(fmt.Sprintf("syscall poll: ufds.events (%d) != POLLIN", events))

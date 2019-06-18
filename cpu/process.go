@@ -125,7 +125,7 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 	process.memory.Zero(process.StackBase-process.StackSize, process.StackSize)
 
 	var stackPointer = process.EnvironmentBase
-	process.memory.WriteWordAt(stackPointer, uint32(len(cmdArgs)))
+	process.memory.WriteUInt32At(stackPointer, uint32(len(cmdArgs)))
 	stackPointer += 4
 
 	var argAddr = stackPointer
@@ -135,18 +135,18 @@ func (process *Process) LoadProgram(kernel *Kernel, contextMapping *ContextMappi
 	stackPointer += (uint32(len(process.Environments)) + 1) * 4
 
 	for i := uint32(0); i < uint32(len(cmdArgs)); i++ {
-		process.memory.WriteWordAt(argAddr+i*4, stackPointer)
+		process.memory.WriteUInt32At(argAddr+i*4, stackPointer)
 		process.memory.WriteStringAt(stackPointer, cmdArgs[i])
 		stackPointer += uint32(len([]byte(cmdArgs[i] + "\x00")))
 	}
-	process.memory.WriteWordAt(argAddr+uint32(len(cmdArgs))*4, 0)
+	process.memory.WriteUInt32At(argAddr+uint32(len(cmdArgs))*4, 0)
 
 	for i := uint32(0); i < uint32(len(process.Environments)); i++ {
-		process.memory.WriteWordAt(environmentAddr+i*4, stackPointer)
+		process.memory.WriteUInt32At(environmentAddr+i*4, stackPointer)
 		process.memory.WriteStringAt(stackPointer, process.Environments[i])
 		stackPointer += uint32(len([]byte(process.Environments[i] + "\x00")))
 	}
-	process.memory.WriteWordAt(environmentAddr+uint32(len(process.Environments))*4, 0)
+	process.memory.WriteUInt32At(environmentAddr+uint32(len(process.Environments))*4, 0)
 
 	if stackPointer > process.StackBase {
 		panic("'environ' overflow, increment MAX_ENVIRON")
@@ -208,7 +208,7 @@ func (process *Process) decode(machInst MachInst) *StaticInst {
 }
 
 func (process *Process) predecode(pc uint32) {
-	var machInst = MachInst(process.memory.ReadWordAt(pc))
+	var machInst = MachInst(process.memory.ReadUInt32At(pc))
 
 	process.pcToMachInsts[pc] = machInst
 

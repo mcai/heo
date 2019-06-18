@@ -1,10 +1,10 @@
 {
-  "OutputDirectory": "../test_results/real/mst_baseline",
+  "OutputDirectory": "test_results/real/mst_baseline",
   "ContextMappings": [
     {
       "ThreadId": 0,
-      "Executable": "../benchmarks/Olden_Custom1/mst/baseline/mst.mips",
-      "Arguments": "100"
+      "Executable": "Data/Benchmarks/Olden_Custom1/mst/baseline/mst.mips",
+      "Arguments": "10"
     }
   ],
   "MaxFastForwardDynamicInsts": 0,

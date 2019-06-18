@@ -79,31 +79,31 @@ func (memory *PagedMemory) Clone() *PagedMemory {
 	return newMemory
 }
 
-func (memory *PagedMemory) ReadByteAt(virtualAddress uint32) byte {
+func (memory *PagedMemory) ReadUInt8At(virtualAddress uint32) uint8 {
 	var buffer = make([]byte, 1)
 	memory.access(virtualAddress, 1, &buffer, false, true)
 	return buffer[0]
 }
 
-func (memory *PagedMemory) ReadHalfWordAt(virtualAddress uint32) uint16 {
+func (memory *PagedMemory) ReadUInt16At(virtualAddress uint32) uint16 {
 	var buffer = make([]byte, 2)
 	memory.access(virtualAddress, 2, &buffer, false, true)
 	return memory.ByteOrder.Uint16(buffer)
 }
 
-func (memory *PagedMemory) ReadWordAt(virtualAddress uint32) uint32 {
+func (memory *PagedMemory) ReadUInt32At(virtualAddress uint32) uint32 {
 	var buffer = make([]byte, 4)
 	memory.access(virtualAddress, 4, &buffer, false, true)
 	return memory.ByteOrder.Uint32(buffer)
 }
 
-func (memory *PagedMemory) ReadDoubleWordAt(virtualAddress uint32) uint64 {
+func (memory *PagedMemory) ReadUInt64At(virtualAddress uint32) uint64 {
 	var buffer = make([]byte, 8)
 	memory.access(virtualAddress, 8, &buffer, false, true)
 	return memory.ByteOrder.Uint64(buffer)
 }
 
-func (memory *PagedMemory) ReadBlockAt(virtualAddress uint32, size uint32) []byte {
+func (memory *PagedMemory) ReadBlockAt(virtualAddress uint32, size uint32) []uint8 {
 	var buffer = make([]byte, size)
 	memory.access(virtualAddress, size, &buffer, false, true)
 	return buffer
@@ -121,36 +121,36 @@ func (memory *PagedMemory) ReadStringAt(virtualAddress uint32, size uint32) stri
 	return string(str)
 }
 
-func (memory *PagedMemory) WriteByteAt(virtualAddress uint32, data byte) {
+func (memory *PagedMemory) WriteUInt8At(virtualAddress uint32, data uint8) {
 	var buffer = make([]byte, 1)
 	buffer[0] = data
 	memory.access(virtualAddress, 1, &buffer, true, true)
 
-	//fmt.Printf("[mem::WriteByteAt] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
+	//fmt.Printf("[mem::WriteUInt8At] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
 }
 
-func (memory *PagedMemory) WriteHalfWordAt(virtualAddress uint32, data uint16) {
+func (memory *PagedMemory) WriteUInt16At(virtualAddress uint32, data uint16) {
 	var buffer = make([]byte, 2)
 	memory.ByteOrder.PutUint16(buffer, data)
 	memory.access(virtualAddress, 2, &buffer, true, true)
 
-	//fmt.Printf("[mem::WriteHalfWordAt] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
+	//fmt.Printf("[mem::WriteUInt16At] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
 }
 
-func (memory *PagedMemory) WriteWordAt(virtualAddress uint32, data uint32) {
+func (memory *PagedMemory) WriteUInt32At(virtualAddress uint32, data uint32) {
 	var buffer = make([]byte, 4)
 	memory.ByteOrder.PutUint32(buffer, data)
 	memory.access(virtualAddress, 4, &buffer, true, true)
 
-	//fmt.Printf("[mem::WriteWordAt] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
+	//fmt.Printf("[mem::WriteUInt32At] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
 }
 
-func (memory *PagedMemory) WriteDoubleWordAt(virtualAddress uint32, data uint64) {
+func (memory *PagedMemory) WriteUInt64At(virtualAddress uint32, data uint64) {
 	var buffer = make([]byte, 8)
 	memory.ByteOrder.PutUint64(buffer, data)
 	memory.access(virtualAddress, 8, &buffer, true, true)
 
-	//fmt.Printf("[mem::WriteDoubleWordAt] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
+	//fmt.Printf("[mem::WriteUInt64At] vaddr: 0x%08x, data: 0x%08x\n", virtualAddress, data)
 }
 
 func (memory *PagedMemory) WriteStringAt(virtualAddress uint32, data string) {
@@ -160,7 +160,7 @@ func (memory *PagedMemory) WriteStringAt(virtualAddress uint32, data string) {
 	//fmt.Printf("[mem::WriteStringAt] vaddr: 0x%08x, size: %d, data: %s\n", virtualAddress, uint32(len(buffer)), data)
 }
 
-func (memory *PagedMemory) WriteBlockAt(virtualAddress uint32, size uint32, data []byte) {
+func (memory *PagedMemory) WriteBlockAt(virtualAddress uint32, size uint32, data []uint8) {
 	memory.access(virtualAddress, size, &data, true, true)
 
 	//fmt.Printf("[mem::WriteBlockAt] vaddr: 0x%08x, size: %d\n", virtualAddress, size)

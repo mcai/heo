@@ -6,7 +6,7 @@ import (
 )
 
 func TestFromCSV(t *testing.T) {
-	var filename = "../data/iris.csv"
+	var filename = "Data/iris.csv"
 	var dataSet = FromCSV(filename)
 
 	fmt.Printf("Loaded data file %s with %d rows and %d columns.\n", filename, len(dataSet), len(dataSet[0]))
@@ -24,7 +24,7 @@ func TestDataSet_MinMax(t *testing.T) {
 }
 
 func TestDataSet_NormalizedFloat64Values(t *testing.T) {
-	var filename = "../data/pima-indians-diabetes.csv"
+	var filename = "Data/pima-indians-diabetes.csv"
 	var dataSet = FromCSV(filename)
 
 	fmt.Println(dataSet.Float64Values(0))

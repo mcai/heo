@@ -151,7 +151,7 @@ func (event *PollEvent) NeedProcess() bool {
 
 func (event *PollEvent) Process() {
 	if !event.WaitForFileDescriptorCriterion.Buffer.IsEmpty() {
-		event.Context().Process.Memory().WriteHalfWordAt(event.WaitForFileDescriptorCriterion.Pufds+6, 1)
+		event.Context().Process.Memory().WriteUInt16At(event.WaitForFileDescriptorCriterion.Pufds+6, 1)
 		event.Context().Regs().Gpr[regs.REGISTER_V0] = 1
 	} else {
 		event.Context().Regs().Gpr[regs.REGISTER_V0] = 0

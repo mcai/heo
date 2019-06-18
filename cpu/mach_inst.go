@@ -201,7 +201,10 @@ func (machInst MachInst) Cc() uint32 {
 func Disassemble(pc uint32, mnemonicName string, machInst MachInst) string {
 	var buf bytes.Buffer
 
-	buf.WriteString(fmt.Sprintf("0x%08x: 0x%08x %s ",
+	//buf.WriteString(fmt.Sprintf("0x%08x: 0x%08x %s ",
+	//	pc, machInst, strings.ToLower(mnemonicName)))
+
+	buf.WriteString(fmt.Sprintf("0x%x: 0x%x %s ",
 		pc, machInst, strings.ToLower(mnemonicName)))
 
 	if machInst == 0x00000000 {

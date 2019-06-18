@@ -12,7 +12,7 @@ func TestPagedMemory(t *testing.T) {
 
 	fmt.Printf("%s\n", memory.ReadStringAt(12, uint32(len([]byte("Hello world.")))))
 
-	memory.WriteWordAt(1, 12)
+	memory.WriteUInt32At(1, 12)
 
-	fmt.Println(memory.ReadWordAt(1))
+	fmt.Println(memory.ReadUInt32At(1))
 }

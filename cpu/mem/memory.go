@@ -1,34 +1,34 @@
 package mem
 
 type Memory interface {
-	ReadByteAt(virtualAddress uint32) byte
-	ReadHalfWordAt(virtualAddress uint32) uint16
-	ReadWordAt(virtualAddress uint32) uint32
-	ReadDoubleWordAt(virtualAddress uint32) uint64
-	ReadBlockAt(virtualAddress uint32, size uint32) []byte
+	ReadUInt8At(virtualAddress uint32) uint8
+	ReadUInt16At(virtualAddress uint32) uint16
+	ReadUInt32At(virtualAddress uint32) uint32
+	ReadUInt64At(virtualAddress uint32) uint64
+	ReadBlockAt(virtualAddress uint32, size uint32) []uint8
 	ReadStringAt(virtualAddress uint32, size uint32) string
-	WriteByteAt(virtualAddress uint32, data byte)
-	WriteHalfWordAt(virtualAddress uint32, data uint16)
-	WriteWordAt(virtualAddress uint32, data uint32)
-	WriteDoubleWordAt(virtualAddress uint32, data uint64)
+	WriteUInt8At(virtualAddress uint32, data uint8)
+	WriteUInt16At(virtualAddress uint32, data uint16)
+	WriteUInt32At(virtualAddress uint32, data uint32)
+	WriteUInt64At(virtualAddress uint32, data uint64)
 	WriteStringAt(virtualAddress uint32, data string)
-	WriteBlockAt(virtualAddress uint32, size uint32, data []byte)
+	WriteBlockAt(virtualAddress uint32, size uint32, data []uint8)
 }
 
 type MemoryReader interface {
-	ReadByte() byte
-	ReadHalfWord() uint16
-	ReadWord() uint32
-	ReadDoubleWord() uint64
+	ReadUInt8() uint8
+	ReadUInt16() uint16
+	ReadUInt32() uint32
+	ReadUInt64() uint64
 	ReadString(size uint32) string
-	ReadBlock(size uint32) []byte
+	ReadBlock(size uint32) []uint8
 }
 
 type MemoryWriter interface {
-	WriteByte(data byte)
-	WriteHalfWord(data uint16)
-	WriteWord(data uint32)
-	WriteDoubleWord(data uint64)
+	WriteUInt8(data uint8)
+	WriteUInt16(data uint16)
+	WriteUInt32(data uint32)
+	WriteUInt64(data uint64)
 	WriteString(data string)
-	WriteBlock(size uint32, data []byte)
+	WriteBlock(size uint32, data []uint8)
 }

@@ -1187,7 +1187,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadByteAt(addr)
+			var temp = context.Process.Memory().ReadUInt8At(addr)
 			context.Regs().Gpr[rt] = cpuutil.SignExtend32(uint32(temp), 8)
 		},
 	)
@@ -1212,7 +1212,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadByteAt(addr)
+			var temp = context.Process.Memory().ReadUInt8At(addr)
 			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
@@ -1237,7 +1237,7 @@ func (isa *ISA) addMnemonics() {
 			var ft = machInst.Ft()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadDoubleWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt64At(addr)
 			context.Regs().Fpr.SetFloat64(ft, math.Float64frombits(temp))
 		},
 	)
@@ -1262,7 +1262,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadHalfWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt16At(addr)
 			context.Regs().Gpr[rt] = cpuutil.SignExtend32(uint32(temp), 16)
 		},
 	)
@@ -1287,7 +1287,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadHalfWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt16At(addr)
 			context.Regs().Gpr[rt] = uint32(temp)
 		},
 	)
@@ -1312,7 +1312,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt32At(addr)
 			context.Regs().Gpr[rt] = temp
 		},
 	)
@@ -1358,7 +1358,7 @@ func (isa *ISA) addMnemonics() {
 			var rt = machInst.Rt()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt32At(addr)
 			context.Regs().Gpr[rt] = temp
 		},
 	)
@@ -1383,7 +1383,7 @@ func (isa *ISA) addMnemonics() {
 			var ft = machInst.Ft()
 
 			var addr = GetEffectiveAddress(context, machInst)
-			var temp = context.Process.Memory().ReadWordAt(addr)
+			var temp = context.Process.Memory().ReadUInt32At(addr)
 			context.Regs().Fpr.SetFloat32(ft, math.Float32frombits(temp))
 		},
 	)
@@ -1901,7 +1901,7 @@ func (isa *ISA) addMnemonics() {
 
 			var temp = byte(context.Regs().Gpr[rt])
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteByteAt(addr, temp)
+			context.Process.Memory().WriteUInt8At(addr, temp)
 		},
 	)
 
@@ -1927,7 +1927,7 @@ func (isa *ISA) addMnemonics() {
 
 			var temp = context.Regs().Gpr[rt]
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteWordAt(addr, temp)
+			context.Process.Memory().WriteUInt32At(addr, temp)
 			context.Regs().Gpr[rt] = 1
 		},
 	)
@@ -1953,7 +1953,7 @@ func (isa *ISA) addMnemonics() {
 			var dbl = context.Regs().Fpr.Float64(ft)
 			var temp = math.Float64bits(dbl)
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteDoubleWordAt(addr, temp)
+			context.Process.Memory().WriteUInt64At(addr, temp)
 		},
 	)
 
@@ -1977,7 +1977,7 @@ func (isa *ISA) addMnemonics() {
 
 			var temp = uint16(context.Regs().Gpr[rt])
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteHalfWordAt(addr, temp)
+			context.Process.Memory().WriteUInt16At(addr, temp)
 		},
 	)
 
@@ -2396,7 +2396,7 @@ func (isa *ISA) addMnemonics() {
 
 			var data = context.Regs().Gpr[rt]
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteWordAt(addr, data)
+			context.Process.Memory().WriteUInt32At(addr, data)
 		},
 	)
 
@@ -2421,7 +2421,7 @@ func (isa *ISA) addMnemonics() {
 			var f = context.Regs().Fpr.Float32(ft)
 			var data = math.Float32bits(f)
 			var addr = GetEffectiveAddress(context, machInst)
-			context.Process.Memory().WriteWordAt(addr, data)
+			context.Process.Memory().WriteUInt32At(addr, data)
 		},
 	)
 

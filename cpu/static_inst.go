@@ -39,7 +39,13 @@ func NewStaticInst(mnemonic *Mnemonic, machInst MachInst) *StaticInst {
 func (staticInst *StaticInst) Execute(context *Context) {
 	staticInst.Mnemonic.Execute(context, staticInst.MachInst)
 
-	//fmt.Printf("[%d] %s(machInst=%d)", context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle, staticInst.Mnemonic.Name, staticInst.MachInst)
+	//fmt.Printf("[%d] %s", context.Kernel.Experiment.CycleAccurateEventQueue().CurrentCycle, staticInst.Disassemble(context.regs.Pc))
+	//
+	//if staticInst.MachInst.IsLoadStore() {
+	//	fmt.Printf("\t; ea=%d", GetEffectiveAddress(context, staticInst.MachInst))
+	//}
+	//
+	//fmt.Println()
 	//
 	//for i := 0; i < regs.NUM_INT_REGISTERS; i++ {
 	//	if i % 4 == 0 {
