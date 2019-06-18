@@ -12,16 +12,6 @@ const (
 	FUType_MEM_PORT = FUType("MEM_PORT")
 )
 
-var FUTypes = []FUType{
-	FUType_INT_ALU,
-	FUType_INT_MULT_DIV,
-
-	FUType_FP_ADD,
-	FUType_FP_MULT_DIV,
-
-	FUType_MEM_PORT,
-}
-
 type FUOperationType string
 
 const (
@@ -41,24 +31,6 @@ const (
 	FUOperationType_READ_PORT  = FUOperationType("READ_PORT")
 	FUOperationType_WRITE_PORT = FUOperationType("WRITE_PORT")
 )
-
-var FUOperationTypes = []FUOperationType{
-	FUOperationType_NONE,
-
-	FUOperationType_INT_ALU,
-	FUOperationType_INT_MULT,
-	FUOperationType_INT_DIV,
-
-	FUOperationType_FP_ADD,
-	FUOperationType_FP_CMP,
-	FUOperationType_FP_CVT,
-	FUOperationType_FP_MULT,
-	FUOperationType_FP_DIV,
-	FUOperationType_FP_SQRT,
-
-	FUOperationType_READ_PORT,
-	FUOperationType_WRITE_PORT,
-}
 
 type FUOperation struct {
 	OperationLatency uint32
