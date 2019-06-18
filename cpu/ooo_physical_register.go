@@ -160,10 +160,6 @@ func (physicalRegs *PhysicalRegisterFile) Allocate(allocator *ReorderBufferEntry
 	panic("Impossible")
 }
 
-func (physicalRegs *PhysicalRegisterFile) Full() bool {
-	return physicalRegs.NumFreePhysicalRegisters == 0
-}
-
 func (physicalRegs *PhysicalRegisterFile) Dump() {
 	for i, physicalReg := range physicalRegs.PhysicalRegisters {
 		fmt.Printf("physicalRegister[%d]={type=%s, num=%d, dependency=%d, state=%s, ready=%t}\n",
