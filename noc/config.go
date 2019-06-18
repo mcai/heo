@@ -11,13 +11,6 @@ const (
 	TrafficTrace      = TrafficType("Trace")
 )
 
-var TRAFFICS = []TrafficType{
-	TrafficUniform,
-	TrafficTranspose1,
-	TrafficTranspose2,
-	TrafficTrace,
-}
-
 type RoutingType string
 
 const (
@@ -28,14 +21,6 @@ const (
 	RoutingOddEven       = RoutingType("OddEven")
 )
 
-var ROUTINGS = []RoutingType{
-	RoutingXY,
-	RoutingNegativeFirst,
-	RoutingWestFirst,
-	RoutingNorthLast,
-	RoutingOddEven,
-}
-
 type SelectionType string
 
 const (
@@ -43,12 +28,6 @@ const (
 	SelectionBufferLevel = SelectionType("BufferLevel")
 	SelectionAco         = SelectionType("ACO")
 )
-
-var SELECTIONS = []SelectionType{
-	SelectionRandom,
-	SelectionBufferLevel,
-	SelectionAco,
-}
 
 type NoCConfig struct {
 	OutputDirectory string

@@ -18,8 +18,8 @@ func TestMstBaseline(t *testing.T) {
 
 	config.TraceL2Requests = true
 
-	//config.NetworkType = noc.NetworkType_BASE;
-	config.NetworkType = noc.NetworkType_FIXED_LATENCY
+	config.NetworkType = noc.NetworkType_BASE
+	//config.NetworkType = noc.NetworkType_FIXED_LATENCY
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()
@@ -29,7 +29,7 @@ func TestMstHelperThreaded(t *testing.T) {
 	var config = NewCPUConfig("test_results/real/mst_ht")
 
 	config.ContextMappings = append(config.ContextMappings,
-		NewContextMapping(0, "Data/Benchmarks/Olden_Custom1/mst/ht/mst.mips", "200"))
+		NewContextMapping(0, "Data/Benchmarks/Olden_Custom1/mst/ht/mst.mips", "10"))
 
 	config.NumCores = 2
 	config.NumThreadsPerCore = 2
@@ -38,8 +38,8 @@ func TestMstHelperThreaded(t *testing.T) {
 
 	config.TraceL2Requests = true
 
-	//config.NetworkType = noc.NetworkType_BASE;
-	config.NetworkType = noc.NetworkType_FIXED_LATENCY
+	config.NetworkType = noc.NetworkType_BASE
+	//config.NetworkType = noc.NetworkType_FIXED_LATENCY
 
 	var experiment = NewCPUExperiment(config)
 	experiment.Run()
