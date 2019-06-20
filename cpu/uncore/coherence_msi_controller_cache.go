@@ -241,74 +241,40 @@ func (cacheController *CacheController) OnStore(access *MemoryHierarchyAccess, t
 	cacheController._onStore(access, tag, NewStoreFlow(cacheController, access, tag, onCompletedCallback))
 }
 
-func (cacheController *CacheController) onFwdGetS(message *FwdGetSMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
+func (cacheController *CacheController) getFsmByTag(tag uint32) *CacheControllerFiniteStateMachine {
+	var set = cacheController.Cache.GetSet(tag)
+	var way = cacheController.Cache.FindWay(tag)
 	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+	return cacheControllerFsm
+}
 
-	cacheControllerFsm.OnEventFwdGetS(message, message.Tag(), message.Requester)
+func (cacheController *CacheController) onFwdGetS(message *FwdGetSMessage) {
+	cacheController.getFsmByTag(message.Tag()).OnEventFwdGetS(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onFwdGetM(message *FwdGetMMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventFwdGetM(message, message.Tag(), message.Requester)
+	cacheController.getFsmByTag(message.Tag()).OnEventFwdGetM(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onInv(message *InvMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventInv(message, message.Tag(), message.Requester)
+	cacheController.getFsmByTag(message.Tag()).OnEventInv(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onRecall(message *RecallMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventRecall(message, message.Tag())
+	cacheController.getFsmByTag(message.Tag()).OnEventRecall(message, message.Tag())
 }
 
 func (cacheController *CacheController) onPutAck(message *PutAckMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventPutAck(message, message.Tag())
+	cacheController.getFsmByTag(message.Tag()).OnEventPutAck(message, message.Tag())
 }
 
 func (cacheController *CacheController) onData(message *DataMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventData(message, message.Tag(), message.Sender, message.NumInvAcks)
+	cacheController.getFsmByTag(message.Tag()).OnEventData(message, message.Tag(), message.Sender, message.NumInvAcks)
 }
 
 func (cacheController *CacheController) onInvAck(message *InvAckMessage) {
-	var set = cacheController.Cache.GetSet(message.Tag())
-	var way = cacheController.Cache.FindWay(message.Tag())
-
-	var line = cacheController.Cache.Sets[set].Lines[way]
-	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
-
-	cacheControllerFsm.OnEventInvAck(message, message.Tag(), message.Sender)
+	cacheController.getFsmByTag(message.Tag()).OnEventInvAck(message, message.Tag(), message.Sender)
 }
 
 type L1IController struct {
