@@ -88,7 +88,6 @@ func (cacheController *CacheController) BeginAccess(accessType MemoryHierarchyAc
 
 func (cacheController *CacheController) EndAccess(physicalTag uint32) {
 	var access = cacheController.FindAccess(physicalTag)
-
 	access.Complete()
 
 	for _, alias := range access.Aliases {
@@ -243,51 +242,72 @@ func (cacheController *CacheController) OnStore(access *MemoryHierarchyAccess, t
 }
 
 func (cacheController *CacheController) onFwdGetS(message *FwdGetSMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventFwdGetS(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onFwdGetM(message *FwdGetMMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventFwdGetM(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onInv(message *InvMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventInv(message, message.Tag(), message.Requester)
 }
 
 func (cacheController *CacheController) onRecall(message *RecallMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventRecall(message, message.Tag())
 }
 
 func (cacheController *CacheController) onPutAck(message *PutAckMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventPutAck(message, message.Tag())
 }
 
 func (cacheController *CacheController) onData(message *DataMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventData(message, message.Tag(), message.Sender, message.NumInvAcks)
 }
 
 func (cacheController *CacheController) onInvAck(message *InvAckMessage) {
+	var set = cacheController.Cache.GetSet(message.Tag())
 	var way = cacheController.Cache.FindWay(message.Tag())
-	var line = cacheController.Cache.Sets[cacheController.Cache.GetSet(message.Tag())].Lines[way]
+
+	var line = cacheController.Cache.Sets[set].Lines[way]
 	var cacheControllerFsm = line.StateProvider.(*CacheControllerFiniteStateMachine)
+
 	cacheControllerFsm.OnEventInvAck(message, message.Tag(), message.Sender)
 }
 
