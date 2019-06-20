@@ -142,8 +142,8 @@ func (cache *Cache) LineSize() uint32 {
 }
 
 func (cache *Cache) FindWay(address uint32) int32 {
-	var tag = cache.GetTag(address)
 	var set = cache.GetSet(address)
+	var tag = cache.GetTag(address)
 
 	for _, line := range cache.Sets[set].Lines {
 		if line.Valid() && line.Tag == int32(tag) {
