@@ -36,8 +36,8 @@ type MemoryHierarchy interface {
 
 	Network() noc.Network
 
-	Transfer(from MemoryDevice, to MemoryDevice, size uint32, onCompletedCallback func())
-	TransferMessage(from Controller, to Controller, size uint32, message CoherenceMessage)
+	Transmit(from MemoryDevice, to MemoryDevice, size uint32, onCompletedCallback func())
+	TransmitMessage(from Controller, to Controller, size uint32, message CoherenceMessage)
 
 	DumpPendingFlowTree()
 
@@ -208,7 +208,7 @@ func (memoryHierarchy *BaseMemoryHierarchy) Network() noc.Network {
 	return memoryHierarchy.network
 }
 
-func (memoryHierarchy *BaseMemoryHierarchy) Transfer(from MemoryDevice, to MemoryDevice, size uint32, onCompletedCallback func()) {
+func (memoryHierarchy *BaseMemoryHierarchy) Transmit(from MemoryDevice, to MemoryDevice, size uint32, onCompletedCallback func()) {
 	var src = memoryHierarchy.DevicesToNodeIds[from]
 	var dest = memoryHierarchy.DevicesToNodeIds[to]
 
@@ -223,7 +223,7 @@ func (memoryHierarchy *BaseMemoryHierarchy) Transfer(from MemoryDevice, to Memor
 	}
 }
 
-func (memoryHierarchy *BaseMemoryHierarchy) TransferMessage(from Controller, to Controller, size uint32, message CoherenceMessage) {
+func (memoryHierarchy *BaseMemoryHierarchy) TransmitMessage(from Controller, to Controller, size uint32, message CoherenceMessage) {
 	if _, ok := memoryHierarchy.p2pReorderBuffers[from]; !ok {
 		memoryHierarchy.p2pReorderBuffers[from] = make(map[Controller]*P2PReorderBuffer)
 	}
@@ -236,7 +236,7 @@ func (memoryHierarchy *BaseMemoryHierarchy) TransferMessage(from Controller, to 
 
 	p2pReorderBuffer.Messages = append(p2pReorderBuffer.Messages, message)
 
-	memoryHierarchy.Transfer(from, to, size, func() {
+	memoryHierarchy.Transmit(from, to, size, func() {
 		p2pReorderBuffer.OnDestArrived(message)
 	})
 }

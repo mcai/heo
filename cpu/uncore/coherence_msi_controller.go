@@ -6,7 +6,7 @@ type Controller interface {
 	SetNext(next MemoryDevice)
 	HitLatency() uint32
 	ReceiveMessage(message CoherenceMessage)
-	TransferMessage(to Controller, size uint32, message CoherenceMessage)
+	TransmitMessage(to Controller, size uint32, message CoherenceMessage)
 }
 
 type BaseController struct {
@@ -30,8 +30,8 @@ func (controller *BaseController) ReceiveMessage(message CoherenceMessage) {
 	panic("Impossible")
 }
 
-func (controller *BaseController) TransferMessage(to Controller, size uint32, message CoherenceMessage) {
-	controller.MemoryHierarchy().TransferMessage(controller, to, size, message)
+func (controller *BaseController) TransmitMessage(to Controller, size uint32, message CoherenceMessage) {
+	controller.MemoryHierarchy().TransmitMessage(controller, to, size, message)
 }
 
 func (controller *BaseController) Next() MemoryDevice {

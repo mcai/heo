@@ -42,7 +42,7 @@ func (directoryController *DirectoryController) HitLatency() uint32 {
 }
 
 func (directoryController *DirectoryController) SendPutAckToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	directoryController.TransferMessage(requester, 8, NewPutAckMessage(directoryController, producerFlow, producerFlow.Access(), tag))
+	directoryController.TransmitMessage(requester, 8, NewPutAckMessage(directoryController, producerFlow, producerFlow.Access(), tag))
 }
 
 func (directoryController *DirectoryController) ReceiveMessage(message CoherenceMessage) {

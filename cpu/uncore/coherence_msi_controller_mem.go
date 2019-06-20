@@ -40,7 +40,7 @@ func (memoryController *MemoryController) ReceiveMemReadRequest(source MemoryDev
 	memoryController.access(
 		tag,
 		func() {
-			memoryController.Transfer(
+			memoryController.Transmit(
 				source,
 				source.(*DirectoryController).Cache.LineSize()+8,
 				onCompletedCallback,
@@ -55,7 +55,7 @@ func (memoryController *MemoryController) ReceiveMemWriteRequest(source MemoryDe
 	memoryController.access(
 		tag,
 		func() {
-			memoryController.Transfer(
+			memoryController.Transmit(
 				source,
 				8,
 				onCompletedCallback,

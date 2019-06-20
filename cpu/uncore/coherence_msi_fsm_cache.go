@@ -152,7 +152,7 @@ func (fsm *CacheControllerFiniteStateMachine) OnEventLastInvAck(producerFlow Cac
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendGetSToDir(producerFlow CacheCoherenceFlow, tag uint32) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		8,
 		NewGetSMessage(
@@ -166,7 +166,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendGetSToDir(producerFlow CacheCo
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendGetMToDir(producerFlow CacheCoherenceFlow, tag uint32) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		8,
 		NewGetMMessage(
@@ -180,7 +180,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendGetMToDir(producerFlow CacheCo
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendPutSToDir(producerFlow CacheCoherenceFlow, tag uint32) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		8,
 		NewPutSMessage(
@@ -194,7 +194,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendPutSToDir(producerFlow CacheCo
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendPutMAndDataToDir(producerFlow CacheCoherenceFlow, tag uint32) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		fsm.CacheController.Cache.LineSize()+8,
 		NewPutMAndDataMessage(
@@ -208,7 +208,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendPutMAndDataToDir(producerFlow 
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendDataToRequesterAndDir(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		requester,
 		10,
 		NewDataMessage(
@@ -221,7 +221,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendDataToRequesterAndDir(producer
 		),
 	)
 
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		fsm.CacheController.Cache.LineSize()+8,
 		NewDataMessage(
@@ -236,7 +236,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendDataToRequesterAndDir(producer
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendDataToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		requester,
 		fsm.CacheController.Cache.LineSize()+8,
 		NewDataMessage(
@@ -251,7 +251,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendDataToRequester(producerFlow C
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendInvAckToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		requester,
 		8,
 		NewInvAckMessage(
@@ -265,7 +265,7 @@ func (fsm *CacheControllerFiniteStateMachine) SendInvAckToRequester(producerFlow
 }
 
 func (fsm *CacheControllerFiniteStateMachine) SendRecallAckToDir(producerFlow CacheCoherenceFlow, tag uint32, size uint32) {
-	fsm.CacheController.TransferMessage(
+	fsm.CacheController.TransmitMessage(
 		fsm.CacheController.Next().(*DirectoryController),
 		size,
 		NewRecallAckMessage(

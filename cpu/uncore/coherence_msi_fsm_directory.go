@@ -186,7 +186,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) OnEventData(producerFlow Cache
 }
 
 func (fsm *DirectoryControllerFiniteStateMachine) SendDataToRequester(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController, numInvAcks int32) {
-	fsm.DirectoryController.TransferMessage(
+	fsm.DirectoryController.TransmitMessage(
 		requester,
 		fsm.DirectoryController.Cache.LineSize()+8,
 		NewDataMessage(
@@ -217,7 +217,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) CopyDataToMem(tag uint32) {
 }
 
 func (fsm *DirectoryControllerFiniteStateMachine) SendFwdGetSToOwner(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	fsm.DirectoryController.TransferMessage(
+	fsm.DirectoryController.TransmitMessage(
 		fsm.DirectoryEntry.Owner,
 		8,
 		NewFwdGetSMessage(
@@ -231,7 +231,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) SendFwdGetSToOwner(producerFlo
 }
 
 func (fsm *DirectoryControllerFiniteStateMachine) SendFwdGetMToOwner(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
-	fsm.DirectoryController.TransferMessage(
+	fsm.DirectoryController.TransmitMessage(
 		fsm.DirectoryEntry.Owner,
 		8,
 		NewFwdGetMMessage(
@@ -247,7 +247,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) SendFwdGetMToOwner(producerFlo
 func (fsm *DirectoryControllerFiniteStateMachine) SendInvToSharers(producerFlow CacheCoherenceFlow, tag uint32, requester *CacheController) {
 	for _, sharer := range fsm.DirectoryEntry.Sharers {
 		if requester != sharer {
-			fsm.DirectoryController.TransferMessage(
+			fsm.DirectoryController.TransmitMessage(
 				sharer,
 				8,
 				NewInvMessage(
@@ -269,7 +269,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) SendRecallToOwner(producerFlow
 		panic("Impossible")
 	}
 
-	fsm.DirectoryController.TransferMessage(
+	fsm.DirectoryController.TransmitMessage(
 		owner,
 		8,
 		NewRecallMessage(
@@ -287,7 +287,7 @@ func (fsm *DirectoryControllerFiniteStateMachine) SendRecallToSharers(producerFl
 			panic("Impossible")
 		}
 
-		fsm.DirectoryController.TransferMessage(
+		fsm.DirectoryController.TransmitMessage(
 			sharer,
 			8,
 			NewRecallMessage(
@@ -462,7 +462,7 @@ func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFinit
 
 			directoryControllerFsm.DirectoryController.NumPendingMemoryAccesses++
 
-			directoryControllerFsm.DirectoryController.Transfer(
+			directoryControllerFsm.DirectoryController.Transmit(
 				directoryControllerFsm.DirectoryController.Next(),
 				8,
 				func() {
@@ -504,7 +504,7 @@ func NewDirectoryControllerFiniteStateMachineFactory() *DirectoryControllerFinit
 
 			directoryControllerFsm.DirectoryController.NumPendingMemoryAccesses++
 
-			directoryControllerFsm.DirectoryController.Transfer(
+			directoryControllerFsm.DirectoryController.Transmit(
 				directoryControllerFsm.DirectoryController.Next(),
 				8,
 				func() {

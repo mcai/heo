@@ -13,7 +13,7 @@ type MemoryDevice interface {
 	MemoryHierarchy() MemoryHierarchy
 	Name() string
 	DeviceType() MemoryDeviceType
-	Transfer(to MemoryDevice, size uint32, onCompletedCallback func())
+	Transmit(to MemoryDevice, size uint32, onCompletedCallback func())
 }
 
 type BaseMemoryDevice struct {
@@ -32,8 +32,8 @@ func NewBaseMemoryDevice(memoryHierarchy MemoryHierarchy, name string, deviceTyp
 	return memoryDevice
 }
 
-func (memoryDevice *BaseMemoryDevice) Transfer(to MemoryDevice, size uint32, onCompletedCallback func()) {
-	memoryDevice.memoryHierarchy.Transfer(memoryDevice, to, size, onCompletedCallback)
+func (memoryDevice *BaseMemoryDevice) Transmit(to MemoryDevice, size uint32, onCompletedCallback func()) {
+	memoryDevice.memoryHierarchy.Transmit(memoryDevice, to, size, onCompletedCallback)
 }
 
 func (memoryDevice *BaseMemoryDevice) MemoryHierarchy() MemoryHierarchy {
